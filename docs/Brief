@@ -1,0 +1,137 @@
+Brief de proyecto — Lenguajes Digitales 5
+1. Contexto o problema
+Hoy no existe un lugar centralizado, confiable y fácil donde un organizador amateur pueda
+crear y gestionar un torneo, y donde un jugador pueda encontrarlo, inscribirse y jugarlo
+viendo su progreso —rankings, puestos, historial por juego— todo en un mismo lugar. Lo
+que existe hoy está repartido entre herramientas que no fueron pensadas para esto: Discord
+para coordinar, TikTok para promocionar, y nada que centralice la gestión del torneo ni el
+seguimiento del jugador a través de los torneos y juegos en los que participa. El problema
+real no es la confianza en sí —eso es apenas un matiz dentro de la experiencia, no el punto
+central—, sino la falta de ese lugar centralizado, confiable y fácil para organizar y competir,
+pensado para el ciclo completo: crear, gestionar, jugar y hacer seguimiento.
+2. Objetivo del producto
+Habilitar el lugar centralizado, confiable y fácil que hoy no existe: un ecosistema de torneos
+amateur en el que cualquier organizador —desde streamers hasta jugadores comunes
+inspirados por ellos— pueda crear, gestionar y darle mantenimiento y seguimiento a su
+torneo de principio a fin, y en el que cualquier jugador pueda encontrar, inscribirse y jugar
+torneos con seguimiento completo de su progreso —rankings, puestos, historial— a través
+de los juegos que le interesan. La prioridad de este objetivo está en la experiencia de crear,
+gestionar y competir, no en lo económico.
+3. Oportunidad de negocio
+Hoy los organizadores (streamers pequeños y medianos, y jugadores que quieren organizar)
+usan Discord para gestionar sus torneos y TikTok para promocionarlos, pero ninguna
+herramienta centraliza la creación, gestión y seguimiento del torneo, ni le da al jugador un
+lugar donde ver su progreso a través de los torneos que juega. El tamaño de base es
+grande: LatAm supera los 370 millones de jugadores, con un crecimiento cercano al 4,5%
+interanual (Newzoo, Global Games Market Report 2025). El segmento formal de esports en
+la región todavía es pequeño frente a esa base — del orden de US$70-80M en ingresos
+anuales (Fortune Business Insights, 2026) — lo que sugiere que la enorme mayoría de
+jugadores casuales y semicompetitivos hoy no tiene dónde organizar ni jugar de forma
+estructurada. Ese es el vacío que la plataforma busca capturar.
+Lo que diferenciaría a la plataforma frente al benchmark (Battlefy, Challonge, Toornament,
+Rivals, PlayTourn) no es solo centralizar creación y gestión, sino ofrecer rankings y
+seguimiento del jugador a través de juegos y torneos en un ecosistema pensado para
+LatAm. Sistemas de ranking/rating ya existen como categoría reconocida en plataformas de
+esports, pero casi siempre atados a un solo juego — no como un historial unificado del
+jugador a través de varios juegos y torneos, que es lo que la plataforma busca ofrecer.
+Por ahora, este brief no define un modelo de monetización. El foco de este semestre es
+validar que organizadores y jugadores prefieren usar la plataforma sobre lo que usan hoy
+(Discord + TikTok + hojas de cálculo) para organizar, jugar y hacer seguimiento de torneos.
+Comisión, tarifa de creación, o cualquier otro mecanismo de ingresos quedan pospuestos
+para una fase posterior, una vez validado ese uso — no antes.
+4. Hipótesis
+Creemos que los organizadores van a preferir una plataforma que centralice la creación,
+gestión, mantenimiento y entrada de su torneo en un solo lugar —hoy repartido entre
+Discord, TikTok y herramientas sueltas—, y que los jugadores van a preferir la plataforma
+porque se convierte en el mejor lugar para competir —encontrar torneos, inscribirse fácil,
+ver su progreso en rankings, puestos e historial— más allá del costo. Esto lo podemos
+validar este semestre con entrevistas estructuradas a cada agente (ver Plan de validación),
+no con adopción habitual medida en el tiempo.
+5. Value props principales (organizador y jugador)
+Nota: se elimina la jerarquía principal/secundaria. En un marketplace de dos lados
+ninguno de los dos actores sostiene el producto por sí solo — sin jugadores no hay
+torneo, sin organizadores no hay torneo al que inscribirse — así que ambos value props
+son principales, uno por actor.
+Principal — organizador:
+Para organizadores de torneos de videojuegos, que hoy reparten su torneo entre Discord,
+TikTok y herramientas sueltas, la plataforma les da un solo lugar donde crear, gestionar y
+mantener su torneo de principio a fin —incluyendo inscritos, bracket y resultados— a
+diferencia de Discord y TikTok, que sirven para convocar pero no para administrar el torneo
+completo.
+Principal — jugador:
+Para jugadores que quieren jugar y organizar torneos, la plataforma les da el mejor lugar
+para encontrar torneos, inscribirse fácil y ver su progreso —rankings, puestos, historial— a
+través de los juegos y torneos en los que participan, algo que hoy no existe en ningún lugar
+centralizado.
+6. Qué vamos a hacer
+Este semestre el alcance se cierra en tres frentes — flujo del organizador, flujo del jugador, y
+la capa de rankings/reputación — sin sumar nada más:
+Organizador: crea el torneo, lo gestiona (inscripciones, bracket, resultados) y le da
+mantenimiento durante y después de que termina, además de publicarlo para que los
+jugadores lo encuentren.
+Jugador: explora torneos disponibles, se inscribe, juega, y hace seguimiento de su
+progreso desde su perfil.
+Rankings: cada jugador construye un historial competitivo visible — resultados por
+torneo, ranking dentro de cada juego (el ranking no compara habilidad entre juegos
+distintos, ya que no son comparables; agrega participación y desempeño en un perfil
+competitivo único por jugador), y una vista de cómo le va frente a sus amigos dentro de
+la plataforma. Esto retoma el ranking de amigos que ya habíamos dejado como stretch
+goal para las semanas 7–8, y lo integra desde ahora en la visión de producto — el corte
+fino de qué entra al MVP y qué queda para después se define en el siguiente paso.
+Fuera de alcance este semestre: monetización (cobro de entradas, comisiones, pasarela
+de pago), sistema de promociones, integración con Discord, y un mecanismo formal de
+resolución de disputas. La inscripción a un torneo en este MVP es gratuita — el foco es la
+experiencia de organizar y jugar, no el cobro.
+7. Plan de validación
+Las entrevistas son parte obligatoria de este corte, no un problema pendiente: hay que
+hablar con organizadores y jugadores reales antes de cerrar el MVP en SDD. Fuentes
+accesibles para contactar desde ya:
+Comunidades gamer de la universidad.
+Organizadores de torneos LAN o de Valorant/CS2 amateur en Bogotá.
+Servidores de Discord de esports amateur en Colombia.
+Para que las entrevistas sean objetivas y comparables entre sí, se hacen con un guion
+estructurado por agente — mismas preguntas para todos los organizadores, mismas
+preguntas para todos los jugadores, organizadas en tres bloques: proceso actual,
+dificultad/motivación, e intención de uso.
+Preguntas para organizadores
+A. Proceso actual
+1. ¿Cómo organizas un torneo hoy, de principio a fin? ¿Qué herramientas usas (Discord,
+TikTok, hojas de cálculo, otras)?
+2. ¿Cómo llevas el registro de inscritos, el bracket y los resultados?
+B. Dificultad
+3. ¿Qué parte de organizar un torneo te toma más tiempo o te resulta más difícil?
+4. ¿Qué haces después de que termina el torneo? ¿Hay seguimiento con los jugadores,
+entrega de premios, algo que documentes para el siguiente?
+C. Intención de uso
+5. ¿Qué tan seguido organizas torneos y cuántos jugadores sueles convocar?
+6. Si existiera una app que centralizara crear, gestionar y hacer seguimiento del torneo,
+¿qué tendría que tener para que la uses en tu próximo torneo? ¿Qué te haría dudar?
+Preguntas para jugadores
+A. Proceso actual
+1. ¿Cómo te enteras de los torneos a los que juegas hoy?
+2. ¿Qué tan fácil o difícil es hoy inscribirte y participar? ¿Qué parte del proceso te frustra
+más?
+B. Motivación
+3. ¿Por qué decides inscribirte en un torneo específico? ¿Qué te hace elegir uno sobre otro?
+4. ¿Qué buscas en un torneo (nivel de competencia, organización, comunidad, premio, algo
+más)?
+C. Intención de uso
+5. ¿Te importa ver tu historial de resultados o un ranking de cómo te ha ido a través de los
+torneos que juegas? ¿Por qué sí o por qué no?
+6. Si hubiera una app donde pudieras encontrar todos los torneos disponibles, inscribirte
+fácil y ver tu progreso frente a tus amigos, ¿la usarías aunque más adelante tuviera un
+costo? ¿Qué le pedirías?
+El objetivo es validar la hipótesis del punto 4 antes de SDD: si a los organizadores les
+interesa centralizar creación, gestión y mantenimiento, y si a los jugadores les importa la
+experiencia de jugar/organizar y ver su progreso — no medir retención ni uso habitual, eso
+queda fuera de alcance de este semestre.
+Fuentes de apoyo (research de contexto, no exhaustivo)
+Newzoo, Global Games Market Report 2025 — tamaño y comportamiento de gasto de la
+base de jugadores en LatAm.
+Fortune Business Insights, Esports Market Report (2026) — tamaño del segmento
+formal de esports, global y LatAm.
+Setupgamers, comparativo de plataformas de torneos esports — confirma que sistemas
+de skill rating y ranking ya son una categoría de feature reconocida en la industria,
+aunque fragmentada por plataforma/juego.
+Documento vivo: se actualiza en cada sesión de Definición del Corte 1, hasta consolidarse
+antes de la Sustentación de cierre (sesión 10).

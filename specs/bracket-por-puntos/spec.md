@@ -83,7 +83,7 @@ Carpeta de pantallas: `design/flujos/bracket-por-puntos/`
 - Botones «Confirmar resultado» y «Cancelar».
 
 **PTS · O4 · Cierre y podio**
-- Barra superior con volver, título «Cerrar torneo» y subtítulo «Liga Relámpago Bogotá».
+- Barra superior con volver, título «Cerrar torneo» y subtítulo «Liga Relámpago».
 - Título «¡FINAL REGISTRADA!» y el podio con Sh4dow (1.º, +100 pts), Johitan (2.º, +94 pts) y Lupe (3.º, +88 pts).
 - Tres datos: 16 Participantes, 40 Partidos y 5 Rondas.
 - Lista de verificación: «Todos los resultados registrados», «Tabla de posiciones completa» y «Puntos de ranking calculados».
@@ -296,7 +296,6 @@ Dentro del MVP, no incluido en este flujo por falta de pantallas:
 19. **Botón de intercambio en O2.** El ícono de la barra superior no tiene destino: ¿cambia a la vista del jugador, o a otro bracket?
 20. **Cómo se llega a J1 y O2.** Las pantallas no muestran el camino desde Mis torneos, desde «Ver bracket» (J11) o desde la gestión del torneo.
 21. **Falta una pantalla.** La carpeta tiene J1 a J3 y O2 a O4, pero no hay «PTS · O1». ¿Es la pantalla de cupos personalizados (PTS · O1b), que está en otra carpeta, o falta una pantalla por exportar?
-22. **Nombre del torneo.** J1 llama al torneo «Liga Relámpago» y O4 «Liga Relámpago Bogotá». Hay que unificar el nombre.
 
 ## Cambios
 
@@ -305,3 +304,4 @@ Dentro del MVP, no incluido en este flujo por falta de pantallas:
 | 2026-10-26 | Versión inicial. Basada en las pantallas PTS · J1 a J3 y PTS · O2 a O4, y en las respuestas del equipo: los empates los registra directamente el organizador, los reportes que no coinciden abren una disputa formal, los tres formatos entran al MVP (solo la Liga está dibujada), el MVP juega de forma individual, y los emparejamientos de cada ronda se generan solos al avanzar («Avanzar a Ronda N» se habilita cuando todos los resultados están registrados, y «Generar emparejamientos» vuelve a sortearlos). |
 | 2026-10-27 | Revisión del PR #3. Equipos queda fuera del MVP de forma definitiva: se quitan las menciones a equipos, escuadras, dúos y tríos, y las referencias a E1 a E3. |
 | 2026-10-27 | Revisión del PR #3. Puntos de ranking con una sola regla: 100 × (N − puesto + 1) / N, redondeada al entero más cercano (con N = 16: 100, 94 y 88). Se borra la pregunta sobre los valores de los puntos del podio. |
+| 2026-10-27 | Revisión del PR #3. El torneo se llama «Liga Relámpago» (sin «Bogotá») en todo el texto, y se borra la pregunta sobre el nombre del torneo. |

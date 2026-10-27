@@ -32,3 +32,4 @@ Cambios de diseño que salen de la revisión del PR #3 y que no se pueden hacer 
 | J21 · Rankings · Amigos | Quitar las pestañas Global y Por juego: Rankings queda solo con el ranking de amigos. | 5 |
 | V3 · Rankings · Sin posición | Rediseñar para el ranking entre amigos (sin pestañas Global y Por juego, sin chips de juego ni podio global). | 5 |
 | J22 · Notificaciones | Quitar el aviso «Subiste al puesto 5 · Ranking global de EA FC 25» y cambiar «Resultado validado · +15 pts» (los puntos se suman solo al cerrar el torneo). | 5 |
+| PTS · O4 · Cierre y podio | Cambiar el subtítulo «Liga Relámpago Bogotá» por «Liga Relámpago». | 6 |

@@ -1,6 +1,6 @@
 # Acceso y registro
 
-Carpeta de pantallas: `design/flujos/Accseso y registro/`
+Carpeta de pantallas: `design/flujos/acceso-y-registro/`
 
 ## Quién y para qué
 
@@ -170,9 +170,9 @@ Estos estados van en Preguntas abiertas.
 
 ## Qué pasa después
 
-- **Jugador:** al terminar Tus juegos (J02), entra al **Inicio (J06)**, en modo Jugador. Los juegos elegidos alimentan «Para ti» y los chips de juego de Inicio (flujo «Jugador, descubrir e inscribirse»). Desde Inicio puede explorar, inscribirse y ver su progreso.
-- **Organizador:** al crear la cuenta entra al **Panel del organizador (O01)**, en modo Organizador (flujo «Organizador panel y creacion»).
-- **Cuenta con los dos modos:** una cuenta puede tener los dos modos. Quien empieza como jugador puede activar el modo organizador después, y viceversa. El cambio se hace desde «Ajustes y modo» (J23, flujo «Jugador progreso y cuenta»).
+- **Jugador:** al terminar Tus juegos (J02), entra al **Inicio (J06)**, en modo Jugador. Los juegos elegidos alimentan «Para ti» y los chips de juego de Inicio (flujo «jugador-descubrir-e-inscribirse»). Desde Inicio puede explorar, inscribirse y ver su progreso.
+- **Organizador:** al crear la cuenta entra al **Panel del organizador (O01)**, en modo Organizador (flujo «organizador-panel-y-creacion»).
+- **Cuenta con los dos modos:** una cuenta puede tener los dos modos. Quien empieza como jugador puede activar el modo organizador después, y viceversa. El cambio se hace desde «Ajustes y modo» (J23, flujo «jugador-progreso-y-cuenta»).
 - **Ingresar:** al ingresar correctamente, la persona entra a la app (el modo con el que entra no se ve; ver Preguntas abiertas).
 - **Recuperar acceso:** al cambiar la contraseña, la persona puede volver a Ingresar (J04) con la nueva.
 - **ID público:** el ID de jugador o de organizador aparece en los brackets, rankings y torneos de los demás flujos. Es único y se puede cambiar después (desde el perfil o los ajustes, que son de otro flujo).
@@ -221,9 +221,9 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 
 Esta spec no cubre lo siguiente, que tiene su propia spec:
 
-- **Inicio y descubrir torneos** (J06 a J12): destino del jugador al terminar el registro. Está en «Jugador, descubrir e inscribirse».
-- **Panel del organizador** (O01): destino del organizador. Está en «Organizador panel y creacion».
-- **Ajustes y modo** (J23), **perfil competitivo** (J18) y **notificaciones** (J22): cambio de modo, edición del ID y avisos. Están en «Jugador progreso y cuenta».
+- **Inicio y descubrir torneos** (J06 a J12): destino del jugador al terminar el registro. Está en «jugador-descubrir-e-inscribirse».
+- **Panel del organizador** (O01): destino del organizador. Está en «organizador-panel-y-creacion».
+- **Ajustes y modo** (J23), **perfil competitivo** (J18) y **notificaciones** (J22): cambio de modo, edición del ID y avisos. Están en «jugador-progreso-y-cuenta».
 - **Términos y Política de privacidad:** se mencionan en J01 y J03, pero no hay pantalla.
 - **Pantalla de «Nueva contraseña»:** no existe en las pantallas.
 

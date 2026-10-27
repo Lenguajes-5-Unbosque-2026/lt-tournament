@@ -1,6 +1,6 @@
 # Battle royale bracket
 
-Carpeta de pantallas: `design/flujos/Battle royale bracket/`
+Carpeta de pantallas: `design/flujos/battle-royale-bracket/`
 
 ## Quién y para qué
 
@@ -133,7 +133,7 @@ Caso: Victory Royale Cup, Partida 3 en vivo.
 16. Debajo, en «Reportes de los jugadores», ve lo que reportó cada jugador, cuándo lo hizo y si adjuntó captura. Los usa como ayuda para llenar la tabla.
 17. La pantalla compara los reportes con la tabla:
     - Si coinciden, muestra el aviso verde «Los reportes coinciden con la tabla», con el ganador de la partida.
-    - Si no coinciden, se abre una disputa formal (flujo «Incidencias de partido»; esa pantalla no se ve aquí).
+    - Si no coinciden, se abre una disputa formal (flujo «incidencias-de-partido»; esa pantalla no se ve aquí).
 18. Confirma el ganador de la partida («Ganador de la partida: ZeroX») y sube la captura de la tabla final, que los jugadores verán con «Ver prueba».
 19. Toca «Confirmar resultados». La partida queda finalizada y la tabla general se actualiza. «Cancelar» y la X cierran sin guardar.
 
@@ -163,7 +163,7 @@ Caso: Victory Royale Cup, Partida 3 en vivo.
 | Reporte sin captura | Solo el texto del puesto, las kills y la hora. |
 | Reporte con check verde | Check verde a la derecha de la fila. Se asume que significa que el reporte coincide con la tabla; hay que confirmarlo. |
 | Los reportes coinciden con la tabla | Aviso verde con el ganador de la partida. |
-| Los reportes no coinciden | Se abre una disputa formal (flujo «Incidencias de partido»; la pantalla no está en este flujo). |
+| Los reportes no coinciden | Se abre una disputa formal (flujo «incidencias-de-partido»; la pantalla no está en este flujo). |
 
 ### Del botón «Reportar resultado» del jugador (J1)
 - **Habilitado:** el jugador ya fue eliminado o la partida terminó.
@@ -189,8 +189,8 @@ Caso: Victory Royale Cup, Partida 3 en vivo.
 
 - **Reporte del jugador:** el reporte llega al organizador y aparece en «Reportes de los jugadores» de O3, con la hora y la captura si la subió.
 - **Confirmar resultados:** la partida pasa a Finalizada. La captura de la tabla final queda visible para los jugadores con «Ver prueba». La tabla general se actualiza con los puntos, kills y mejor puesto.
-- **Reportes que no coinciden:** se abre una disputa formal en el flujo «Incidencias de partido» (D1 para el jugador y D2 para el organizador). Esta spec solo menciona a dónde se va.
-- **Cierre del torneo:** al finalizar y publicar los resultados se actualizan al instante el historial y los rankings de los 100 jugadores (flujo «Jugador progreso y cuenta», J18 a J21). Cada jugador puede ver su resultado final (pantalla F1 de «Jugador competir»).
+- **Reportes que no coinciden:** se abre una disputa formal en el flujo «incidencias-de-partido» (D1 para el jugador y D2 para el organizador). Esta spec solo menciona a dónde se va.
+- **Cierre del torneo:** al finalizar y publicar los resultados se actualizan al instante el historial y los rankings de los 100 jugadores (flujo «jugador-progreso-y-cuenta», J18 a J21). Cada jugador puede ver su resultado final (pantalla F1 de «jugador-competir»).
 - **Puntos de ranking:** los 3 primeros reciben puntos (+300, +150, +80 en el ejemplo). Los valores salen de la configuración del torneo.
 - **Compartir:** J1 y O4 tienen botones de compartir; el contenido que se comparte no está definido.
 
@@ -200,7 +200,7 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 
 ### Se lee
 
-**Torneo Battle royale** (viene de la configuración, flujo «Organizador panel y creacion»)
+**Torneo Battle royale** (viene de la configuración, flujo «organizador-panel-y-creacion»)
 - Nombre y juego.
 - Formato: Partidas acumuladas, Clasificación por lobbies o Partida única.
 - Cantidad de jugadores (de 2 a 100).
@@ -250,13 +250,13 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 
 Esta spec no cubre lo siguiente, que tiene su propia spec:
 
-- **Crear y configurar el torneo** (O01 a O06, O03b, BR · O1b), en «Organizador panel y creacion».
-- **Inscribirse** (J06 a J12 y E1 a E3), en «Jugador, descubrir e inscribirse».
-- **Check-in y chat** (J14, J15, O11, O14), en «Jugador competir» y «Orgamizador gestion del torneo».
-- **Equipo vs equipo** y **Bracket por puntos**, las otras modalidades, con sus propias carpetas.
-- **Incidencias de partido** (D1, D2, W1, W2, W3): disputas y W.O., con su propia spec.
+- **Crear y configurar el torneo** (O01 a O06, O03b, BR · O1b), en «organizador-panel-y-creacion».
+- **Inscribirse** (J06 a J12 y E1 a E3), en «jugador-descubrir-e-inscribirse».
+- **Check-in y chat** (J14, J15, O11, O14), en «jugador-competir» y «organizador-gestion-del-torneo».
+- **Equipo vs equipo** y **bracket-por-puntos**, las otras modalidades, con sus propias carpetas.
+- **incidencias-de-partido** (D1, D2, W1, W2, W3): disputas y W.O., con su propia spec.
 - **Ranking e historial** (J18 a J21) y **resultado final del jugador** (F1): se actualizan al cerrar, pero se describen en sus carpetas.
-- **Estadísticas del torneo** (O16), en «Organizador cierre datos y perfil».
+- **Estadísticas del torneo** (O16), en «organizador-cierre-datos-y-perfil».
 
 Dentro del MVP, no incluido en este flujo por falta de pantallas:
 - **Clasificación por lobbies** y **Partida única** (los dos formatos que no se dibujaron).
@@ -292,7 +292,7 @@ Dentro del MVP, no incluido en este flujo por falta de pantallas:
     - La Victory Royale Cup aparece en Explorar con 48/50 y aquí tiene 100 jugadores.
     - En O3, los avatares de las filas de ZeroX y de Johitan en «Reportes de los jugadores» parecen intercambiados.
 21. **Falta una pantalla.** La carpeta tiene J1 a J3 y O2 a O4, pero no hay «BR · O1». ¿Es la pantalla de cupos personalizados (BR · O1b), que está en otra carpeta, o falta una pantalla por exportar?
-22. **Nombre del flujo.** La carpeta se llama «Battle royale bracket», pero también cubre el cierre del torneo, que en otros formatos es una pantalla aparte (O15). ¿Se mantiene el cierre aquí?
+22. **Nombre del flujo.** La carpeta se llama «battle-royale-bracket», pero también cubre el cierre del torneo, que en otros formatos es una pantalla aparte (O15). ¿Se mantiene el cierre aquí?
 
 ## Cambios
 

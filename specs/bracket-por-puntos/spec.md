@@ -1,6 +1,6 @@
 # Bracket por puntos
 
-Carpeta de pantallas: `design/flujos/Bracket por puntos/`
+Carpeta de pantallas: `design/flujos/bracket-por-puntos/`
 
 ## Quién y para qué
 
@@ -134,7 +134,7 @@ Los empates no se reportan desde este formulario: los registra directamente el o
 16. En «Reportes de los jugadores» ve lo que reportó cada uno, cuándo lo hizo y si adjuntó captura. En este caso los dos reportaron 21 – 18.
 17. La pantalla compara los dos reportes:
     - Si coinciden, muestra el aviso verde «Los reportes coinciden», con los puntos que suma cada jugador (Johitan 3 pts, Mafe 0).
-    - Si no coinciden, se abre una disputa formal (flujo «Incidencias de partido»; esa pantalla no se ve aquí).
+    - Si no coinciden, se abre una disputa formal (flujo «incidencias-de-partido»; esa pantalla no se ve aquí).
 18. Confirma al ganador («Ganador: Johitan») y sube la prueba del resultado, que los jugadores verán con «Ver prueba».
 19. Toca «Confirmar resultado». El partido queda registrado y suma los puntos a la tabla. «Cancelar» y la X cierran sin guardar.
 20. Si el partido terminó empatado, el organizador registra el empate directamente, y cada jugador suma 1 punto.
@@ -168,7 +168,7 @@ Los empates no se reportan desde este formulario: los registra directamente el o
 | Reporte sin captura | Solo el texto del marcador y la hora. |
 | Reporte con check verde | Check verde a la derecha de la fila. Se asume que significa que coincide con el otro reporte; hay que confirmarlo. |
 | Los reportes coinciden | Aviso verde con los puntos que suma cada jugador. |
-| Los reportes no coinciden | Se abre una disputa formal (flujo «Incidencias de partido»; la pantalla no está en este flujo). |
+| Los reportes no coinciden | Se abre una disputa formal (flujo «incidencias-de-partido»; la pantalla no está en este flujo). |
 
 ### De la tabla de posiciones
 - **Fila propia:** resaltada con borde de acento (J1) o de azul (O2).
@@ -195,9 +195,9 @@ Los empates no se reportan desde este formulario: los registra directamente el o
 
 - **Reporte del jugador:** el reporte llega al organizador y aparece en «Reportes de los jugadores» de O3, con la hora y la captura si la subió. La tarjeta de la ronda en O2 refleja que ambos reportaron.
 - **Confirmar resultado:** el partido queda registrado, la prueba queda visible para los jugadores con «Ver prueba» y los puntos se suman a la tabla (3 por victoria, 1 por empate, 0 por derrota).
-- **Reportes que no coinciden:** se abre una disputa formal en el flujo «Incidencias de partido» (D1 para el jugador y D2 para el organizador). Esta spec solo menciona a dónde se va.
+- **Reportes que no coinciden:** se abre una disputa formal en el flujo «incidencias-de-partido» (D1 para el jugador y D2 para el organizador). Esta spec solo menciona a dónde se va.
 - **Avanzar de ronda:** al avanzar, los emparejamientos de la ronda siguiente se generan solos.
-- **Cierre del torneo:** al finalizar y publicar los resultados se actualizan al instante el historial y los rankings de los 16 participantes (flujo «Jugador progreso y cuenta», J18 a J21). Cada jugador puede ver su resultado final (pantalla F1 de «Jugador competir»).
+- **Cierre del torneo:** al finalizar y publicar los resultados se actualizan al instante el historial y los rankings de los 16 participantes (flujo «jugador-progreso-y-cuenta», J18 a J21). Cada jugador puede ver su resultado final (pantalla F1 de «jugador-competir»).
 - **Puntos de ranking:** los 3 primeros reciben puntos (+300, +150, +80 en el ejemplo). Los valores salen de la configuración del torneo.
 - **Compartir:** J1 y O4 tienen botones de compartir; el contenido que se comparte no está definido.
 
@@ -207,7 +207,7 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 
 ### Se lee
 
-**Torneo «Por puntos»** (viene de la configuración, flujo «Organizador panel y creacion»)
+**Torneo «Por puntos»** (viene de la configuración, flujo «organizador-panel-y-creacion»)
 - Nombre.
 - Formato: Liga, Rondas suizas o Récord de puntos.
 - Jugadores por equipo (en este flujo solo se usa 1, individual).
@@ -258,13 +258,13 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 
 Esta spec no cubre lo siguiente, que tiene su propia spec:
 
-- **Crear y configurar el torneo** (O01 a O06, O03c, PTS · O1b), en «Organizador panel y creacion».
-- **Inscribirse** (J06 a J12 y E1 a E3), en «Jugador, descubrir e inscribirse».
-- **Check-in y chat** (J14, J15, O11, O14), en «Jugador competir» y «Orgamizador gestion del torneo».
+- **Crear y configurar el torneo** (O01 a O06, O03c, PTS · O1b), en «organizador-panel-y-creacion».
+- **Inscribirse** (J06 a J12 y E1 a E3), en «jugador-descubrir-e-inscribirse».
+- **Check-in y chat** (J14, J15, O11, O14), en «jugador-competir» y «organizador-gestion-del-torneo».
 - **Equipo vs equipo** y **Battle royale**, las otras modalidades, con sus propias carpetas.
-- **Incidencias de partido** (D1, D2, W1, W2, W3): disputas y W.O., con su propia spec.
+- **incidencias-de-partido** (D1, D2, W1, W2, W3): disputas y W.O., con su propia spec.
 - **Ranking e historial** (J18 a J21) y **resultado final del jugador** (F1): se actualizan al cerrar, pero se describen en sus carpetas.
-- **Estadísticas del torneo** (O16), en «Organizador cierre datos y perfil».
+- **Estadísticas del torneo** (O16), en «organizador-cierre-datos-y-perfil».
 
 Dentro del MVP, no incluido en este flujo por falta de pantallas:
 - **Rondas suizas** y **Récord de puntos** (los dos formatos que no se dibujaron).

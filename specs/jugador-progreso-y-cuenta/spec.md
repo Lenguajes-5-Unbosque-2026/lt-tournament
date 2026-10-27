@@ -1,6 +1,6 @@
 # Jugador · Progreso y cuenta
 
-Carpeta de pantallas: `design/flujos/Jugador progreso y cuenta/`
+Carpeta de pantallas: `design/flujos/jugador-progreso-y-cuenta/`
 
 ## Quién y para qué
 
@@ -152,7 +152,7 @@ Caso: Johitan revisa su progreso y ajusta su cuenta.
 ### F. Cambiar de modo
 
 13. Johitan toca la tarjeta **«Organizador»** en Ajustes (o el segmento «Organizador» del perfil). Cualquiera de los dos controles cambia el modo de **toda la app**: la navegación, el acento (naranja o azul) y las pantallas.
-14. La cuenta es una sola, y su historial se conserva al cambiar de modo. Johitan llega al Panel del organizador (flujo «Organizador panel y creacion»).
+14. La cuenta es una sola, y su historial se conserva al cambiar de modo. Johitan llega al Panel del organizador (flujo «organizador-panel-y-creacion»).
 
 ## Estados
 
@@ -160,7 +160,7 @@ Caso: Johitan revisa su progreso y ajusta su cuenta.
 | Estado | Qué muestra |
 |---|---|
 | Con historial | Estadísticas, logros y últimos torneos (los que se ven en la pantalla). |
-| Sin historial | «Tu historial está vacío» (ver la spec «Estado vacio sin torneos», V4). |
+| Sin historial | «Tu historial está vacío» (ver la spec «estado-vacio-sin-torneos», V4). |
 
 ### De un torneo en el historial (J18 y J19)
 - **Puesto:** el número a la izquierda (1º, 2º, 3º, 5º, 12º), con un color distinto para los tres primeros.
@@ -197,13 +197,13 @@ Caso: Johitan revisa su progreso y ajusta su cuenta.
 
 ## Qué pasa después
 
-- **Después de cada torneo:** al cerrar el torneo, los puntos de ranking se suman al perfil, el torneo entra en el historial y el nivel se actualiza (flujos «Equipo vs equipo bracket», «Battle royale bracket» y «Bracket por puntos»). Los tres primeros reciben además el Resultado final (F1).
+- **Después de cada torneo:** al cerrar el torneo, los puntos de ranking se suman al perfil, el torneo entra en el historial y el nivel se actualiza (flujos «eliminacion-directa-bracket», «battle-royale-bracket» y «bracket-por-puntos»). Los tres primeros reciben además el Resultado final (F1).
 - **Nivel:** el nivel sale de los puntos totales acumulados, con umbrales por nivel (los umbrales no están definidos).
 - **Ranking de amigos:** el jugador ve a sus amigos ordenados por puntos totales.
 - **Retar:** cuando un amigo reta al jugador, le llega una notificación. Aceptar, jugar y reportar el reto no tiene pantallas.
-- **Invitaciones:** quien abre el enlace de invitación se registra (flujo «Accseso y registro») y queda como amigo de quien invitó. Una solicitud de amistad que se acepta deja a los dos como amigos.
-- **Cambio de modo:** pasa a modo Organizador, con su navegación y su panel (flujo «Organizador panel y creacion»).
-- **Cerrar sesión:** cierra la sesión y lleva a la pantalla de bienvenida (flujo «Accseso y registro», J01). Se asume por el nombre; el destino no se ve.
+- **Invitaciones:** quien abre el enlace de invitación se registra (flujo «acceso-y-registro») y queda como amigo de quien invitó. Una solicitud de amistad que se acepta deja a los dos como amigos.
+- **Cambio de modo:** pasa a modo Organizador, con su navegación y su panel (flujo «organizador-panel-y-creacion»).
+- **Cerrar sesión:** cierra la sesión y lleva a la pantalla de bienvenida (flujo «acceso-y-registro», J01). Se asume por el nombre; el destino no se ve.
 
 ## Datos que usa
 
@@ -279,8 +279,8 @@ Ejemplos:
 Esta spec no cubre lo siguiente, que tiene su propia spec:
 
 - **Registro y onboarding** (J00 a J05), de donde salen el ID y los juegos del jugador.
-- **Estados vacíos de Perfil y Rankings** (V3, V4), en «Estado vacio sin torneos».
-- **Mis torneos, Sala y chat** (J13 a J15) y **Resultado final** (F1), en «Jugador competir».
+- **Estados vacíos de Perfil y Rankings** (V3, V4), en «estado-vacio-sin-torneos».
+- **Mis torneos, Sala y chat** (J13 a J15) y **Resultado final** (F1), en «jugador-competir».
 - **Inscribirse y Detalle del torneo** (J06 a J12), destino de algunas notificaciones.
 - **Bracket y cierre de los torneos** (J16, O12, O15 y las otras modalidades), donde se calculan los puntos.
 - **Modo Organizador** (panel, perfil del organizador O17, crear y gestionar), en el flujo del organizador.
@@ -293,7 +293,7 @@ No entra al MVP, aunque está en el diseño:
 
 **Ajustes pendientes en Figma (ya decididos por el equipo)**
 
-1. **Eliminar el ranking Global y Por juego.** J20 se elimina, y las pestañas Global y Por juego se quitan de J21. Rankings queda con el ranking de amigos. También cambia el estado vacío de Rankings (V3, en la spec «Estado vacio sin torneos»), que muestra Global y chips de juego. El Brief pide «ranking dentro de cada juego» y hay que alinearlo.
+1. **Eliminar el ranking Global y Por juego.** J20 se elimina, y las pestañas Global y Por juego se quitan de J21. Rankings queda con el ranking de amigos. También cambia el estado vacío de Rankings (V3, en la spec «estado-vacio-sin-torneos»), que muestra Global y chips de juego. El Brief pide «ranking dentro de cada juego» y hay que alinearlo.
 2. **Notificaciones.** «Subiste al puesto 5 · Ranking global de EA FC 25» ya no aplica, porque se elimina el ranking global. «Resultado validado · +15 pts» ya no aplica, porque los puntos se suman solo al cerrar el torneo.
 3. **Etiqueta «TOP 5 · EA FC 25» (J18).** Se refería a un ranking global que se elimina. Debería mostrar el juego principal del jugador, o la posición entre amigos, o quitarse.
 4. **Puntos del historial.** J18 y J19 muestran +60, +45, +27, +40 y +8, que no siguen la regla de puntos nueva (por ejemplo, un 1.º de 64 jugadores suma 100, y un 12.º de 128 suma 100 × 117 / 128 ≈ 91).
@@ -308,7 +308,7 @@ No entra al MVP, aunque está en el diseño:
 10. **Logros.** No se ve qué logros existen ni cómo se ganan («Primer título», «Racha x5», «Top 10 · EA FC 25»). «Top 10» depende de un ranking que se elimina.
 11. **Historial: filtros y estadísticas.** ¿Los chips de juego filtran también los tres datos de arriba (jugados, victorias y puntos)? ¿Cómo se calcula el «62% Victorias» (victorias sobre partidos jugados) y qué cuenta como victoria («38 Victorias» en J18)?
 12. **Torneos por equipos y dúos en el historial.** J19 incluye torneos de equipos («Liga Nocturna 5v5 · 16 equipos») y dúos. Con la regla de puntos por equipo, ¿qué puesto muestra cada integrante y cómo se cuenta la «cantidad de participantes»?
-13. **Quien pierde por W.O.** La spec de «Incidencias de partido» dice que el torneo cuenta como jugado pero «sin puntos». Con la regla de tres, todos suman al menos 100 / N. Hay que decidir si el jugador eliminado por W.O. suma los puntos de su puesto o ninguno.
+13. **Quien pierde por W.O.** La spec de «incidencias-de-partido» dice que el torneo cuenta como jugado pero «sin puntos». Con la regla de tres, todos suman al menos 100 / N. Hay que decidir si el jugador eliminado por W.O. suma los puntos de su puesto o ninguno.
 14. **Cálculo de N y de los puestos.**
     - ¿Cuenta en N un jugador descalificado o que nunca hizo check-in?
     - En una Liga y en Rondas suizas, el puesto sale de la tabla de posiciones: ¿cómo se desempata?
@@ -323,7 +323,7 @@ No entra al MVP, aunque está en el diseño:
 18. **Privacidad.** Un jugador de las entrevistas quería decidir qué información ven los demás. «Privacidad y seguridad» no tiene pantalla, y no se sabe si un amigo ve todo el historial o solo los puntos.
 19. **Compartir.** El botón de compartir del perfil no muestra qué se comparte ni con qué formato.
 20. **Cerrar sesión.** ¿Pide confirmación (el UI kit pide un diálogo propio para acciones destructivas)? ¿A dónde lleva?
-21. **Otras specs afectadas por las nuevas reglas de ranking.** Hay que revisar «Estado vacio sin torneos» (V3), «Equipo vs equipo bracket», «Battle royale bracket», «Bracket por puntos» (los puntos del podio ya no vienen de la configuración del organizador, y ya no son +300, +150 y +80), «Jugador competir» (F1: «+150 Pts de ranking» y «↑3 Puestos en EA FC») y «Jugador, descubrir e inscribirse» (los premios con puntos del Detalle, J09).
+21. **Otras specs afectadas por las nuevas reglas de ranking.** Hay que revisar «estado-vacio-sin-torneos» (V3), «eliminacion-directa-bracket», «battle-royale-bracket», «bracket-por-puntos» (los puntos del podio ya no vienen de la configuración del organizador, y ya no son +300, +150 y +80), «jugador-competir» (F1: «+150 Pts de ranking» y «↑3 Puestos en EA FC») y «jugador-descubrir-e-inscribirse» (los premios con puntos del Detalle, J09).
 
 ## Cambios
 

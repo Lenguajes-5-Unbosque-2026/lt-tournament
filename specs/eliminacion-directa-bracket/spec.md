@@ -1,6 +1,6 @@
-# Equipo vs equipo bracket
+# Eliminación directa bracket
 
-Carpeta de pantallas: `design/flujos/Equipo vs equipo bracket/`
+Carpeta de pantallas: `design/flujos/eliminacion-directa-bracket/`
 
 ## Quién y para qué
 
@@ -18,7 +18,7 @@ Carpeta de pantallas: `design/flujos/Equipo vs equipo bracket/`
 
 **Alcance del MVP:**
 - La modalidad «Equipo vs equipo» entra completa al MVP (de 1 a 5 jugadores por equipo). Las pantallas de este flujo todavía muestran un jugador por lado; faltan las versiones con nombres de equipo.
-- La inscripción por equipo (crear equipo, invitar compañeros y unirse con código) también entra al MVP. Es del flujo «Jugador, descubrir e inscribirse».
+- La inscripción por equipo (crear equipo, invitar compañeros y unirse con código) también entra al MVP. Es del flujo «jugador-descubrir-e-inscribirse».
 - De los tres formatos de esta modalidad, **solo entra la eliminación directa**. La doble eliminación y la fase de grupos quedan fuera.
 
 **Caso de ejemplo para el paso a paso:** la **Copa Relámpago Bogotá**, eliminación directa. Se sigue el **Partido 1 de Octavos**, Johitan (seed #13) contra NovaK (seed #4), desde las dos perspectivas:
@@ -131,7 +131,7 @@ Caso: Copa Relámpago Bogotá, Octavos, Partido 1: Johitan contra NovaK.
 15. En «Reportes de los jugadores» ve lo que reportó cada uno, cuándo lo hizo y si adjuntó captura. En este caso los dos reportaron 2 – 1.
 16. La pantalla compara los dos reportes:
     - Si coinciden, muestra el aviso verde «Los reportes coinciden», con el ganador sugerido (Johitan).
-    - Si no coinciden, se abre una disputa formal (flujo «Incidencias de partido»; esa pantalla no se ve aquí).
+    - Si no coinciden, se abre una disputa formal (flujo «incidencias-de-partido»; esa pantalla no se ve aquí).
 17. Confirma al ganador («Ganador: Johitan») y sube la prueba del resultado, que los jugadores verán con «Ver prueba».
 18. Toca «Confirmar resultado». El partido queda registrado y el ganador pasa al partido siguiente de la ronda que viene. «Cancelar» y la X cierran sin guardar.
 
@@ -169,7 +169,7 @@ Caso: Copa Relámpago Bogotá, Octavos, Partido 1: Johitan contra NovaK.
 | Reporte sin captura | Solo el texto del marcador y la hora. |
 | Reporte con check verde | Check verde a la derecha de la fila. Se asume que significa que coincide con el otro reporte; hay que confirmarlo. |
 | Los reportes coinciden | Aviso verde con el ganador sugerido. |
-| Los reportes no coinciden | Se abre una disputa formal (flujo «Incidencias de partido»; la pantalla no está en este flujo). |
+| Los reportes no coinciden | Se abre una disputa formal (flujo «incidencias-de-partido»; la pantalla no está en este flujo). |
 
 ### De la ronda (O12)
 - **Faltan resultados:** el texto «Faltan N resultados de Octavos para avanzar» y «Avanzar a Cuartos» deshabilitado (se asume por el texto; el estado deshabilitado no se ve dibujado).
@@ -190,9 +190,9 @@ Caso: Copa Relámpago Bogotá, Octavos, Partido 1: Johitan contra NovaK.
 
 - **Reporte del jugador:** el reporte llega al organizador y aparece en «Reportes de los jugadores» de O13, con la hora y la captura si la subió. La tarjeta del partido en O12 refleja que ambos reportaron.
 - **Confirmar resultado:** el partido queda registrado, la prueba queda visible para los jugadores con «Ver prueba» y el ganador pasa a la siguiente ronda.
-- **Reportes que no coinciden:** se abre una disputa formal en el flujo «Incidencias de partido» (D1 para el jugador y D2 para el organizador). Esta spec solo menciona a dónde se va.
+- **Reportes que no coinciden:** se abre una disputa formal en el flujo «incidencias-de-partido» (D1 para el jugador y D2 para el organizador). Esta spec solo menciona a dónde se va.
 - **Avanzar de ronda:** al avanzar, los ganadores ocupan los lugares «Por definir» de la ronda siguiente.
-- **Cierre del torneo:** al finalizar y publicar los resultados se actualizan al instante el historial y los rankings de todos los jugadores (flujo «Jugador progreso y cuenta», J18 a J21). Cada jugador puede ver su resultado final (pantalla F1 de «Jugador competir»).
+- **Cierre del torneo:** al finalizar y publicar los resultados se actualizan al instante el historial y los rankings de todos los jugadores (flujo «jugador-progreso-y-cuenta», J18 a J21). Cada jugador puede ver su resultado final (pantalla F1 de «jugador-competir»).
 - **Puntos de ranking:** los 3 primeros reciben puntos (+300, +150, +80 en el ejemplo). Los valores salen de la configuración del torneo.
 - **Compartir:** J16 y O15 tienen botones de compartir; el contenido que se comparte no está definido.
 
@@ -202,7 +202,7 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 
 ### Se lee
 
-**Torneo «Equipo vs equipo»** (viene de la configuración, flujo «Organizador panel y creacion»)
+**Torneo «Equipo vs equipo»** (viene de la configuración, flujo «organizador-panel-y-creacion»)
 - Nombre.
 - Formato: eliminación directa (el único que entra al MVP).
 - Jugadores por equipo (de 1 a 5).
@@ -252,13 +252,13 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 
 Esta spec no cubre lo siguiente, que tiene su propia spec:
 
-- **Crear y configurar el torneo** (O01 a O06, O03, EvE · O1b), en «Organizador panel y creacion».
-- **Inscribirse** (J06 a J12, y la inscripción por equipo), en «Jugador, descubrir e inscribirse». Ahí se asigna el seed.
-- **Check-in y chat** (J14, J15, O11, O14), en «Jugador competir» y «Orgamizador gestion del torneo».
-- **Battle royale** y **Bracket por puntos**, las otras modalidades, con sus propias carpetas.
-- **Incidencias de partido** (D1, D2, W1, W2, W3): disputas y W.O., con su propia spec.
+- **Crear y configurar el torneo** (O01 a O06, O03, EvE · O1b), en «organizador-panel-y-creacion».
+- **Inscribirse** (J06 a J12, y la inscripción por equipo), en «jugador-descubrir-e-inscribirse». Ahí se asigna el seed.
+- **Check-in y chat** (J14, J15, O11, O14), en «jugador-competir» y «organizador-gestion-del-torneo».
+- **Battle royale** y **bracket-por-puntos**, las otras modalidades, con sus propias carpetas.
+- **incidencias-de-partido** (D1, D2, W1, W2, W3): disputas y W.O., con su propia spec.
 - **Ranking e historial** (J18 a J21) y **resultado final del jugador** (F1): se actualizan al cerrar, pero se describen en sus carpetas.
-- **Estadísticas del torneo** (O16), en «Organizador cierre datos y perfil».
+- **Estadísticas del torneo** (O16), en «organizador-cierre-datos-y-perfil».
 
 Dentro del MVP, no incluido en este flujo:
 - **Doble eliminación** y **Fase de grupos**: los dos formatos de esta modalidad que no entran al MVP.
@@ -268,7 +268,7 @@ Dentro del MVP, no incluido en este flujo:
 **Ajustes pendientes en Figma (ya decididos por el equipo)**
 
 1. **Bracket con equipos.** La modalidad «Equipo vs equipo» entra completa al MVP, pero todas las pantallas de este flujo muestran un jugador por lado. Faltan las versiones con nombres de equipo y tag (como «Los Cóndores · CND»), cómo se ven los integrantes y el marcador por equipo.
-2. **Inscripción por equipo.** Se decidió que las pantallas E1, E2 y E3 vuelven al MVP. La spec «Jugador, descubrir e inscribirse» las quitó, y hay que restaurarlas ahí (pantallas, estados, datos y preguntas). Tampoco se sabe si la Copa Relámpago Bogotá (el torneo del ejemplo) es un torneo con 1 jugador por equipo.
+2. **Inscripción por equipo.** Se decidió que las pantallas E1, E2 y E3 vuelven al MVP. La spec «jugador-descubrir-e-inscribirse» las quitó, y hay que restaurarlas ahí (pantallas, estados, datos y preguntas). Tampoco se sabe si la Copa Relámpago Bogotá (el torneo del ejemplo) es un torneo con 1 jugador por equipo.
 3. **Formatos que no entran.** La doble eliminación y la fase de grupos están en la configuración (O03), pero no entran al MVP. Hay que quitarlos o deshabilitarlos, igual que lo que habla de jugadores por equipo si no se cambia.
 4. **Texto de J17 y reportes distintos.** J17 dice «Si ambos reportan distinto, decide el organizador», pero se decidió que los reportes distintos abren una disputa formal. Hay que alinear el texto y dibujar en O13 el estado «Los reportes no coinciden».
 5. **Partido por el tercer puesto.** Se decidió que el 3.º sale de un partido entre los perdedores de las semifinales. Falta en Figma (por ejemplo, como una pestaña o un partido junto a la Final).

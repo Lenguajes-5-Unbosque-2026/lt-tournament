@@ -1,6 +1,6 @@
 # Jugador · Competir
 
-Carpeta de pantallas: `design/flujos/Jugador competir/`
+Carpeta de pantallas: `design/flujos/jugador-competir/`
 
 ## Quién y para qué
 
@@ -89,7 +89,7 @@ Caso: Johitan, inscrito en la Copa Relámpago Bogotá.
    - **Escribir al organizador**, que abre el chat del torneo (J15).
    - El botón de chat de la barra superior, que también abre el chat (J15).
 9. Si antes del check-in quiere salir del torneo, cancela su inscripción desde la Sala, hasta 1 h antes (ver la spec de inscripción). Ese botón falta en la Sala.
-10. Cuando se acerca su partido hay un check-in por partido, con tolerancia, que sirve para el W.O. de cada ronda (flujo «Incidencias de partido»). Sus pantallas del lado del jugador no están en esta carpeta.
+10. Cuando se acerca su partido hay un check-in por partido, con tolerancia, que sirve para el W.O. de cada ronda (flujo «incidencias-de-partido»). Sus pantallas del lado del jugador no están en esta carpeta.
 
 ### C. Hablar en el chat
 
@@ -99,7 +99,7 @@ Caso: Johitan, inscrito en la Copa Relámpago Bogotá.
 
 ### D. Jugar
 
-14. Tras el check-in, el bracket se publica (según el anuncio, a las 6:45 pm) y el jugador juega su partido (flujo «Equipo vs equipo bracket» y las otras modalidades).
+14. Tras el check-in, el bracket se publica (según el anuncio, a las 6:45 pm) y el jugador juega su partido (flujo «eliminacion-directa-bracket» y las otras modalidades).
 
 ### E. Ver el resultado final
 
@@ -108,7 +108,7 @@ Caso: Johitan, inscrito en la Copa Relámpago Bogotá.
     - **Ver bracket completo** (J16).
     - **Compartir mi resultado.**
     - Volver con la flecha.
-17. Los jugadores que no llegaron al podio no ven esta pantalla: ven su resultado en su historial (flujo «Jugador progreso y cuenta», J19).
+17. Los jugadores que no llegaron al podio no ven esta pantalla: ven su resultado en su historial (flujo «jugador-progreso-y-cuenta», J19).
 
 ## Estados
 
@@ -125,7 +125,7 @@ Caso: Johitan, inscrito en la Copa Relámpago Bogotá.
 | Check-in abierto | Etiqueta CHECK-IN, la hora de cierre («Cierra 6:30 pm»), la cuenta atrás, la barra de progreso y el botón «Hacer check-in». |
 | Check-in hecho | No se ve. Falta en Figma. |
 | Check-in cerrado | No se ve. Falta en Figma. |
-| Check-in por partido | No se ve en esta carpeta (ver «Incidencias de partido», W1). |
+| Check-in por partido | No se ve en esta carpeta (ver «incidencias-de-partido», W1). |
 
 ### De los mensajes del chat (J15)
 | Tipo | Cómo se ve |
@@ -149,8 +149,8 @@ Caso: Johitan, inscrito en la Copa Relámpago Bogotá.
 ## Qué pasa después
 
 - **Check-in hecho:** el jugador queda listo para el bracket, que se publica a la hora que indica el organizador (en el ejemplo, a las 6:45 pm). Qué pasa con quien no hace el check-in del torneo no está definido (ver Preguntas abiertas).
-- **Check-in por partido:** al acercarse cada partido, si un jugador no hace su check-in dentro de la tolerancia, el organizador resuelve el partido con una victoria por W.O. (flujo «Incidencias de partido»).
-- **Bracket y partidos:** el bracket, reportar el resultado y las disputas están en «Equipo vs equipo bracket», «Battle royale bracket», «Bracket por puntos» e «Incidencias de partido».
+- **Check-in por partido:** al acercarse cada partido, si un jugador no hace su check-in dentro de la tolerancia, el organizador resuelve el partido con una victoria por W.O. (flujo «incidencias-de-partido»).
+- **Bracket y partidos:** el bracket, reportar el resultado y las disputas están en «eliminacion-directa-bracket», «battle-royale-bracket», «bracket-por-puntos» e «incidencias-de-partido».
 - **Chat:** el chat se usa durante todo el torneo. El organizador fija anuncios y responde a los jugadores.
 - **Cancelar la inscripción:** se hace desde la Sala, antes del check-in y hasta 1 h antes (decidido en la spec de inscripción). El cupo se libera para la lista de espera.
 - **Cierre del torneo:** al publicar el organizador los resultados (O15), el historial y los rankings se actualizan, y los tres primeros reciben el Resultado final (F1). El resto de jugadores ve su resultado en su historial.
@@ -207,12 +207,12 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 
 Esta spec no cubre lo siguiente, que tiene su propia spec:
 
-- **Inscribirse** (J06 a J12 y la inscripción por equipo), en «Jugador, descubrir e inscribirse». Ahí también está la regla de cancelar la inscripción.
-- **El bracket y los partidos** (J16, J16b, J17, O12, O13, O15), en «Equipo vs equipo bracket», «Battle royale bracket» y «Bracket por puntos».
-- **Disputas y W.O.** (D1, D2, W1, W2, W3), en «Incidencias de partido».
-- **Check-in en vivo del organizador** (O11) y **chat del organizador** (O14), en «Orgamizador gestion del torneo».
-- **Estados vacíos de Mis torneos** (J24), en «Estado vacio sin torneos».
-- **Ranking, perfil, historial y notificaciones** (J18 a J22), en «Jugador progreso y cuenta».
+- **Inscribirse** (J06 a J12 y la inscripción por equipo), en «jugador-descubrir-e-inscribirse». Ahí también está la regla de cancelar la inscripción.
+- **El bracket y los partidos** (J16, J16b, J17, O12, O13, O15), en «eliminacion-directa-bracket», «battle-royale-bracket» y «bracket-por-puntos».
+- **Disputas y W.O.** (D1, D2, W1, W2, W3), en «incidencias-de-partido».
+- **Check-in en vivo del organizador** (O11) y **chat del organizador** (O14), en «organizador-gestion-del-torneo».
+- **Estados vacíos de Mis torneos** (J24), en «estado-vacio-sin-torneos».
+- **Ranking, perfil, historial y notificaciones** (J18 a J22), en «jugador-progreso-y-cuenta».
 - **Mensajes privados con el organizador:** no entran al MVP.
 
 ## Preguntas abiertas
@@ -239,7 +239,7 @@ Esta spec no cubre lo siguiente, que tiene su propia spec:
 15. **Cuenta atrás.** ¿Qué pasa cuando llega a cero? ¿Se muestra el check-in cerrado?
 16. **Resultado final: datos.** No queda claro cómo se calculan «↑3 Puestos en EA FC» y «+150 Pts de ranking», ni qué cuenta como «Victorias» (¿incluye W.O.?). El contenido de «Compartir mi resultado» tampoco está definido.
 17. **Modalidad con equipos.** La modalidad con equipos entra al MVP. Falta definir cómo se ve la Sala (check-in por equipo, quién hace el check-in), el chat (¿hay chat de equipo?) y el Resultado final cuando el podio son equipos.
-18. **Avisos.** ¿El jugador recibe una notificación cuando se abre el check-in, cuando se publica el bracket y cuando el torneo termina? Es del flujo «Jugador progreso y cuenta» (J22).
+18. **Avisos.** ¿El jugador recibe una notificación cuando se abre el check-in, cuando se publica el bracket y cuando el torneo termina? Es del flujo «jugador-progreso-y-cuenta» (J22).
 
 ## Cambios
 

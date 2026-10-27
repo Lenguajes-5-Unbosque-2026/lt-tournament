@@ -1,6 +1,6 @@
 # Incidencias de partido
 
-Carpeta de pantallas: `design/flujos/Incidencias de partido/`
+Carpeta de pantallas: `design/flujos/incidencias-de-partido/`
 
 ## Quién y para qué
 
@@ -85,7 +85,7 @@ Caso: Copa Relámpago Bogotá, Octavos, Partido 1: Johitan contra NovaK.
 3. Johitan recibe una notificación cuando NovaK reporta, y entra a **Resultado en disputa (D1)** desde ahí.
 4. En D1 el jugador ve el aviso «Los reportes no coinciden», con lo que reportó cada uno («Tú reportaste 2 – 1 y NovaK reportó 1 – 2»), y la nota de que el organizador revisará las pruebas y decidirá.
 5. Desde D1 puede:
-   - Tocar «Ir al chat del torneo» (flujo «Jugador competir», J15).
+   - Tocar «Ir al chat del torneo» (flujo «jugador-competir», J15).
    - Tocar «Volver al bracket» (J16).
    - Cerrar con la X.
 6. El jugador espera. Solo puede corregir su reporte si el organizador pide una nueva captura (ver sección B). Le llega un aviso cuando el organizador decide.
@@ -102,7 +102,7 @@ Caso: Copa Relámpago Bogotá, Octavos, Partido 1: Johitan contra NovaK.
 
 ### C. W.O.: el jugador no se presenta
 
-12. Antes del partido, cada jugador hace su check-in (flujo «Jugador competir»). Johitan hizo check-in a las 6:52 pm. NovaK no lo hizo.
+12. Antes del partido, cada jugador hace su check-in (flujo «jugador-competir»). Johitan hizo check-in a las 6:52 pm. NovaK no lo hizo.
 13. Cuando vence la tolerancia de 10 minutos sin que NovaK haga check-in, el organizador recibe un aviso y queda disponible **Resolver partido (W1)**. La tolerancia la define el organizador al crear el torneo (10 minutos es el valor predeterminado).
 14. En W1 el organizador ve el check-in de cada jugador (Johitan «A las 6:52 pm», NovaK «Sin check-in · tolerancia de 10 min vencida») y el aviso «NovaK no se presentó».
 15. Elige «Victoria por W.O. para Johitan». Es la única decisión que entra al MVP: «Descalificar a NovaK del torneo» y «Reprogramar el partido» se quitan o se deshabilitan.
@@ -165,11 +165,11 @@ Caso: Copa Relámpago Bogotá, Octavos, Partido 1: Johitan contra NovaK.
 
 ## Qué pasa después
 
-- **Disputa resuelta:** el ganador elegido por el organizador avanza a la siguiente ronda. La prueba oficial aparece en el bracket con «Ver prueba» (flujo «Equipo vs equipo bracket», J16 y O12). El partido ya cuenta como resultado registrado, y «Avanzar de ronda» se habilita cuando todos los resultados están.
-- **Notificaciones:** el primer jugador en reportar recibe un aviso cuando el segundo reporta, y los dos reciben un aviso cuando el organizador decide. Las notificaciones son del flujo «Jugador progreso y cuenta» (J22).
+- **Disputa resuelta:** el ganador elegido por el organizador avanza a la siguiente ronda. La prueba oficial aparece en el bracket con «Ver prueba» (flujo «eliminacion-directa-bracket», J16 y O12). El partido ya cuenta como resultado registrado, y «Avanzar de ronda» se habilita cuando todos los resultados están.
+- **Notificaciones:** el primer jugador en reportar recibe un aviso cuando el segundo reporta, y los dos reciben un aviso cuando el organizador decide. Las notificaciones son del flujo «jugador-progreso-y-cuenta» (J22).
 - **Nueva captura:** si el organizador pide una nueva captura, los dos jugadores reciben el aviso y pueden corregir su reporte dentro del tiempo límite. Si no responden, el organizador decide sin más evidencia.
 - **W.O.:** el ganador pasa a la siguiente ronda sin jugar (por ejemplo, a Cuartos), con la hora de su siguiente partido. El perdedor queda fuera del torneo.
-- **Historial del perdedor:** el torneo cuenta como jugado, sin puntos ni victorias (flujo «Jugador progreso y cuenta», J18 y J19).
+- **Historial del perdedor:** el torneo cuenta como jugado, sin puntos ni victorias (flujo «jugador-progreso-y-cuenta», J18 y J19).
 - **Siguiente paso del perdedor:** «Ver otros torneos» lo lleva a Explorar (J07).
 - **Chat:** «Ir al chat del torneo» en D1 y en W2 lleva al chat (J15).
 
@@ -231,11 +231,11 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 
 Esta spec no cubre lo siguiente, que tiene su propia spec:
 
-- **Reportar el resultado cuando los reportes coinciden** (J17, O13), en «Equipo vs equipo bracket».
-- **Check-in** (J14, O11), en «Jugador competir» y «Orgamizador gestion del torneo».
-- **El bracket** (J16, O12) y su cierre (O15), en «Equipo vs equipo bracket».
+- **Reportar el resultado cuando los reportes coinciden** (J17, O13), en «eliminacion-directa-bracket».
+- **Check-in** (J14, O11), en «jugador-competir» y «organizador-gestion-del-torneo».
+- **El bracket** (J16, O12) y su cierre (O15), en «eliminacion-directa-bracket».
 - **Chat del torneo** (J15, O14).
-- **Notificaciones** (J22) y **perfil e historial** (J18, J19), en «Jugador progreso y cuenta».
+- **Notificaciones** (J22) y **perfil e historial** (J18, J19), en «jugador-progreso-y-cuenta».
 - **Explorar torneos** (J07), destino de «Ver otros torneos».
 - **Crear el torneo** (O02 a O06), donde se define la tolerancia de check-in.
 
@@ -265,10 +265,10 @@ No entra al MVP, aunque está en el diseño:
 14. **Los dos jugadores sin check-in.** W1 solo muestra el caso de un jugador ausente. ¿Qué pasa si ninguno se presenta?
 15. **Cómo aparece el W.O. en el bracket.** No se ve el marcador, ni una etiqueta de W.O., ni si «Ver prueba» aplica. J16 y O12 no tienen esa variante.
 16. **Datos de W2.** Dice «Hora 7:00 pm» y «tu siguiente partido es a las 8:00 pm»: no queda claro a qué se refiere cada una. El estado «CONFIRMADA» tampoco explica qué se confirma.
-17. **Cómo se muestra «sumas tu participación».** Se decidió que el torneo cuenta como jugado, sin puntos ni victorias. No se ve cómo aparece en el historial y en el perfil del jugador (por ejemplo, con una etiqueta «W.O.»). Es del flujo «Jugador progreso y cuenta».
+17. **Cómo se muestra «sumas tu participación».** Se decidió que el torneo cuenta como jugado, sin puntos ni victorias. No se ve cómo aparece en el historial y en el perfil del jugador (por ejemplo, con una etiqueta «W.O.»). Es del flujo «jugador-progreso-y-cuenta».
 18. **W2 y W3 como aviso.** W2 es una pantalla completa y W3 un diálogo sobre el bracket. ¿Se abren al entrar a la app, llegan como notificación, o solo se ven al abrir el bracket?
 19. **Chat en D1.** «Ir al chat del torneo» lleva al chat general del torneo. ¿El jugador habla ahí con el organizador sobre la disputa, o hay una conversación aparte?
-20. **Otras modalidades.** Las cinco pantallas son de un partido de eliminación directa entre dos jugadores. Las specs de Battle royale y Bracket por puntos mandan los reportes distintos a D1 y D2. Falta definir cómo se ven en esas modalidades (en Por puntos, un W.O. puede dar derrota 0 pts; en Battle royale, no aplica un partido de dos jugadores).
+20. **Otras modalidades.** Las cinco pantallas son de un partido de eliminación directa entre dos jugadores. Las specs de Battle royale y bracket-por-puntos mandan los reportes distintos a D1 y D2. Falta definir cómo se ven en esas modalidades (en Por puntos, un W.O. puede dar derrota 0 pts; en Battle royale, no aplica un partido de dos jugadores).
 21. **Modalidad con equipos.** La modalidad con equipos entra al MVP. Falta definir el check-in por equipo, quién se presenta, y quién reporta o disputa cuando cada lado son varios jugadores.
 22. **Apelar y reincidencia.** No hay forma de apelar la decisión del organizador, ni de registrar que un jugador faltó antes. Queda fuera de las pantallas actuales.
 

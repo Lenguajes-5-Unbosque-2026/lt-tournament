@@ -1,6 +1,6 @@
 # Jugador · Descubrir e inscribirse
 
-Carpeta de pantallas: `design/flujos/Jugador, descubrir e inscribirse/`
+Carpeta de pantallas: `design/flujos/jugador-descubrir-e-inscribirse/`
 
 ## Quién y para qué
 
@@ -122,7 +122,7 @@ Caso: Johitan se inscribe en la Copa Relámpago Bogotá (1 vs 1, gratis).
 10. Toca «Confirmar inscripción». Pasa a **Inscripción confirmada (J11)**.
     - «Cancelar» cierra la hoja y vuelve al Detalle sin inscribirlo.
 11. En J11 ve «¡ESTÁS DENTRO!», con fecha, hora, su seed (#13) y el estado CONFIRMADA. Desde aquí puede:
-    - **Ir al chat del torneo**, que lleva al chat (flujo «Jugador competir», J15).
+    - **Ir al chat del torneo**, que lleva al chat (flujo «jugador-competir», J15).
     - **Ver bracket**, que lleva al bracket (J16).
     - **Agregar al calendario.**
     - Cerrar con la X.
@@ -160,8 +160,8 @@ Caso: Johitan se inscribe en la Copa Relámpago Bogotá (1 vs 1, gratis).
 
 ## Qué pasa después
 
-- **Mis torneos:** se espera que el torneo aparezca en «Mis torneos» (J13, flujo «Jugador competir»). Las pantallas de este flujo no lo muestran.
-- **Check-in:** cuando abre el check-in, el jugador recibe un aviso (J11 lo promete: «Te avisaremos cuando abra el check-in»). El check-in ocurre en la sala del torneo (J14, flujo «Jugador competir»). Las reglas dicen que se hace 30 min antes. En Inicio (J06) el próximo torneo muestra la cuenta atrás y el botón «Check-in».
+- **Mis torneos:** se espera que el torneo aparezca en «Mis torneos» (J13, flujo «jugador-competir»). Las pantallas de este flujo no lo muestran.
+- **Check-in:** cuando abre el check-in, el jugador recibe un aviso (J11 lo promete: «Te avisaremos cuando abra el check-in»). El check-in ocurre en la sala del torneo (J14, flujo «jugador-competir»). Las reglas dicen que se hace 30 min antes. En Inicio (J06) el próximo torneo muestra la cuenta atrás y el botón «Check-in».
 - **Cancelar la inscripción:** se hace desde la sala del torneo (J14), antes del check-in y hasta 1 h antes. El cupo se libera para la lista de espera.
 - **Lista de espera:** J12 dice «te avisamos si se libera un cupo». El mecanismo exacto no está definido (ver Preguntas abiertas).
 - **Chat y bracket:** «Ir al chat del torneo» lleva a J15 y «Ver bracket» lleva a J16, ambas de otros flujos.
@@ -221,13 +221,13 @@ Datos que esta spec lee o escribe, como puente hacia la base de datos en Supabas
 Esta spec no cubre lo siguiente, que tiene su propia spec:
 
 - **Acceso y registro** (J00 a J05): crear cuenta, ingresar, recuperar acceso y elegir juegos en el onboarding (J02).
-- **Jugador competir** (J13, J14, J15, F1): Mis torneos, la sala del torneo con el check-in y la cancelación de la inscripción, el chat y el resultado final. Aquí solo se describe a dónde se llega desde J11.
-- **Equipo vs equipo bracket** (J16, J16b, J17) y las otras modalidades (Battle royale y Bracket por puntos): el bracket, el reporte de resultados y las pruebas.
+- **jugador-competir** (J13, J14, J15, F1): Mis torneos, la sala del torneo con el check-in y la cancelación de la inscripción, el chat y el resultado final. Aquí solo se describe a dónde se llega desde J11.
+- **eliminacion-directa-bracket** (J16, J16b, J17) y las otras modalidades (Battle royale y bracket-por-puntos): el bracket, el reporte de resultados y las pruebas.
 - **Inscripción por equipos** (crear equipo, invitar compañeros, unirse con código): no entra al MVP. En el MVP solo hay inscripción individual.
-- **Jugador progreso y cuenta** (J18 a J23): perfil, historial, rankings, notificaciones y ajustes. La campana de Inicio lleva a Notificaciones (J22).
+- **jugador-progreso-y-cuenta** (J18 a J23): perfil, historial, rankings, notificaciones y ajustes. La campana de Inicio lleva a Notificaciones (J22).
 - **Estado vacío sin torneos** (J24, V1, V3, V4, V5).
 - **Organizador:** crear y publicar el torneo, gestionarlo, cerrarlo y ver sus estadísticas y perfil.
-- **Incidencias de partido** (disputas y W.O.).
+- **incidencias-de-partido** (disputas y W.O.).
 - **Pagos:** el UI kit describe métodos de pago (Nequi, PSE, Tarjeta), pero el MVP es gratuito y las pantallas de este flujo solo muestran «Gratis».
 - **Perfil público del organizador** (el botón «Seguir» y «Ver perfil») y **favoritos** (el corazón): no hay pantallas.
 
@@ -235,7 +235,7 @@ Esta spec no cubre lo siguiente, que tiene su propia spec:
 
 **Ajustes pendientes en Figma (ya decididos por el equipo)**
 
-1. **Pantallas de equipos.** El MVP es solo con jugadores individuales, y las pantallas E1, E2 y E3 ya no forman parte del diseño. Sus archivos todavía están en `design/flujos/Jugador, descubrir e inscribirse/` y deben quitarse. También hay que quitar de las pantallas que quedan todo lo que habla de equipos:
+1. **Pantallas de equipos.** El MVP es solo con jugadores individuales, y las pantallas E1, E2 y E3 ya no forman parte del diseño. Sus archivos todavía están en `design/flujos/jugador-descubrir-e-inscribirse/` y deben quitarse. También hay que quitar de las pantallas que quedan todo lo que habla de equipos:
    - **Inicio (J06) y Explorar (J07):** el torneo «Liga Nocturna 5v5» (20/32 cupos), que es de equipos.
    - **Filtros (J08):** los chips de modalidad «2 vs 2», «5 vs 5» y «Dúos».
    - **Torneo lleno (J12):** Clutch Masters Bogotá es 5 vs 5 y el aviso dice «16/16 equipos inscritos». Hay que cambiarlo por un torneo individual y por «inscritos».

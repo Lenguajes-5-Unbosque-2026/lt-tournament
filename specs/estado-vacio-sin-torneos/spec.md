@@ -1,6 +1,6 @@
 # Estado vacío sin torneos
 
-Carpeta de pantallas: `design/flujos/Estado vacio sin torneos/`
+Carpeta de pantallas: `design/flujos/estado-vacio-sin-torneos/`
 
 ## Quién y para qué
 
@@ -80,7 +80,7 @@ Caso: Johitan acaba de crear su cuenta como jugador.
    - Su nombre y que es Nivel 1 con 0 pts.
    - El bloque «TU PRÓXIMO TORNEO» vacío, con el texto «Aún no tienes torneos».
    - El resto de Inicio con contenido: el torneo destacado y la lista «Para ti».
-2. Toca «Explorar torneos» en el bloque vacío. Va a **Explorar (J07)** (flujo «Jugador, descubrir e inscribirse»). También puede tocar «Inscribirme» en el torneo destacado.
+2. Toca «Explorar torneos» en el bloque vacío. Va a **Explorar (J07)** (flujo «jugador-descubrir-e-inscribirse»). También puede tocar «Inscribirme» en el torneo destacado.
 3. En la barra de navegación toca **Mis torneos** y ve **Mis torneos (J24)**. Cada una de las tres pestañas (Próximos, En curso y Finalizados) muestra el mismo vacío. «Explorar torneos» lleva a Explorar (J07).
 4. Toca **Rankings** y ve **Rankings (V3)**. Ve el ranking de los demás jugadores (podio y lista), y en lugar de su posición, el aviso «Aún no apareces en el ranking». «Explorar torneos» lleva a Explorar (J07).
 5. Toca **Perfil** y ve **Perfil (V4)**. Ve su perfil con 0 torneos, 0 victorias y «—» en mejor puesto, la etiqueta «SIN JUEGO PRINCIPAL» y el aviso «Tu historial está vacío». «Explorar torneos» lleva a Explorar (J07).
@@ -91,7 +91,7 @@ Caso: Johitan acaba de crear su cuenta como jugador.
 Caso: StreamerNova acaba de crear su cuenta como organizador.
 
 7. Termina el registro y llega al **Panel (V5)**. Ve las tres estadísticas en 0 («En curso», «Inscritos» y «Finalizados»), la tarjeta «CREA UN NUEVO TORNEO» y el vacío de «Mis torneos».
-8. Toca «+ Empezar» en la tarjeta. Va al primer paso de crear torneo (O02, flujo «Organizador panel y creacion»). Es el camino que indica el texto «Toca «Empezar» arriba».
+8. Toca «+ Empezar» en la tarjeta. Va al primer paso de crear torneo (O02, flujo «organizador-panel-y-creacion»). Es el camino que indica el texto «Toca «Empezar» arriba».
 9. Al tener cualquier torneo (aunque sea un borrador), el vacío de «Mis torneos» desaparece.
 
 ## Estados
@@ -123,10 +123,10 @@ Caso: StreamerNova acaba de crear su cuenta como organizador.
 ## Qué pasa después
 
 - **Explorar torneos:** en V1, J24, V3 y V4, el botón «Explorar torneos» lleva a Explorar (J07). Se asume por el nombre del botón; el destino no se ve en las pantallas.
-- **Primera inscripción:** al inscribirse en el primer torneo (flujo «Jugador, descubrir e inscribirse»), el vacío de Inicio y de Mis torneos se reemplaza por el torneo. Los demás vacíos se mantienen hasta terminarlo.
-- **Primer torneo terminado:** al terminar el primer torneo, el jugador suma puntos, aparece en el ranking de ese juego y su perfil muestra el resultado en «Últimos torneos» (flujos «Jugador progreso y cuenta», J18 a J21). Los textos de los vacíos prometen justo eso («verás aquí tus resultados, logros y puntos»).
+- **Primera inscripción:** al inscribirse en el primer torneo (flujo «jugador-descubrir-e-inscribirse»), el vacío de Inicio y de Mis torneos se reemplaza por el torneo. Los demás vacíos se mantienen hasta terminarlo.
+- **Primer torneo terminado:** al terminar el primer torneo, el jugador suma puntos, aparece en el ranking de ese juego y su perfil muestra el resultado en «Últimos torneos» (flujos «jugador-progreso-y-cuenta», J18 a J21). Los textos de los vacíos prometen justo eso («verás aquí tus resultados, logros y puntos»).
 - **Empezar (organizador):** en V5, el botón «Empezar» lleva al primer paso de crear torneo (O02). Se asume por el contenido de la tarjeta; el destino no se ve en las pantallas.
-- **Primer torneo del organizador:** al crear cualquier torneo, el vacío de «Mis torneos» desaparece y el panel muestra la lista (flujo «Organizador panel y creacion», O01).
+- **Primer torneo del organizador:** al crear cualquier torneo, el vacío de «Mis torneos» desaparece y el panel muestra la lista (flujo «organizador-panel-y-creacion», O01).
 - **Ver todo:** los links «Ver todo» de V4 y V5 no tienen destino mostrado.
 
 ## Datos que usa
@@ -156,7 +156,7 @@ Datos que esta spec lee, como puente hacia Supabase. Los nombres son provisional
 - Estadísticas del panel: torneos en curso, inscritos y finalizados.
 
 **De torneos abiertos**
-- Torneo destacado y lista «Para ti» (los datos de cada torneo están en el flujo «Jugador, descubrir e inscribirse»).
+- Torneo destacado y lista «Para ti» (los datos de cada torneo están en el flujo «jugador-descubrir-e-inscribirse»).
 
 ### Reglas que dicen las pantallas
 - El estado vacío de Inicio aparece siempre que no hay un torneo próximo ni en curso, aunque haya finalizados.
@@ -170,8 +170,8 @@ Datos que esta spec lee, como puente hacia Supabase. Los nombres son provisional
 
 Esta spec no cubre lo siguiente, que tiene su propia spec:
 
-- **Inicio con contenido** (J06), **Mis torneos con contenido** (J13), **Rankings** (J20 y J21), **Perfil competitivo** (J18) e **Historial** (J19): las pantallas completas, en «Jugador progreso y cuenta», «Jugador competir» y «Jugador, descubrir e inscribirse».
-- **Panel del organizador con torneos** (O01): en «Organizador panel y creacion».
+- **Inicio con contenido** (J06), **Mis torneos con contenido** (J13), **Rankings** (J20 y J21), **Perfil competitivo** (J18) e **Historial** (J19): las pantallas completas, en «jugador-progreso-y-cuenta», «jugador-competir» y «jugador-descubrir-e-inscribirse».
+- **Panel del organizador con torneos** (O01): en «organizador-panel-y-creacion».
 - **Crear torneo** (O02 a O06): el destino de «Empezar».
 - **Explorar e inscribirse** (J07 a J12): el destino de «Explorar torneos».
 - **Acceso y registro:** de donde se llega a estos estados por primera vez.
@@ -198,7 +198,7 @@ Esta spec no cubre lo siguiente, que tiene su propia spec:
 11. **Organizador: «Inscritos».** ¿Es el total de jugadores inscritos en todos sus torneos, o los de los torneos en curso? ¿Y qué muestra «Ver todo» en un panel sin torneos?
 12. **Barra de navegación.** V4 y V5 no muestran la barra de navegación, y el resto de pantallas sí. ¿Es solo un recorte del diseño, o esas pantallas no la tienen?
 13. **Estado de carga y de error.** No hay pantalla para cuando la lista está cargando o falla la conexión. Un usuario con torneos podría ver un instante el estado vacío antes de que carguen sus datos.
-14. **Nombres de las pantallas.** J24 y «V2» son la misma pantalla. El resto de la serie usa «V» (V1, V3, V4 y V5). Hay que unificar el ID (por ejemplo, llamarla V2) o dejar la nota. Además, el nombre de la carpeta («Estado vacio sin torneos») no refleja que también cubre Rankings, Perfil y el panel del organizador.
+14. **Nombres de las pantallas.** J24 y «V2» son la misma pantalla. El resto de la serie usa «V» (V1, V3, V4 y V5). Hay que unificar el ID (por ejemplo, llamarla V2) o dejar la nota. Además, el nombre de la carpeta («estado-vacio-sin-torneos») no refleja que también cubre Rankings, Perfil y el panel del organizador.
 15. **Liga Nocturna 5v5 en Inicio.** V1 mantiene el torneo destacado «LIGA NOCTURNA 5V5», que es de equipos. Para un usuario nuevo que no tiene equipo, ¿qué pasa al tocar «Inscribirme»? Es del flujo de inscripción.
 
 ## Cambios

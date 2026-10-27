@@ -1,0 +1,15 @@
+id,usuario_id,tipo,titulo,texto,torneo_id,leida,creado_en
+not_001,usr_001,checkin,Check-in abierto,Copa Relámpago · cierra 6:30 pm,tor_001,false,2026-10-22T18:00:00-05:00
+not_002,usr_001,resultado,Resultado validado,Ganaste 3–1 a Lupe · +3 pts,tor_007,false,2026-10-18T20:10:00-05:00
+not_003,usr_001,reto,Sh4dow te retó,Partido amistoso de Valorant,,false,2026-10-22T16:00:00-05:00
+not_004,usr_001,inscripcion,Inscripción confirmada,Liga Nocturna 5v5 · Vie 30 Oct,tor_002,true,2026-10-19T09:00:00-05:00
+not_005,usr_001,recomendado,Nuevo torneo cerca,Grieta Andina · League of Legends,tor_005,true,2026-10-18T11:00:00-05:00
+not_006,usr_001,ranking,Subiste al puesto 5,Ranking global de EA FC 25,,true,2026-10-17T21:00:00-05:00
+not_007,usr_001,espera,Estás en lista de espera,Clutch Masters Bogotá · eres el #1,tor_004,true,2026-10-20T14:00:00-05:00
+not_008,usr_006,disputa,Resultado en disputa,El organizador revisará las pruebas de tu partido con NovaK,tor_007,false,2026-10-22T19:32:00-05:00
+not_009,usr_002,disputa,Resultado en disputa,El organizador revisará las pruebas de tu partido con Kairo,tor_007,false,2026-10-22T19:32:00-05:00
+not_010,usr_018,wo,Perdiste por W.O.,No hiciste check-in a tiempo en Cuartos,tor_008,true,2026-09-19T21:05:00-05:00
+not_011,usr_023,cancelado,Torneo cancelado,Kombat Night Barranquilla fue cancelado por el organizador,tor_013,true,2026-10-15T10:00:00-05:00
+not_012,usr_031,inscripcion,Nueva inscripción,Brayan_GOAT se inscribió en Copa Relámpago Bogotá,tor_001,false,2026-10-21T22:00:00-05:00
+not_013,usr_031,disputa,Disputa por resolver,Liga Relámpago · Ronda 3 · NovaK vs Kairo,tor_007,false,2026-10-22T19:32:00-05:00
+not_014,usr_010,bienvenida,¡Bienvenido a LTournaments!,Elige tus juegos y encuentra tu primer torneo,,false,2026-10-18T10:05:00-05:00

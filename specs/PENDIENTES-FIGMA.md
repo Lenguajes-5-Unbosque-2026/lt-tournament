@@ -28,3 +28,7 @@ Cambios de diseño que salen de la revisión del PR #3 y que no se pueden hacer 
 | O04 · Crear · Fecha y reglas | En «Premios» quitar «300 pts de ranking» del ejemplo: los puntos de ranking son automáticos. | 4 |
 | J18 · Perfil competitivo y J19 · Historial | Recalcular los puntos de cada torneo con la regla (por ejemplo, un 1.º suma 100). | 4 |
 | UI kit (`design/ui kit`) | Quitar los puntos de 1.º, 2.º y 3.º por juego (§5.18 y §7), que contradicen la regla. | 4 |
+| J20 · Rankings | Eliminar la pantalla (Global y Por juego). El PNG ya se eliminó del repositorio. | 5 |
+| J21 · Rankings · Amigos | Quitar las pestañas Global y Por juego: Rankings queda solo con el ranking de amigos. | 5 |
+| V3 · Rankings · Sin posición | Rediseñar para el ranking entre amigos (sin pestañas Global y Por juego, sin chips de juego ni podio global). | 5 |
+| J22 · Notificaciones | Quitar el aviso «Subiste al puesto 5 · Ranking global de EA FC 25» y cambiar «Resultado validado · +15 pts» (los puntos se suman solo al cerrar el torneo). | 5 |

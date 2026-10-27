@@ -31,7 +31,7 @@ Carpeta de pantallas: `design/flujos/jugador-progreso-y-cuenta/`
 |---|---|---|
 | J18 | Perfil competitivo | Pestaña raíz del jugador. Datos, estadísticas, logros y últimos torneos. |
 | J19 | Historial | Lista de todos sus torneos, con filtro por juego. |
-| J20 | Rankings | **Se elimina.** Ranking Global y Por juego (podio y lista). No entra al MVP. |
+| J20 | Rankings | Eliminada. |
 | J21 | Rankings · Amigos | Pestaña raíz del jugador. Ranking entre amigos, invitación y «Retar». |
 | J22 | Notificaciones | Lista de avisos agrupados por día. |
 | J23 | Ajustes y modo | Modo de la app, notificaciones y cuenta. |
@@ -58,12 +58,6 @@ Carpeta de pantallas: `design/flujos/jugador-progreso-y-cuenta/`
   - 5º · Copa Chapinero · EA FC 25 · 32 jugadores · 7 Sep · +27.
   - 3º · Liga Nocturna · Valorant · 30 Ago · +40.
   - 12º · Open Bogotá · EA FC 25 · 128 jugadores · 16 Ago · +8.
-
-**J20 · Rankings (se elimina)**
-- Título «RANKINGS», botón de búsqueda y pestañas Global (activa), Por juego y Amigos.
-- Chips de juego (EA FC 25, Valorant, CS2).
-- Podio (NovaK 2.310 pts, Sh4dow 1.980, Mafe 1.720) y lista (ZeroX 1.410, Johitan · Tú 1.240 con «↑ 2 puestos esta semana», Kairo 1.105 y Lupe 980).
-- Esta pantalla no entra al MVP, porque solo queda el ranking entre amigos.
 
 **J21 · Rankings · Amigos**
 - Título «RANKINGS», botón de búsqueda y pestañas Global, Por juego y Amigos (activa). Con la decisión de dejar solo el ranking de amigos, las pestañas se quitan.
@@ -327,3 +321,4 @@ No entra al MVP, aunque está en el diseño:
 | 2026-10-26 | Versión inicial. Basada en las pantallas J18 a J23, y en las respuestas del equipo: los puntos se suman solo al cerrar el torneo con la regla 100 × (N − puesto + 1) / N, redondeada al entero más cercano (en eliminación directa, el grupo eliminado comparte el mejor puesto); se elimina el ranking Global y Por juego, y queda solo el de amigos; «Retar» es un partido amistoso sin puntos; los amigos se agregan con enlace y búsqueda con solicitud; cada notificación lleva a su pantalla; el nivel sale de los puntos totales; y los dos controles de cambio de modo cambian toda la app. |
 | 2026-10-27 | Revisión del PR #3. Equipos queda fuera del MVP de forma definitiva: en la regla de puntos N es la cantidad de jugadores del torneo, y se quitan las reglas de equipos e integrantes, el ejemplo de 4 equipos y las preguntas sobre equipos y dúos. |
 | 2026-10-27 | Revisión del PR #3 (puntos). Una sola regla de puntos: 100 × (N − puesto + 1) / N, redondeada al entero más cercano. Se borra la pregunta sobre otras specs afectadas, porque las specs de los brackets, Resultado final y descubrir ya usan la regla. |
+| 2026-10-27 | Revisión del PR #3. J20 · Rankings (Global y Por juego) queda como «Eliminada» y se elimina su PNG: solo queda el ranking entre amigos (J21). |

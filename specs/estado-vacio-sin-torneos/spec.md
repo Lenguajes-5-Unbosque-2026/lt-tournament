@@ -26,7 +26,7 @@ Carpeta de pantallas: `design/flujos/estado-vacio-sin-torneos/`
 |---|---|---|---|
 | V1 | Inicio · Sin torneos | Jugador | Inicio (J06). |
 | J24 (también V2) | Mis torneos · vacío | Jugador | Mis torneos (J13). |
-| V3 | Rankings · Sin posición | Jugador | Rankings (J20). |
+| V3 | Rankings · Sin posición | Jugador | Rankings (J21). |
 | V4 | Perfil · Sin historial | Jugador | Perfil competitivo (J18). |
 | V5 | Panel organizador · Sin torneos | Organizador | Panel del organizador (O01). |
 
@@ -170,7 +170,7 @@ Datos que esta spec lee, como puente hacia Supabase. Los nombres son provisional
 
 Esta spec no cubre lo siguiente, que tiene su propia spec:
 
-- **Inicio con contenido** (J06), **Mis torneos con contenido** (J13), **Rankings** (J20 y J21), **Perfil competitivo** (J18) e **Historial** (J19): las pantallas completas, en «jugador-progreso-y-cuenta», «jugador-competir» y «jugador-descubrir-e-inscribirse».
+- **Inicio con contenido** (J06), **Mis torneos con contenido** (J13), **Rankings** (J21), **Perfil competitivo** (J18) e **Historial** (J19): las pantallas completas, en «jugador-progreso-y-cuenta», «jugador-competir» y «jugador-descubrir-e-inscribirse».
 - **Panel del organizador con torneos** (O01): en «organizador-panel-y-creacion».
 - **Crear torneo** (O02 a O06): el destino de «Empezar».
 - **Explorar e inscribirse** (J07 a J12): el destino de «Explorar torneos».
@@ -206,3 +206,4 @@ Esta spec no cubre lo siguiente, que tiene su propia spec:
 |---|---|
 | 2026-10-26 | Versión inicial. Basada en las pantallas V1, J24 (V2), V3, V4 y V5, y en las respuestas del equipo: las tres pestañas de Mis torneos muestran el mismo vacío, el vacío de Inicio aparece cuando no hay torneo próximo ni en curso (aunque haya finalizados) con el mismo texto, la tarjeta de Rankings aparece solo si el jugador no tiene puntos en ningún juego, el juego principal lo elige el jugador, el vacío del panel desaparece con cualquier torneo, y V2 es la pantalla J24. |
 | 2026-10-27 | Revisión del PR #3. Equipos queda fuera del MVP de forma definitiva: se quita la pregunta sobre el torneo de equipos en Inicio y el nombre «5v5» del torneo destacado. |
+| 2026-10-27 | Revisión del PR #3. J20 se elimina y Rankings queda solo con el ranking de amigos (J21); las referencias pasan a J21. |

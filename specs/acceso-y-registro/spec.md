@@ -13,7 +13,7 @@ Carpeta de pantallas: `design/flujos/acceso-y-registro/`
 
 **Resultado:** la persona queda dentro de la app con una cuenta y un perfil. Es una sola cuenta que puede tener los dos modos (Jugador y Organizador); el perfil que elige al crearla define con cuál empieza.
 
-**Alcance del MVP:** la inscripción es gratuita y la integración con Discord está fuera de alcance. Los botones de Google y Discord de Ingresar (J04) aparecen en el diseño, pero no se implementan en el MVP.
+**Alcance del MVP:** la inscripción es gratuita; el acceso es solo con correo y contraseña.
 
 **Caso de ejemplo para el paso a paso:** Johan Torres abre la app por primera vez, toca «Crear cuenta», elige el perfil Jugador, escribe su ID «Johitan» y su Gmail, elige EA FC 25, Valorant y Fortnite, y llega al Inicio. Las variantes son:
 - Johan como **Organizador**, con el ID «JohitanCups».
@@ -29,7 +29,7 @@ Carpeta de pantallas: `design/flujos/acceso-y-registro/`
 | J03 | Crear cuenta · Jugador | Paso 1 de 2 del registro del jugador: perfil, nombre, ID de jugador, Gmail y términos. |
 | J03 | Crear cuenta · Organizador | Registro del organizador, en un solo paso, en acento azul. |
 | J02 | Onboarding · Tus juegos | Paso 2 de 2 del registro del jugador: elegir juegos. |
-| J04 | Ingresar | Entrar con correo y contraseña, o con Google o Discord. |
+| J04 | Ingresar | Entrar con correo y contraseña. |
 | J05 | Recuperar acceso | Pedir un enlace por correo para crear una nueva contraseña. |
 
 Nota: el orden en que se recorren las pantallas del registro no sigue el número del ID. Según las etiquetas de paso, J03 es el paso 1 de 2 y J02 es el paso 2 de 2.
@@ -79,7 +79,6 @@ Nota: el orden en que se recorren las pantallas del registro no sigue el número
 - Campo «Correo» (con ícono de sobre) y campo «Contraseña» (con ícono de candado, texto oculto).
 - Link «¿Olvidaste tu contraseña?» a la derecha.
 - Botón «Ingresar».
-- Separador «o continúa con» y dos botones: «Continuar con Google» y «Continuar con Discord».
 
 **J05 · Recuperar acceso**
 - Barra superior con volver y «Recuperar acceso».
@@ -126,7 +125,6 @@ Caso: Johan Torres crea su cuenta como Jugador.
 11. Johan, que ya tiene cuenta, toca «Ya tengo cuenta» (en J01 o en J03) y llega a **Ingresar (J04)**.
 12. Escribe su correo y su contraseña y toca «Ingresar». Entra a la app.
 13. Alternativas en la misma pantalla:
-    - «Continuar con Google» y «Continuar con Discord»: están en el diseño pero no se implementan en el MVP.
     - «¿Olvidaste tu contraseña?»: lleva a **Recuperar acceso (J05)** (sección E).
     - Volver (flecha): regresa a Bienvenida (J01).
 
@@ -227,44 +225,40 @@ Esta spec no cubre lo siguiente, que tiene su propia spec:
 - **Términos y Política de privacidad:** se mencionan en J01 y J03, pero no hay pantalla.
 - **Pantalla de «Nueva contraseña»:** no existe en las pantallas.
 
-No se implementa en el MVP, aunque está en el diseño:
-- **Continuar con Google y Continuar con Discord** (J04). La integración con Discord está fuera de alcance según el Brief.
-
 ## Preguntas abiertas
 
 **Ajustes pendientes en Figma (ya decididos por el equipo)**
 
 1. **Falta el campo de contraseña en Crear cuenta (J03).** Ingresar (J04) pide contraseña, pero al crear la cuenta no hay dónde definirla. Hay que agregar el campo (y, si aplica, su confirmación) a las dos versiones de J03.
 2. **Texto de Tus juegos (J02) contradictorio.** Dice «Elige al menos uno», pero también ofrece «Omitir por ahora», y se decidió que se puede omitir. Hay que cambiar el texto (por ejemplo, «Elige los que quieras»). Además el UI kit dice «mínimo 1» y también debe alinearse.
-3. **Botones de Google y Discord en Ingresar (J04).** Están en el diseño, pero no entran al MVP. Hay que decidir si se quitan del diseño o se dejan deshabilitados.
 
 **Pendientes de definir**
 
-4. **Ingresar con Google: ¿también crea cuentas?** No hay botón de Google en J01 ni en J03. Si se implementara, ¿serviría tanto para ingresar como para registrarse?
-5. **Recuperar acceso: qué pasa al abrir el enlace.** No hay pantalla de «Nueva contraseña». ¿Se abre dentro de la app o en el navegador? Al guardar, ¿la persona entra directo o vuelve a Ingresar?
-6. **Estados que faltan en Recuperar acceso (J05).** Solo existe el estado «Enlace enviado». Falta el estado inicial (campo vacío y botón para enviar el enlace), el de correo no registrado y el de enlace vencido.
-7. **Mismo ID para jugador y organizador.** Una cuenta puede tener los dos modos, pero no se sabe si el ID de jugador y el de organizador son el mismo o son dos distintos. Y si alguien empieza como organizador y activa el modo jugador después, ¿cuándo elige sus juegos, dado que J03 organizador no pasa por Tus juegos?
-8. **Dónde se cambia el ID.** Se decidió que se puede cambiar, pero no se sabe desde dónde (perfil, ajustes) ni si hay un límite de cambios.
-9. **Cómo se activa el segundo modo.** Se asume desde «Ajustes y modo» (J23), pero esa pantalla es de otro flujo. Hay que confirmarlo en su spec.
-10. **Modo con el que se entra al ingresar.** J04 no muestra si entra siempre al modo con el que empezó, o al último que usó.
-11. **«Gmail» o «Correo».** J03 pide «Gmail» y J04 dice «Correo». ¿Solo se aceptan correos de Gmail, o cualquier correo? El texto de ayuda de J03 habla de «Con tu Gmail ingresas».
-12. **Verificación del correo.** No hay pantalla de «Revisa tu correo» ni de confirmar la cuenta. ¿La cuenta se crea al instante o hay que verificar el correo?
-13. **Errores de validación.** No hay estados de error para: campo vacío, correo inválido, ID ya usado, ID con caracteres no permitidos, correo ya registrado (al crear la cuenta), contraseña incorrecta, o sin conexión. ¿Qué dice cada uno? El UI kit pide mostrar el mensaje concreto en el campo.
-14. **Cuenta que ya existe.** Si alguien intenta crear una cuenta con un correo ya registrado, ¿se le dirige a Ingresar?
-15. **Reglas del ID.** Largo mínimo y máximo, caracteres permitidos y si distingue mayúsculas.
-16. **Reglas de la contraseña.** Largo mínimo y complejidad, una vez que se agregue el campo.
-17. **Orden de los pasos de J02 y J03.** Las etiquetas dicen que J03 es el paso 1 de 2 y J02 el paso 2 de 2, pero el UI kit describe el registro como «Bienvenida → Tus juegos → Crear cuenta». Esta spec sigue las etiquetas de las pantallas. Hay que confirmar el orden.
-18. **Cuándo se muestra el Splash y cuánto dura.** ¿Siempre al abrir la app, o solo la primera vez? Y si ya hay una sesión abierta, ¿se salta Bienvenida y va directo a Inicio o al Panel?
-19. **Sesión.** ¿La sesión se mantiene abierta al cerrar la app? ¿Hay «Cerrar sesión» y dónde? (No hay pantalla en este flujo.)
-20. **Términos y Política de privacidad.** Se mencionan en J01 y J03 como links, pero no hay pantalla. ¿Qué texto muestran y dónde viven?
-21. **Catálogo de juegos de Tus juegos.** La pantalla muestra 6 juegos, pero el UI kit habla de 24 y de un buscador («Busca entre 24 juegos») con el link «Ver los 24 juegos». ¿Cuántos se muestran y cómo se ven los demás?
-22. **Edad mínima.** Los Términos aceptados no mencionan una edad mínima para registrarse. ¿Se pide la edad o la fecha de nacimiento?
-23. **Foto de perfil.** El avatar de otras pantallas (Inicio) es un casco 3D. ¿Se elige o se genera al crear la cuenta? No hay paso para eso en este flujo.
-24. **Cambiar de perfil con datos escritos.** Si Johan escribe sus datos como Jugador y luego toca «Organizador» (o al revés), ¿se conservan el nombre, el ID y el Gmail? El ID cambia de «ID de jugador» a «ID de organizador»: ¿se borra o se mantiene?
-25. **Idioma del lema.** El splash dice «Sube de nivel» y el UI kit usa «COMPITE. ORGANIZA. SUBE.». ¿Cuál es el texto oficial?
+3. **Recuperar acceso: qué pasa al abrir el enlace.** No hay pantalla de «Nueva contraseña». ¿Se abre dentro de la app o en el navegador? Al guardar, ¿la persona entra directo o vuelve a Ingresar?
+4. **Estados que faltan en Recuperar acceso (J05).** Solo existe el estado «Enlace enviado». Falta el estado inicial (campo vacío y botón para enviar el enlace), el de correo no registrado y el de enlace vencido.
+5. **Mismo ID para jugador y organizador.** Una cuenta puede tener los dos modos, pero no se sabe si el ID de jugador y el de organizador son el mismo o son dos distintos. Y si alguien empieza como organizador y activa el modo jugador después, ¿cuándo elige sus juegos, dado que J03 organizador no pasa por Tus juegos?
+6. **Dónde se cambia el ID.** Se decidió que se puede cambiar, pero no se sabe desde dónde (perfil, ajustes) ni si hay un límite de cambios.
+7. **Cómo se activa el segundo modo.** Se asume desde «Ajustes y modo» (J23), pero esa pantalla es de otro flujo. Hay que confirmarlo en su spec.
+8. **Modo con el que se entra al ingresar.** J04 no muestra si entra siempre al modo con el que empezó, o al último que usó.
+9. **«Gmail» o «Correo».** J03 pide «Gmail» y J04 dice «Correo». ¿Solo se aceptan correos de Gmail, o cualquier correo? El texto de ayuda de J03 habla de «Con tu Gmail ingresas».
+10. **Verificación del correo.** No hay pantalla de «Revisa tu correo» ni de confirmar la cuenta. ¿La cuenta se crea al instante o hay que verificar el correo?
+11. **Errores de validación.** No hay estados de error para: campo vacío, correo inválido, ID ya usado, ID con caracteres no permitidos, correo ya registrado (al crear la cuenta), contraseña incorrecta, o sin conexión. ¿Qué dice cada uno? El UI kit pide mostrar el mensaje concreto en el campo.
+12. **Cuenta que ya existe.** Si alguien intenta crear una cuenta con un correo ya registrado, ¿se le dirige a Ingresar?
+13. **Reglas del ID.** Largo mínimo y máximo, caracteres permitidos y si distingue mayúsculas.
+14. **Reglas de la contraseña.** Largo mínimo y complejidad, una vez que se agregue el campo.
+15. **Orden de los pasos de J02 y J03.** Las etiquetas dicen que J03 es el paso 1 de 2 y J02 el paso 2 de 2, pero el UI kit describe el registro como «Bienvenida → Tus juegos → Crear cuenta». Esta spec sigue las etiquetas de las pantallas. Hay que confirmar el orden.
+16. **Cuándo se muestra el Splash y cuánto dura.** ¿Siempre al abrir la app, o solo la primera vez? Y si ya hay una sesión abierta, ¿se salta Bienvenida y va directo a Inicio o al Panel?
+17. **Sesión.** ¿La sesión se mantiene abierta al cerrar la app? ¿Hay «Cerrar sesión» y dónde? (No hay pantalla en este flujo.)
+18. **Términos y Política de privacidad.** Se mencionan en J01 y J03 como links, pero no hay pantalla. ¿Qué texto muestran y dónde viven?
+19. **Catálogo de juegos de Tus juegos.** La pantalla muestra 6 juegos, pero el UI kit habla de 24 y de un buscador («Busca entre 24 juegos») con el link «Ver los 24 juegos». ¿Cuántos se muestran y cómo se ven los demás?
+20. **Edad mínima.** Los Términos aceptados no mencionan una edad mínima para registrarse. ¿Se pide la edad o la fecha de nacimiento?
+21. **Foto de perfil.** El avatar de otras pantallas (Inicio) es un casco 3D. ¿Se elige o se genera al crear la cuenta? No hay paso para eso en este flujo.
+22. **Cambiar de perfil con datos escritos.** Si Johan escribe sus datos como Jugador y luego toca «Organizador» (o al revés), ¿se conservan el nombre, el ID y el Gmail? El ID cambia de «ID de jugador» a «ID de organizador»: ¿se borra o se mantiene?
+23. **Idioma del lema.** El splash dice «Sube de nivel» y el UI kit usa «COMPITE. ORGANIZA. SUBE.». ¿Cuál es el texto oficial?
 
 ## Cambios
 
 | Fecha | Cambio |
 |---|---|
-| 2026-10-25 | Versión inicial. Basada en las pantallas J00 a J05 (con las dos versiones de J03) y en las respuestas del equipo: falta el campo de contraseña en J03 (ajuste pendiente en Figma), Google y Discord están en el diseño pero no se implementan en el MVP, los juegos se pueden omitir, el ID es único y se puede cambiar después, la cuenta puede tener los dos modos, y lo que pasa después de abrir el enlace de recuperación queda sin definir. |
+| 2026-10-25 | Versión inicial. Basada en las pantallas J00 a J05 (con las dos versiones de J03) y en las respuestas del equipo: falta el campo de contraseña en J03 (ajuste pendiente en Figma), los juegos se pueden omitir, el ID es único y se puede cambiar después, la cuenta puede tener los dos modos, y lo que pasa después de abrir el enlace de recuperación queda sin definir. |
+| 2026-10-27 | Revisión del PR #3. Google y Discord se eliminan del diseño: Ingresar solo tiene correo, contraseña, el link «¿Olvidaste tu contraseña?» y el botón «Ingresar», y el acceso es solo con correo y contraseña. |

@@ -83,4 +83,4 @@ Carpetas de `design/flujos/`, tal como se llaman hoy en disco, con las pantallas
 12. **Figma.** El kit dice que sale del archivo «LT» (páginas Componentes, Flujo y 📱 Diseño). ¿Cuál es el enlace del archivo para poder consultarlo con el MCP de Figma?
 13. **Modelo de datos.** No existe `data/modelo-datos.md`. ¿Quién lo define y se hace antes de crear `web/`? Hay que decidir al menos cómo se calculan los puntos (el kit los saca de la configuración del torneo) y cómo se agrupan por juego.
 14. **Arranque técnico.** ¿Versión de Next.js, gestor de paquetes, y comandos de desarrollo, build, lint y pruebas? Se definen al crear `web/` y deben agregarse a este archivo.
-15. **Inicio de sesión.** Algunas entrevistas piden iniciar con Discord, pero la integración con Discord está fuera de alcance. ¿El login es solo correo y contraseña con Supabase?
+15. **Inicio de sesión.** Resuelto: el login es solo correo y contraseña con Supabase. No hay inicio con Google ni con Discord.

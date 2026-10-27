@@ -39,7 +39,7 @@ Carpeta de pantallas: `design/flujos/jugador-competir/`
 - Segmento de pestañas: Próximos (activa), En curso y Finalizados.
 - Tarjetas de torneo, cada una con la portada, el juego, el nombre, la fecha y hora, los cupos y una etiqueta de estado:
   - EA FC 25 · Copa Relámpago Bogotá · Sáb 4 Oct · 7:00 pm · 24/32 · CONFIRMADA.
-  - Valorant · Liga Nocturna 5v5 · Vie 10 Oct · 8:00 pm · 20/32 · CONFIRMADA.
+  - Valorant · Liga Nocturna · Vie 10 Oct · 8:00 pm · 20/32 · CONFIRMADA.
   - Rocket League · Aerial Masters · Sáb 25 Oct · 5:00 pm · 6/12 · PENDIENTE.
 - Sección «Lista de espera»: CS2 · Clutch Masters Bogotá · Dom 12 Oct · 4:00 pm · 16/16 · LLENO.
 - Link «Ver estado vacío» al pie.
@@ -207,7 +207,7 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 
 Esta spec no cubre lo siguiente, que tiene su propia spec:
 
-- **Inscribirse** (J06 a J12 y la inscripción por equipo), en «jugador-descubrir-e-inscribirse». Ahí también está la regla de cancelar la inscripción.
+- **Inscribirse** (J06 a J12), en «jugador-descubrir-e-inscribirse». Ahí también está la regla de cancelar la inscripción.
 - **El bracket y los partidos** (J16, J16b, J17, O12, O13, O15), en «eliminacion-directa-bracket», «battle-royale-bracket» y «bracket-por-puntos».
 - **Disputas y W.O.** (D1, D2, W1, W2, W3), en «incidencias-de-partido».
 - **Check-in en vivo del organizador** (O11) y **chat del organizador** (O14), en «organizador-gestion-del-torneo».
@@ -238,11 +238,11 @@ Esta spec no cubre lo siguiente, que tiene su propia spec:
 14. **Chat: quién lo ve y cuándo.** ¿Los jugadores en lista de espera ven el chat? ¿El chat sigue abierto después de que el torneo termina? ¿El «en línea» y el «Leído» cuentan a todos?
 15. **Cuenta atrás.** ¿Qué pasa cuando llega a cero? ¿Se muestra el check-in cerrado?
 16. **Resultado final: datos.** No queda claro cómo se calculan «↑3 Puestos en EA FC» y «+150 Pts de ranking», ni qué cuenta como «Victorias» (¿incluye W.O.?). El contenido de «Compartir mi resultado» tampoco está definido.
-17. **Modalidad con equipos.** La modalidad con equipos entra al MVP. Falta definir cómo se ve la Sala (check-in por equipo, quién hace el check-in), el chat (¿hay chat de equipo?) y el Resultado final cuando el podio son equipos.
-18. **Avisos.** ¿El jugador recibe una notificación cuando se abre el check-in, cuando se publica el bracket y cuando el torneo termina? Es del flujo «jugador-progreso-y-cuenta» (J22).
+17. **Avisos.** ¿El jugador recibe una notificación cuando se abre el check-in, cuando se publica el bracket y cuando el torneo termina? Es del flujo «jugador-progreso-y-cuenta» (J22).
 
 ## Cambios
 
 | Fecha | Cambio |
 |---|---|
 | 2026-10-26 | Versión inicial. Basada en las pantallas J13, J14, J15 y F1, y en las respuestas del equipo: PENDIENTE significa que el jugador todavía no ha hecho algo que le pide el torneo (sin definir qué), hay un check-in por torneo y otro por partido, hay un solo chat público por torneo, el Resultado final solo lo ven los tres primeros, y todas las tarjetas de Mis torneos llevan a la Sala del torneo, que cambia según el estado. |
+| 2026-10-27 | Revisión del PR #3. Equipos queda fuera del MVP de forma definitiva: se quita la pregunta sobre la modalidad con equipos y la referencia a la inscripción por equipo. |

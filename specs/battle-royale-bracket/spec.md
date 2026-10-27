@@ -17,7 +17,7 @@ Carpeta de pantallas: `design/flujos/battle-royale-bracket/`
 **Resultado:** el torneo queda con una tabla final, un podio (1.º, 2.º y 3.º), los puntos de ranking calculados y los resultados publicados. Al cerrar, el historial y los rankings de todos los jugadores se actualizan.
 
 **Alcance del MVP:**
-- En este flujo se juega en modo **Solo** (un jugador por fila de la tabla), aunque la configuración del torneo ofrece Dúo, Trío y Escuadra.
+- En este flujo se juega en modo **Solo** (un jugador por fila de la tabla).
 - Los tres formatos de Battle royale (Partidas acumuladas, Clasificación por lobbies y Partida única) entran al MVP, pero las pantallas solo muestran **Partidas acumuladas**; esta spec describe solo ese formato.
 
 **Caso de ejemplo para el paso a paso:** la **Victory Royale Cup**, con 100 jugadores, 3 partidas de 25 minutos, puntos por posición más 1 punto por kill. Se sigue la **Partida 3**, en vivo, desde las dos perspectivas:
@@ -204,7 +204,6 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 - Nombre y juego.
 - Formato: Partidas acumuladas, Clasificación por lobbies o Partida única.
 - Cantidad de jugadores (de 2 a 100).
-- Jugadores por escuadra (en este flujo solo se usa Solo).
 - Número de partidas (en el ejemplo, 3) y tiempo por partida (25 min).
 - Puntos por eliminación (activado: posición más 1 punto por kill).
 - Puntos de ranking del podio (1.º, 2.º y 3.º).
@@ -251,51 +250,50 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 Esta spec no cubre lo siguiente, que tiene su propia spec:
 
 - **Crear y configurar el torneo** (O01 a O06, O03b, BR · O1b), en «organizador-panel-y-creacion».
-- **Inscribirse** (J06 a J12 y E1 a E3), en «jugador-descubrir-e-inscribirse».
+- **Inscribirse** (J06 a J12), en «jugador-descubrir-e-inscribirse».
 - **Check-in y chat** (J14, J15, O11, O14), en «jugador-competir» y «organizador-gestion-del-torneo».
-- **Equipo vs equipo** y **bracket-por-puntos**, las otras modalidades, con sus propias carpetas.
+- **eliminacion-directa-bracket** y **bracket-por-puntos**, las otras modalidades, con sus propias carpetas.
 - **incidencias-de-partido** (D1, D2, W1, W2, W3): disputas y W.O., con su propia spec.
 - **Ranking e historial** (J18 a J21) y **resultado final del jugador** (F1): se actualizan al cerrar, pero se describen en sus carpetas.
 - **Estadísticas del torneo** (O16), en «organizador-cierre-datos-y-perfil».
 
 Dentro del MVP, no incluido en este flujo por falta de pantallas:
 - **Clasificación por lobbies** y **Partida única** (los dos formatos que no se dibujaron).
-- **Dúo, Trío y Escuadra:** este flujo solo muestra el modo Solo.
 
 ## Preguntas abiertas
 
 **Ajustes pendientes en Figma (ya decididos por el equipo)**
 
 1. **Botón «Reportar resultado» en J1.** Se decidió que solo se habilita cuando el jugador ya fue eliminado o la partida terminó. En J1 aparece activo con la partida en vivo y con 46 jugadores vivos. Falta el estado deshabilitado y su mensaje. Además, J2 permite reportar el 2.º puesto mientras J1 dice que quedan 46 jugadores vivos: los datos de los ejemplos no cuadran.
-2. **Escuadras.** La configuración (O03b) ofrece Dúo, Trío y Escuadra (en la pantalla está en 4), pero el seguimiento solo muestra jugadores individuales, y en el MVP solo se juega en modo Solo. Hay que quitar o deshabilitar esas opciones en la configuración, o dibujar las tablas por escuadra.
-3. **Formatos sin pantalla.** Entran los tres formatos al MVP, pero solo está dibujado «Partidas acumuladas». Faltan las pantallas o variantes de «Clasificación por lobbies» y de «Partida única».
-4. **Disputas formales.** Se decidió que los reportes que no coinciden abren una disputa formal. El Brief deja fuera «un mecanismo formal de resolución de disputas» del MVP, y D1 y D2 están dibujadas para partidos entre dos jugadores. Hay que confirmar si aplican a Battle royale.
+2. **Formatos sin pantalla.** Entran los tres formatos al MVP, pero solo está dibujado «Partidas acumuladas». Faltan las pantallas o variantes de «Clasificación por lobbies» y de «Partida única».
+3. **Disputas formales.** Se decidió que los reportes que no coinciden abren una disputa formal. El Brief deja fuera «un mecanismo formal de resolución de disputas» del MVP, y D1 y D2 están dibujadas para partidos entre dos jugadores. Hay que confirmar si aplican a Battle royale.
 
 **Pendientes de definir**
 
-5. **Fórmula de puntos por posición.** Las pantallas solo dicen «posición + 1 pt por kill». Por los números de O3 parece 12, 9, 7, 6 y 5 puntos para los 5 primeros puestos, pero la fórmula depende del número de jugadores y no está escrita. También falta el desempate cuando dos jugadores tienen los mismos puntos.
-6. **Cuántos jugadores registra el organizador.** O3 muestra 5 de 100 filas y dice «Toca una fila para editar». Llenar la tabla a mano con 100 jugadores es mucho trabajo: ¿se registran todos o solo los primeros puestos? ¿Cómo se buscan las filas?
-7. **Qué ve el jugador al reportar.** J2 no muestra qué pasa después de «Enviar resultado»: ¿hay confirmación, un estado «Reporte enviado», se puede corregir, se puede reportar dos veces? Tampoco se ve qué pasa si el organizador rechaza el reporte.
-8. **Pestañas Partida 1, 2 y 3 y «Ver tabla completa».** Ninguna de las dos vistas está dibujada. ¿La tabla de una partida muestra puesto y kills de esa partida? ¿«Ver tabla completa» lista a los 100 jugadores, con búsqueda?
-9. **Pantalla «Ver jugadores y lobbies» (O2).** El botón no tiene destino. Con un solo lobby, ¿qué muestra? Parece necesario para los otros formatos.
-10. **Botón de intercambio en O2.** El ícono de la barra superior no tiene destino: ¿cambia a la vista del jugador, o a otro bracket?
-11. **Cómo se llega a J1 y O2.** Las pantallas no muestran el camino desde Mis torneos, desde «Ver bracket» (J11) o desde la gestión del torneo. Tampoco se sabe qué ve un jugador eliminado o alguien que solo mira.
-12. **Prueba del resultado (J3).** La imagen parece una tarjeta ilustrada («VICTORIA · PARTIDA 2 · ZEROX · 1° · 14 KILLS»), no una captura real. ¿Es la captura que sube el organizador o una tarjeta generada? Además, las 14 kills que muestra son las totales de ZeroX, no las de la Partida 2.
-13. **Temporizador (O2).** «Tiempo restante 12:40» ¿corre solo o lo controla el organizador? ¿Qué pasa al llegar a cero? ¿Cuál es la relación con «Iniciar siguiente partida»?
-14. **«Iniciar siguiente partida» en la última partida.** En O2 la Partida 3 es la última (el torneo tiene 3), pero el botón sigue visible. Debería estar deshabilitado o cambiar a «Ir al cierre».
-15. **Cierre con partidas pendientes.** ¿Se puede cerrar el torneo sin haber registrado todas las partidas? O4 muestra la lista de verificación completa, pero no cómo se ve con puntos pendientes.
-16. **Después de «Finalizar y publicar resultados».** No hay pantalla de confirmación ni de torneo finalizado. ¿Se notifica a los jugadores? ¿Se puede deshacer?
-17. **Valores de los puntos del ranking.** O4 muestra +300, +150 y +80 puntos. El UI kit propone otros valores para otros juegos (por ejemplo, 250, 125 y 60 para Fortnite). ¿Cuáles son los de este torneo?
-18. **Compartir.** J1 (botón de compartir en la barra) y O4 («Compartir resultados») no muestran qué se comparte ni con qué formato.
-19. **Columna «Mejor».** Se asume que es el mejor puesto entre las partidas, por los valores de la tabla. Hay que confirmarlo.
-20. **Datos de ejemplo que no cuadran.**
+4. **Fórmula de puntos por posición.** Las pantallas solo dicen «posición + 1 pt por kill». Por los números de O3 parece 12, 9, 7, 6 y 5 puntos para los 5 primeros puestos, pero la fórmula depende del número de jugadores y no está escrita. También falta el desempate cuando dos jugadores tienen los mismos puntos.
+5. **Cuántos jugadores registra el organizador.** O3 muestra 5 de 100 filas y dice «Toca una fila para editar». Llenar la tabla a mano con 100 jugadores es mucho trabajo: ¿se registran todos o solo los primeros puestos? ¿Cómo se buscan las filas?
+6. **Qué ve el jugador al reportar.** J2 no muestra qué pasa después de «Enviar resultado»: ¿hay confirmación, un estado «Reporte enviado», se puede corregir, se puede reportar dos veces? Tampoco se ve qué pasa si el organizador rechaza el reporte.
+7. **Pestañas Partida 1, 2 y 3 y «Ver tabla completa».** Ninguna de las dos vistas está dibujada. ¿La tabla de una partida muestra puesto y kills de esa partida? ¿«Ver tabla completa» lista a los 100 jugadores, con búsqueda?
+8. **Pantalla «Ver jugadores y lobbies» (O2).** El botón no tiene destino. Con un solo lobby, ¿qué muestra? Parece necesario para los otros formatos.
+9. **Botón de intercambio en O2.** El ícono de la barra superior no tiene destino: ¿cambia a la vista del jugador, o a otro bracket?
+10. **Cómo se llega a J1 y O2.** Las pantallas no muestran el camino desde Mis torneos, desde «Ver bracket» (J11) o desde la gestión del torneo. Tampoco se sabe qué ve un jugador eliminado o alguien que solo mira.
+11. **Prueba del resultado (J3).** La imagen parece una tarjeta ilustrada («VICTORIA · PARTIDA 2 · ZEROX · 1° · 14 KILLS»), no una captura real. ¿Es la captura que sube el organizador o una tarjeta generada? Además, las 14 kills que muestra son las totales de ZeroX, no las de la Partida 2.
+12. **Temporizador (O2).** «Tiempo restante 12:40» ¿corre solo o lo controla el organizador? ¿Qué pasa al llegar a cero? ¿Cuál es la relación con «Iniciar siguiente partida»?
+13. **«Iniciar siguiente partida» en la última partida.** En O2 la Partida 3 es la última (el torneo tiene 3), pero el botón sigue visible. Debería estar deshabilitado o cambiar a «Ir al cierre».
+14. **Cierre con partidas pendientes.** ¿Se puede cerrar el torneo sin haber registrado todas las partidas? O4 muestra la lista de verificación completa, pero no cómo se ve con puntos pendientes.
+15. **Después de «Finalizar y publicar resultados».** No hay pantalla de confirmación ni de torneo finalizado. ¿Se notifica a los jugadores? ¿Se puede deshacer?
+16. **Valores de los puntos del ranking.** O4 muestra +300, +150 y +80 puntos. El UI kit propone otros valores para otros juegos (por ejemplo, 250, 125 y 60 para Fortnite). ¿Cuáles son los de este torneo?
+17. **Compartir.** J1 (botón de compartir en la barra) y O4 («Compartir resultados») no muestran qué se comparte ni con qué formato.
+18. **Columna «Mejor».** Se asume que es el mejor puesto entre las partidas, por los valores de la tabla. Hay que confirmarlo.
+19. **Datos de ejemplo que no cuadran.**
     - La Victory Royale Cup aparece en Explorar con 48/50 y aquí tiene 100 jugadores.
     - En O3, los avatares de las filas de ZeroX y de Johitan en «Reportes de los jugadores» parecen intercambiados.
-21. **Falta una pantalla.** La carpeta tiene J1 a J3 y O2 a O4, pero no hay «BR · O1». ¿Es la pantalla de cupos personalizados (BR · O1b), que está en otra carpeta, o falta una pantalla por exportar?
-22. **Nombre del flujo.** La carpeta se llama «battle-royale-bracket», pero también cubre el cierre del torneo, que en otros formatos es una pantalla aparte (O15). ¿Se mantiene el cierre aquí?
+20. **Falta una pantalla.** La carpeta tiene J1 a J3 y O2 a O4, pero no hay «BR · O1». ¿Es la pantalla de cupos personalizados (BR · O1b), que está en otra carpeta, o falta una pantalla por exportar?
+21. **Nombre del flujo.** La carpeta se llama «battle-royale-bracket», pero también cubre el cierre del torneo, que en otros formatos es una pantalla aparte (O15). ¿Se mantiene el cierre aquí?
 
 ## Cambios
 
 | Fecha | Cambio |
 |---|---|
 | 2026-10-25 | Versión inicial. Basada en las pantallas BR · J1 a J3 y BR · O2 a O4, y en las respuestas del equipo: el organizador llena la tabla a mano, los reportes que no coinciden abren una disputa formal, los puntos por posición dependen de una fórmula según el número de jugadores, el MVP juega en modo Solo, los tres formatos entran al MVP (solo «Partidas acumuladas» está dibujado) y el jugador solo puede reportar cuando ya fue eliminado o la partida terminó. |
+| 2026-10-27 | Revisión del PR #3. Equipos queda fuera del MVP de forma definitiva: se quitan las menciones a equipos, escuadras, dúos y tríos, y las referencias a E1 a E3. |

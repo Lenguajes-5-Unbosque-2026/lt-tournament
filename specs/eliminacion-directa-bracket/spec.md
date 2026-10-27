@@ -5,7 +5,7 @@ Carpeta de pantallas: `design/flujos/eliminacion-directa-bracket/`
 ## Quién y para qué
 
 **Quién:** dos roles sobre el mismo torneo.
-- **El jugador** inscrito en un torneo «Equipo vs equipo» (modo Jugador, acento naranja).
+- **El jugador** inscrito en un torneo de eliminación directa 1 vs 1 (modo Jugador, acento naranja).
 - **El organizador** de ese torneo (modo Organizador, acento azul).
 
 **Para qué:** llevar un torneo de **eliminación directa** desde que empieza hasta su cierre. Es un bracket de rondas (Octavos, Cuartos, Semis y Final) en el que quien pierde queda fuera.
@@ -17,9 +17,8 @@ Carpeta de pantallas: `design/flujos/eliminacion-directa-bracket/`
 **Resultado:** el torneo queda con el bracket completo, un podio (1.º, 2.º y 3.º), los puntos de ranking calculados y los resultados publicados. Al cerrar, el historial y los rankings de todos los jugadores se actualizan.
 
 **Alcance del MVP:**
-- La modalidad «Equipo vs equipo» entra completa al MVP (de 1 a 5 jugadores por equipo). Las pantallas de este flujo todavía muestran un jugador por lado; faltan las versiones con nombres de equipo.
-- La inscripción por equipo (crear equipo, invitar compañeros y unirse con código) también entra al MVP. Es del flujo «jugador-descubrir-e-inscribirse».
-- De los tres formatos de esta modalidad, **solo entra la eliminación directa**. La doble eliminación y la fase de grupos quedan fuera.
+- Los partidos son **1 vs 1**: cada lado es un jugador individual.
+- De los tres formatos de la configuración (eliminación directa, doble eliminación y fase de grupos), **solo entra la eliminación directa**. La doble eliminación y la fase de grupos quedan fuera.
 
 **Caso de ejemplo para el paso a paso:** la **Copa Relámpago Bogotá**, eliminación directa. Se sigue el **Partido 1 de Octavos**, Johitan (seed #13) contra NovaK (seed #4), desde las dos perspectivas:
 - **Johitan (jugador):** reporta 2 – 1.
@@ -32,7 +31,7 @@ Carpeta de pantallas: `design/flujos/eliminacion-directa-bracket/`
 | J16 | Bracket | Jugador | Bracket por rondas, con la tarjeta de su partido. |
 | J16b | Bracket · Prueba del resultado | Jugador | Hoja con la prueba de un partido ya confirmado. |
 | J17 | Reportar resultado | Jugador | Formulario para reportar el marcador de su partido. |
-| O12 | Bracket · Equipo vs equipo | Organizador | Bracket y controles de la ronda (registrar, avanzar y reordenar). |
+| O12 | Bracket · 1 vs 1 | Organizador | Bracket y controles de la ronda (registrar, avanzar y reordenar). |
 | O13 | Registrar resultado | Organizador | Registro y validación del resultado de un partido. |
 | O15 | Cerrar torneo | Organizador | Podio, resumen y cierre del torneo. |
 
@@ -63,8 +62,8 @@ Carpeta de pantallas: `design/flujos/eliminacion-directa-bracket/`
 - Aviso informativo: «El organizador valida el resultado. Si ambos reportan distinto, decide el organizador.»
 - Botones «Enviar resultado» y «Cancelar».
 
-**O12 · Bracket · Equipo vs equipo**
-- Barra superior con volver, título «Bracket», subtítulo «16 equipos · Eliminación directa» y un botón de ícono de intercambio.
+**O12 · Bracket · 1 vs 1**
+- Barra superior con volver, título «Bracket», subtítulo «16 jugadores · Eliminación directa» y un botón de ícono de intercambio.
 - Mismas pestañas por ronda y mismo bracket, con acento azul. Los partidos son: Johitan 2 – 1 NovaK (borde azul), Sh4dow 2 – 0 Kairo, Mafe – ZeroX (sin marcador) y Lupe 2 – 1 Tito. Las cajas de la ronda siguiente son «Por definir» vs Sh4dow, y «Por definir» vs Lupe.
 - Tarjeta «Partido 1 · Johitan vs NovaK», con la etiqueta PENDIENTE, el texto «Ambos jugadores reportaron 2–1. Confirma para avanzar.» y el botón «Registrar resultado».
 - Botones «Avanzar a Cuartos» y «Reordenar semillas».
@@ -202,11 +201,10 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 
 ### Se lee
 
-**Torneo «Equipo vs equipo»** (viene de la configuración, flujo «organizador-panel-y-creacion»)
+**Torneo «1 vs 1»** (viene de la configuración, flujo «organizador-panel-y-creacion»)
 - Nombre.
 - Formato: eliminación directa (el único que entra al MVP).
-- Jugadores por equipo (de 1 a 5).
-- Cupos (cantidad de equipos; potencias de 2, con una ronda previa si no lo son).
+- Cupos (cantidad de jugadores; potencias de 2, con una ronda previa si no lo son).
 - Tiempo por partida («el reloj corre al iniciar»).
 - Puntos de ranking del podio (1.º, 2.º y 3.º).
 
@@ -244,7 +242,7 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 - El ganador de cada partido pasa a la siguiente ronda.
 - Para avanzar de ronda deben estar registrados todos los resultados de la ronda actual.
 - Los cupos son potencias de 2. Si no lo son, se juega una ronda previa para completar el cuadro (lo dice la configuración).
-- Los cupos pueden ser de 2 a 128 equipos.
+- Los cupos pueden ser de 2 a 128 jugadores.
 - El 3.º puesto sale de un partido entre los perdedores de las semifinales.
 - El cierre exige tener todos los resultados registrados, el bracket completo y los puntos de ranking calculados (O15).
 
@@ -253,7 +251,7 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 Esta spec no cubre lo siguiente, que tiene su propia spec:
 
 - **Crear y configurar el torneo** (O01 a O06, O03, EvE · O1b), en «organizador-panel-y-creacion».
-- **Inscribirse** (J06 a J12, y la inscripción por equipo), en «jugador-descubrir-e-inscribirse». Ahí se asigna el seed.
+- **Inscribirse** (J06 a J12), en «jugador-descubrir-e-inscribirse». Ahí se asigna el seed.
 - **Check-in y chat** (J14, J15, O11, O14), en «jugador-competir» y «organizador-gestion-del-torneo».
 - **Battle royale** y **bracket-por-puntos**, las otras modalidades, con sus propias carpetas.
 - **incidencias-de-partido** (D1, D2, W1, W2, W3): disputas y W.O., con su propia spec.
@@ -267,40 +265,37 @@ Dentro del MVP, no incluido en este flujo:
 
 **Ajustes pendientes en Figma (ya decididos por el equipo)**
 
-1. **Bracket con equipos.** La modalidad «Equipo vs equipo» entra completa al MVP, pero todas las pantallas de este flujo muestran un jugador por lado. Faltan las versiones con nombres de equipo y tag (como «Los Cóndores · CND»), cómo se ven los integrantes y el marcador por equipo.
-2. **Inscripción por equipo.** Se decidió que las pantallas E1, E2 y E3 vuelven al MVP. La spec «jugador-descubrir-e-inscribirse» las quitó, y hay que restaurarlas ahí (pantallas, estados, datos y preguntas). Tampoco se sabe si la Copa Relámpago Bogotá (el torneo del ejemplo) es un torneo con 1 jugador por equipo.
-3. **Formatos que no entran.** La doble eliminación y la fase de grupos están en la configuración (O03), pero no entran al MVP. Hay que quitarlos o deshabilitarlos, igual que lo que habla de jugadores por equipo si no se cambia.
-4. **Texto de J17 y reportes distintos.** J17 dice «Si ambos reportan distinto, decide el organizador», pero se decidió que los reportes distintos abren una disputa formal. Hay que alinear el texto y dibujar en O13 el estado «Los reportes no coinciden».
-5. **Partido por el tercer puesto.** Se decidió que el 3.º sale de un partido entre los perdedores de las semifinales. Falta en Figma (por ejemplo, como una pestaña o un partido junto a la Final).
-6. **Marcador de «Tu partido» en J16.** Se decidió que el partido no tiene marcador en vivo. La tarjeta de J16 muestra 1 – 0 mientras el partido está EN CURSO, y el bracket muestra «–» en ese mismo partido. Hay que cambiar la tarjeta para que no muestre marcador hasta que se reporta el resultado.
+1. **Formatos que no entran.** La doble eliminación y la fase de grupos están en la configuración (O03), pero no entran al MVP. Hay que quitarlos o deshabilitarlos.
+2. **Texto de J17 y reportes distintos.** J17 dice «Si ambos reportan distinto, decide el organizador», pero se decidió que los reportes distintos abren una disputa formal. Hay que alinear el texto y dibujar en O13 el estado «Los reportes no coinciden».
+3. **Partido por el tercer puesto.** Se decidió que el 3.º sale de un partido entre los perdedores de las semifinales. Falta en Figma (por ejemplo, como una pestaña o un partido junto a la Final).
+4. **Marcador de «Tu partido» en J16.** Se decidió que el partido no tiene marcador en vivo. La tarjeta de J16 muestra 1 – 0 mientras el partido está EN CURSO, y el bracket muestra «–» en ese mismo partido. Hay que cambiar la tarjeta para que no muestre marcador hasta que se reporta el resultado.
 
 **Pendientes de definir**
 
-7. **«Reordenar semillas» (O12).** No está definido qué hace el botón ni cuándo se puede usar. Además contradice la spec de inscripción, donde el seed es el orden de inscripción y queda fijo (J11 lo muestra como definitivo). Hay que definir si el organizador puede cambiar las semillas, hasta cuándo, y si los jugadores reciben un aviso.
-8. **Avanzar de ronda.** Se asume que «Avanzar a Cuartos» se habilita cuando todos los resultados de la ronda están registrados (lo dice «Faltan 2 resultados de Octavos para avanzar»). No se ve el estado deshabilitado, ni qué pasa si un jugador no se presenta (W.O.), ni qué muestra el botón en la última ronda.
-9. **Cantidad de equipos que no es potencia de 2.** EvE · O1b dice «Si no es potencia de 2, se juega una ronda previa para completar el cuadro». No hay pantalla de cómo se ve esa ronda ni de a quién le toca jugarla. La Copa Relámpago tiene 24 inscritos de 32 cupos.
-10. **Quién reporta por el equipo.** Cuando cada lado es un equipo de varios jugadores, ¿reporta solo el capitán o cualquier integrante? ¿Qué pasa si dos integrantes reportan distinto? Hoy las pantallas muestran un jugador por lado.
-11. **Datos que no cuadran entre pantallas.**
-    - J16 y O12 dicen «16 equipos» con Octavos como primera ronda, y O15 cierra con 32 jugadores, 31 partidos y 5 rondas. Con 32 la primera ronda sería Dieciseisavos.
+5. **«Reordenar semillas» (O12).** No está definido qué hace el botón ni cuándo se puede usar. Además contradice la spec de inscripción, donde el seed es el orden de inscripción y queda fijo (J11 lo muestra como definitivo). Hay que definir si el organizador puede cambiar las semillas, hasta cuándo, y si los jugadores reciben un aviso.
+6. **Avanzar de ronda.** Se asume que «Avanzar a Cuartos» se habilita cuando todos los resultados de la ronda están registrados (lo dice «Faltan 2 resultados de Octavos para avanzar»). No se ve el estado deshabilitado, ni qué pasa si un jugador no se presenta (W.O.), ni qué muestra el botón en la última ronda.
+7. **Cantidad de jugadores que no es potencia de 2.** EvE · O1b dice «Si no es potencia de 2, se juega una ronda previa para completar el cuadro». No hay pantalla de cómo se ve esa ronda ni de a quién le toca jugarla. La Copa Relámpago tiene 24 inscritos de 32 cupos.
+8. **Datos que no cuadran entre pantallas.**
+    - J16 y O12 dicen «16 jugadores» con Octavos como primera ronda, y O15 cierra con 32 jugadores, 31 partidos y 5 rondas. Con 32 la primera ronda sería Dieciseisavos.
     - En J16 el partido de Mafe contra ZeroX ya está jugado (1 – 2, con «Ver prueba»), y en O12 el mismo partido aparece sin marcador.
     - La ronda siguiente de J16 tiene «Por definir» vs Sh4dow y ZeroX vs Lupe; la de O12 tiene «Por definir» vs Sh4dow y «Por definir» vs Lupe.
     - El bracket muestra 4 de los 8 partidos de Octavos.
-12. **Pestañas de ronda.** Solo está dibujada la ronda de Octavos. Faltan Cuartos, Semis, Final, la ronda previa y cómo se ve el bracket completo (con scroll horizontal).
-13. **Qué ve el jugador al reportar.** J17 no muestra qué pasa después de «Enviar resultado»: ¿hay confirmación, un estado «Reporte enviado», se puede corregir? ¿Cuándo se habilita «Reportar resultado»? ¿Qué pasa si el organizador rechaza el reporte?
-14. **Marcador.** Los contadores de J17 y O13 muestran 2 y 1. ¿Hay un máximo o depende del juego? La prueba de J16b dice «FINAL · 90:00», lo que parece un partido de fútbol.
-15. **Prueba del resultado (J16b).** La imagen parece una tarjeta ilustrada («FINAL · 90:00 · SH4DOW 2 – 0 KAIRO»), no una captura real. ¿Es la captura que sube el organizador o una tarjeta generada?
-16. **Tiempo por partido.** La configuración tiene «Tiempo por partido: 30 min, el reloj corre al iniciar» (O03), pero este flujo no muestra un reloj ni cómo empieza el partido.
-17. **Disputas formales.** El Brief deja fuera «un mecanismo formal de resolución de disputas» del MVP. D1 y D2 están dibujadas para partidos de dos lados, así que encajan aquí. Hay que confirmar que entran al MVP, y cómo se resuelve cuando cada lado es un equipo.
-18. **Cierre del torneo.**
+9. **Pestañas de ronda.** Solo está dibujada la ronda de Octavos. Faltan Cuartos, Semis, Final, la ronda previa y cómo se ve el bracket completo (con scroll horizontal).
+10. **Qué ve el jugador al reportar.** J17 no muestra qué pasa después de «Enviar resultado»: ¿hay confirmación, un estado «Reporte enviado», se puede corregir? ¿Cuándo se habilita «Reportar resultado»? ¿Qué pasa si el organizador rechaza el reporte?
+11. **Marcador.** Los contadores de J17 y O13 muestran 2 y 1. ¿Hay un máximo o depende del juego? La prueba de J16b dice «FINAL · 90:00», lo que parece un partido de fútbol.
+12. **Prueba del resultado (J16b).** La imagen parece una tarjeta ilustrada («FINAL · 90:00 · SH4DOW 2 – 0 KAIRO»), no una captura real. ¿Es la captura que sube el organizador o una tarjeta generada?
+13. **Tiempo por partido.** La configuración tiene «Tiempo por partido: 30 min, el reloj corre al iniciar» (O03), pero este flujo no muestra un reloj ni cómo empieza el partido.
+14. **Disputas formales.** El Brief deja fuera «un mecanismo formal de resolución de disputas» del MVP. D1 y D2 están dibujadas para partidos de dos lados, así que encajan aquí. Hay que confirmar que entran al MVP.
+15. **Cierre del torneo.**
     - O15 muestra la lista de verificación completa, pero no cómo se ve con resultados pendientes, ni si se puede cerrar así.
     - Después de «Finalizar y publicar resultados» no hay pantalla de confirmación; ¿se notifica a los jugadores? ¿Se puede deshacer?
     - Los puntos de ranking (+300, +150, +80) vienen de la configuración; el UI kit propone valores distintos según el juego, y las pantallas no muestran el juego de la Copa Relámpago.
-    - O15 habla de «32 jugadores», aunque la modalidad se llama «Equipo vs equipo».
-19. **Compartir y botón de intercambio.** J16 y O15 tienen botones de compartir, y no muestran qué se comparte ni con qué formato. El botón de intercambio de O12 no tiene destino.
-20. **Cómo se llega a J16 y O12.** Las pantallas no muestran el camino desde «Ver bracket» (J11), Mis torneos o la gestión del torneo. J11 promete ver el bracket antes de que exista (se genera después del check-in): ¿qué ve el jugador? El UI kit tiene el estado «El bracket aún no se publica».
+16. **Compartir y botón de intercambio.** J16 y O15 tienen botones de compartir, y no muestran qué se comparte ni con qué formato. El botón de intercambio de O12 no tiene destino.
+17. **Cómo se llega a J16 y O12.** Las pantallas no muestran el camino desde «Ver bracket» (J11), Mis torneos o la gestión del torneo. J11 promete ver el bracket antes de que exista (se genera después del check-in): ¿qué ve el jugador? El UI kit tiene el estado «El bracket aún no se publica».
 
 ## Cambios
 
 | Fecha | Cambio |
 |---|---|
-| 2026-10-26 | Versión inicial. Basada en las pantallas J16, J16b, J17, O12, O13 y O15, y en las respuestas del equipo: la modalidad con equipos entra completa al MVP, la inscripción por equipo (E1 a E3) vuelve al MVP, solo entra la eliminación directa, los reportes que no coinciden abren una disputa formal, «Reordenar semillas» queda sin definir, el 3.º puesto sale de un partido entre los perdedores de las semifinales (falta en Figma), y el partido no tiene marcador en vivo. |
+| 2026-10-26 | Versión inicial. Basada en las pantallas J16, J16b, J17, O12, O13 y O15, y en las respuestas del equipo: solo entra la eliminación directa, los reportes que no coinciden abren una disputa formal, «Reordenar semillas» queda sin definir, el 3.º puesto sale de un partido entre los perdedores de las semifinales (falta en Figma), y el partido no tiene marcador en vivo. |
+| 2026-10-27 | Revisión del PR #3. La carpeta pasa a `eliminacion-directa-bracket` y la modalidad «Equipo vs equipo» pasa a «1 vs 1». Equipos queda fuera del MVP de forma definitiva: se quitan jugadores por equipo, inscripción por equipo y las preguntas sobre equipos. |

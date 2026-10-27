@@ -37,7 +37,7 @@ Nota: la pantalla de Mis torneos vacío está en el diseño como J24, y es la qu
 **V1 · Inicio · Sin torneos**
 - Cabecera con avatar, «Hola, Johitan», «Nivel 1 · 0 pts» y la campana de notificaciones.
 - «TU PRÓXIMO TORNEO»: en lugar de la tarjeta del torneo, un recuadro con borde punteado, un ícono de calendario, el título «Aún no tienes torneos», el texto «Inscríbete en uno de los recomendados y aquí verás tu check-in, chat y bracket.» y el botón «Explorar torneos».
-- Debajo, el resto de Inicio se mantiene: el torneo destacado («LIGA NOCTURNA 5V5», ABIERTO, «Vie 10 Oct», «20/32 cupos», «Inscribirme»), la sección «Para ti» con «Ver todo», chips de juego (Todos, EA FC 25, Valorant, Fortnite) y tarjetas de torneo.
+- Debajo, el resto de Inicio se mantiene: el torneo destacado («LIGA NOCTURNA», ABIERTO, «Vie 10 Oct», «20/32 cupos», «Inscribirme»), la sección «Para ti» con «Ver todo», chips de juego (Todos, EA FC 25, Valorant, Fortnite) y tarjetas de torneo.
 - Barra de navegación con Inicio activo.
 
 **J24 (V2) · Mis torneos · vacío**
@@ -199,10 +199,10 @@ Esta spec no cubre lo siguiente, que tiene su propia spec:
 12. **Barra de navegación.** V4 y V5 no muestran la barra de navegación, y el resto de pantallas sí. ¿Es solo un recorte del diseño, o esas pantallas no la tienen?
 13. **Estado de carga y de error.** No hay pantalla para cuando la lista está cargando o falla la conexión. Un usuario con torneos podría ver un instante el estado vacío antes de que carguen sus datos.
 14. **Nombres de las pantallas.** J24 y «V2» son la misma pantalla. El resto de la serie usa «V» (V1, V3, V4 y V5). Hay que unificar el ID (por ejemplo, llamarla V2) o dejar la nota. Además, el nombre de la carpeta («estado-vacio-sin-torneos») no refleja que también cubre Rankings, Perfil y el panel del organizador.
-15. **Liga Nocturna 5v5 en Inicio.** V1 mantiene el torneo destacado «LIGA NOCTURNA 5V5», que es de equipos. Para un usuario nuevo que no tiene equipo, ¿qué pasa al tocar «Inscribirme»? Es del flujo de inscripción.
 
 ## Cambios
 
 | Fecha | Cambio |
 |---|---|
 | 2026-10-26 | Versión inicial. Basada en las pantallas V1, J24 (V2), V3, V4 y V5, y en las respuestas del equipo: las tres pestañas de Mis torneos muestran el mismo vacío, el vacío de Inicio aparece cuando no hay torneo próximo ni en curso (aunque haya finalizados) con el mismo texto, la tarjeta de Rankings aparece solo si el jugador no tiene puntos en ningún juego, el juego principal lo elige el jugador, el vacío del panel desaparece con cualquier torneo, y V2 es la pantalla J24. |
+| 2026-10-27 | Revisión del PR #3. Equipos queda fuera del MVP de forma definitiva: se quita la pregunta sobre el torneo de equipos en Inicio y el nombre «5v5» del torneo destacado. |

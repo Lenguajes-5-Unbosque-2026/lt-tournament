@@ -12,12 +12,12 @@ Carpeta de pantallas: `design/flujos/bracket-por-puntos/`
 - El jugador ve la tabla de posiciones, su partido de la ronda, reporta el marcador y consulta las pruebas de sus partidos anteriores.
 - El organizador valida los reportes, registra cada resultado con su captura, avanza de ronda y cierra el torneo con el podio.
 
-**Por qué importa:** es la tercera modalidad de competencia del producto (junto a Equipo vs equipo y Battle royale) y la que da un historial de partidos tipo liga. Al cerrar, los resultados se convierten en historial y ranking, que es la propuesta de valor del jugador. También ataca el dolor del organizador: mantener el orden durante el torneo sin hojas de cálculo.
+**Por qué importa:** es la tercera modalidad de competencia del producto (junto a la eliminación directa y Battle royale) y la que da un historial de partidos tipo liga. Al cerrar, los resultados se convierten en historial y ranking, que es la propuesta de valor del jugador. También ataca el dolor del organizador: mantener el orden durante el torneo sin hojas de cálculo.
 
 **Resultado:** el torneo queda con una tabla de posiciones final, un podio (1.º, 2.º y 3.º), los puntos de ranking calculados y los resultados publicados. Al cerrar, el historial y los rankings de todos los participantes se actualizan.
 
 **Alcance del MVP:**
-- En este flujo se juega de forma **individual** (un jugador por fila de la tabla), aunque la configuración ofrece equipos de hasta 5.
+- En este flujo se juega de forma **individual** (un jugador por fila de la tabla).
 - Los tres formatos de «Por puntos» (Liga, Rondas suizas y Récord de puntos) entran al MVP, pero las pantallas solo muestran la **Liga**; esta spec describe solo ese formato.
 
 **Caso de ejemplo para el paso a paso:** la **Liga Relámpago**, con 16 participantes, 5 rondas y 20 minutos por partido. Se sigue la **Ronda 3**, Johitan contra Mafe, desde las dos perspectivas:
@@ -210,7 +210,6 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 **Torneo «Por puntos»** (viene de la configuración, flujo «organizador-panel-y-creacion»)
 - Nombre.
 - Formato: Liga, Rondas suizas o Récord de puntos.
-- Jugadores por equipo (en este flujo solo se usa 1, individual).
 - Cantidad de participantes y número de rondas (en el ejemplo, 16 y 5).
 - Puntos por resultado, editables (en el ejemplo, victoria 3, empate 1 y derrota 0).
 - Tiempo por partida (20 min).
@@ -259,16 +258,15 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 Esta spec no cubre lo siguiente, que tiene su propia spec:
 
 - **Crear y configurar el torneo** (O01 a O06, O03c, PTS · O1b), en «organizador-panel-y-creacion».
-- **Inscribirse** (J06 a J12 y E1 a E3), en «jugador-descubrir-e-inscribirse».
+- **Inscribirse** (J06 a J12), en «jugador-descubrir-e-inscribirse».
 - **Check-in y chat** (J14, J15, O11, O14), en «jugador-competir» y «organizador-gestion-del-torneo».
-- **Equipo vs equipo** y **Battle royale**, las otras modalidades, con sus propias carpetas.
+- **eliminacion-directa-bracket** y **battle-royale-bracket**, las otras modalidades, con sus propias carpetas.
 - **incidencias-de-partido** (D1, D2, W1, W2, W3): disputas y W.O., con su propia spec.
 - **Ranking e historial** (J18 a J21) y **resultado final del jugador** (F1): se actualizan al cerrar, pero se describen en sus carpetas.
 - **Estadísticas del torneo** (O16), en «organizador-cierre-datos-y-perfil».
 
 Dentro del MVP, no incluido en este flujo por falta de pantallas:
 - **Rondas suizas** y **Récord de puntos** (los dos formatos que no se dibujaron).
-- **Ligas por equipos:** este flujo solo muestra el modo individual.
 
 ## Preguntas abiertas
 
@@ -276,34 +274,34 @@ Dentro del MVP, no incluido en este flujo por falta de pantallas:
 
 1. **Empates.** Se decidió que los registra directamente el organizador. J2 solo ofrece elegir un ganador entre dos jugadores, lo que es coherente, pero falta definir cómo se ve en O3 (¿hay una opción «Empate» junto a «Ganador»?) y qué ve el jugador cuando su partido se registra como empate.
 2. **Texto de J2 sobre reportes distintos.** J2 dice «Si ambos reportan distinto, decide el organizador», pero se decidió que los reportes distintos abren una disputa formal. Hay que alinear el texto con ese camino, y dibujar en O3 el estado «Los reportes no coinciden».
-3. **Equipos en la configuración.** O03c ofrece «Jugadores por equipo» de 1 a 5, pero en el MVP este flujo solo juega individual. Hay que quitar o deshabilitar esas opciones, o dibujar las tablas por equipo.
-4. **Formatos sin pantalla.** Entran los tres formatos al MVP, pero solo está dibujada la Liga. Faltan las pantallas o variantes de Rondas suizas y de Récord de puntos. Este último («gana el mejor puntaje en sus intentos») no se juega en partidos de dos jugadores, así que sus pantallas serían distintas a las de este flujo.
-5. **Disputas formales.** El Brief deja fuera «un mecanismo formal de resolución de disputas» del MVP. Se decidió que los reportes distintos abren una disputa, y D1 y D2 están dibujadas para partidos de dos jugadores, así que encajan aquí. Hay que confirmar que entran al MVP.
+3. **Formatos sin pantalla.** Entran los tres formatos al MVP, pero solo está dibujada la Liga. Faltan las pantallas o variantes de Rondas suizas y de Récord de puntos. Este último («gana el mejor puntaje en sus intentos») no se juega en partidos de dos jugadores, así que sus pantallas serían distintas a las de este flujo.
+4. **Disputas formales.** El Brief deja fuera «un mecanismo formal de resolución de disputas» del MVP. Se decidió que los reportes distintos abren una disputa, y D1 y D2 están dibujadas para partidos de dos jugadores, así que encajan aquí. Hay que confirmar que entran al MVP.
 
 **Pendientes de definir**
 
-6. **Cuándo se habilita «Reportar resultado».** En J1 la tarjeta dice «Al terminar, reporta el marcador» y el botón aparece activo con el partido PENDIENTE y programado «Hoy · 7:00 pm». ¿Se habilita a la hora del partido, cuando el organizador lo inicia, o siempre? ¿Qué ve el jugador después de enviar (confirmación, estado «Reporte enviado», corrección)? ¿Qué pasa si el organizador rechaza el reporte?
-7. **Avanzar de ronda.** Se decidió que «Avanzar a Ronda 4» se habilita cuando todos los resultados de la ronda están registrados. No se ve el estado deshabilitado en Figma, y falta definir qué pasa si un jugador no se presenta (W.O.). Tampoco se sabe qué ve el organizador en la última ronda (Ronda 5), donde no hay ronda siguiente.
-8. **«Generar emparejamientos».** Se decidió que sirve para volver a sortear los emparejamientos. ¿Hasta cuándo se puede hacer (solo antes de que se registren resultados de esa ronda)? ¿Los jugadores reciben un aviso del cambio?
-9. **Liga «todos contra todos» con 5 rondas.** O03c dice que la Liga es «Todos contra todos», pero 16 participantes necesitarían 15 rondas, y el torneo tiene 5. ¿Cómo se emparejan, o es una liga parcial? Hay que aclarar el nombre o la regla.
-10. **Datos de la tabla que no cuadran.** En J1 y O2 la Ronda 3 está pendiente, pero la tabla ya muestra 3 partidos jugados para todos (Johitan: 2 victorias y 1 empate, 7 pts). Con la Ronda 1 empatada y la Ronda 2 ganada, Johitan tendría 2 partidos y 4 pts. Hay que ajustar los ejemplos, o aclarar si la tabla cuenta la Ronda 3.
-11. **Desempate en la tabla.** Kairo y Tito tienen los mismos números (0 G, 1 E, 2 P y 1 pt) y aparecen 7.º y 8.º. ¿Cuál es el criterio de desempate (diferencia de marcador, resultado entre ellos, orden alfabético)?
-12. **Pestañas de ronda.** Hay 5 rondas, pero el segmento solo muestra Tabla, Ronda 1, Ronda 2 y Ronda 3. ¿Se desplaza, o las rondas futuras se muestran deshabilitadas? Tampoco está dibujada la vista de los partidos de una ronda.
-13. **Tabla completa.** J1 y O2 muestran 8 de los 16 participantes, sin el link «Ver tabla completa» que sí existe en Battle royale. ¿Cómo se ven los 8 restantes?
-14. **Cantidad impar de participantes.** PTS · O1b dice «Con número impar, uno descansa cada ronda». No se ve cómo aparece el descanso en la tabla ni en «Tu partido», ni si suma puntos.
-15. **Máximo de participantes.** O03c dice «Hasta 64 participantes», y PTS · O1b dice «Entre 2 y 128». Hay que alinearlos.
-16. **Rango del marcador.** Los contadores de J2 y O3 muestran 21 y 18, mientras la Ronda 2 fue 3 – 1 y la Ronda 1 fue 1 – 1. ¿El marcador tiene un máximo, o depende del juego?
-17. **Prueba del resultado (J3).** La imagen parece una tarjeta ilustrada («FINAL · RONDA 2 · JOHITAN 3 – 1 LUPE»), no una captura real. ¿Es la captura que sube el organizador o una tarjeta generada? Además, dice «FINAL» siendo la Ronda 2 de 5.
-18. **Cierre con resultados pendientes.** O4 muestra la lista de verificación completa, pero no cómo se ve con resultados pendientes ni si se puede cerrar así. Después de «Finalizar y publicar resultados» no hay pantalla de confirmación; ¿se notifica a los participantes? ¿Se puede deshacer?
-19. **Valores de los puntos del ranking.** O4 muestra +300, +150 y +80 puntos. El UI kit propone otros valores según el juego. Además, las pantallas no muestran de qué juego es la Liga Relámpago. ¿De dónde salen los valores?
-20. **Compartir.** J1 y O4 tienen botones de compartir, y no muestran qué se comparte ni con qué formato.
-21. **Botón de intercambio en O2.** El ícono de la barra superior no tiene destino: ¿cambia a la vista del jugador, o a otro bracket?
-22. **Cómo se llega a J1 y O2.** Las pantallas no muestran el camino desde Mis torneos, desde «Ver bracket» (J11) o desde la gestión del torneo.
-23. **Falta una pantalla.** La carpeta tiene J1 a J3 y O2 a O4, pero no hay «PTS · O1». ¿Es la pantalla de cupos personalizados (PTS · O1b), que está en otra carpeta, o falta una pantalla por exportar?
-24. **Nombre del torneo.** J1 llama al torneo «Liga Relámpago» y O4 «Liga Relámpago Bogotá». Hay que unificar el nombre.
+5. **Cuándo se habilita «Reportar resultado».** En J1 la tarjeta dice «Al terminar, reporta el marcador» y el botón aparece activo con el partido PENDIENTE y programado «Hoy · 7:00 pm». ¿Se habilita a la hora del partido, cuando el organizador lo inicia, o siempre? ¿Qué ve el jugador después de enviar (confirmación, estado «Reporte enviado», corrección)? ¿Qué pasa si el organizador rechaza el reporte?
+6. **Avanzar de ronda.** Se decidió que «Avanzar a Ronda 4» se habilita cuando todos los resultados de la ronda están registrados. No se ve el estado deshabilitado en Figma, y falta definir qué pasa si un jugador no se presenta (W.O.). Tampoco se sabe qué ve el organizador en la última ronda (Ronda 5), donde no hay ronda siguiente.
+7. **«Generar emparejamientos».** Se decidió que sirve para volver a sortear los emparejamientos. ¿Hasta cuándo se puede hacer (solo antes de que se registren resultados de esa ronda)? ¿Los jugadores reciben un aviso del cambio?
+8. **Liga «todos contra todos» con 5 rondas.** O03c dice que la Liga es «Todos contra todos», pero 16 participantes necesitarían 15 rondas, y el torneo tiene 5. ¿Cómo se emparejan, o es una liga parcial? Hay que aclarar el nombre o la regla.
+9. **Datos de la tabla que no cuadran.** En J1 y O2 la Ronda 3 está pendiente, pero la tabla ya muestra 3 partidos jugados para todos (Johitan: 2 victorias y 1 empate, 7 pts). Con la Ronda 1 empatada y la Ronda 2 ganada, Johitan tendría 2 partidos y 4 pts. Hay que ajustar los ejemplos, o aclarar si la tabla cuenta la Ronda 3.
+10. **Desempate en la tabla.** Kairo y Tito tienen los mismos números (0 G, 1 E, 2 P y 1 pt) y aparecen 7.º y 8.º. ¿Cuál es el criterio de desempate (diferencia de marcador, resultado entre ellos, orden alfabético)?
+11. **Pestañas de ronda.** Hay 5 rondas, pero el segmento solo muestra Tabla, Ronda 1, Ronda 2 y Ronda 3. ¿Se desplaza, o las rondas futuras se muestran deshabilitadas? Tampoco está dibujada la vista de los partidos de una ronda.
+12. **Tabla completa.** J1 y O2 muestran 8 de los 16 participantes, sin el link «Ver tabla completa» que sí existe en Battle royale. ¿Cómo se ven los 8 restantes?
+13. **Cantidad impar de participantes.** PTS · O1b dice «Con número impar, uno descansa cada ronda». No se ve cómo aparece el descanso en la tabla ni en «Tu partido», ni si suma puntos.
+14. **Máximo de participantes.** O03c dice «Hasta 64 participantes», y PTS · O1b dice «Entre 2 y 128». Hay que alinearlos.
+15. **Rango del marcador.** Los contadores de J2 y O3 muestran 21 y 18, mientras la Ronda 2 fue 3 – 1 y la Ronda 1 fue 1 – 1. ¿El marcador tiene un máximo, o depende del juego?
+16. **Prueba del resultado (J3).** La imagen parece una tarjeta ilustrada («FINAL · RONDA 2 · JOHITAN 3 – 1 LUPE»), no una captura real. ¿Es la captura que sube el organizador o una tarjeta generada? Además, dice «FINAL» siendo la Ronda 2 de 5.
+17. **Cierre con resultados pendientes.** O4 muestra la lista de verificación completa, pero no cómo se ve con resultados pendientes ni si se puede cerrar así. Después de «Finalizar y publicar resultados» no hay pantalla de confirmación; ¿se notifica a los participantes? ¿Se puede deshacer?
+18. **Valores de los puntos del ranking.** O4 muestra +300, +150 y +80 puntos. El UI kit propone otros valores según el juego. Además, las pantallas no muestran de qué juego es la Liga Relámpago. ¿De dónde salen los valores?
+19. **Compartir.** J1 y O4 tienen botones de compartir, y no muestran qué se comparte ni con qué formato.
+20. **Botón de intercambio en O2.** El ícono de la barra superior no tiene destino: ¿cambia a la vista del jugador, o a otro bracket?
+21. **Cómo se llega a J1 y O2.** Las pantallas no muestran el camino desde Mis torneos, desde «Ver bracket» (J11) o desde la gestión del torneo.
+22. **Falta una pantalla.** La carpeta tiene J1 a J3 y O2 a O4, pero no hay «PTS · O1». ¿Es la pantalla de cupos personalizados (PTS · O1b), que está en otra carpeta, o falta una pantalla por exportar?
+23. **Nombre del torneo.** J1 llama al torneo «Liga Relámpago» y O4 «Liga Relámpago Bogotá». Hay que unificar el nombre.
 
 ## Cambios
 
 | Fecha | Cambio |
 |---|---|
 | 2026-10-26 | Versión inicial. Basada en las pantallas PTS · J1 a J3 y PTS · O2 a O4, y en las respuestas del equipo: los empates los registra directamente el organizador, los reportes que no coinciden abren una disputa formal, los tres formatos entran al MVP (solo la Liga está dibujada), el MVP juega de forma individual, y los emparejamientos de cada ronda se generan solos al avanzar («Avanzar a Ronda N» se habilita cuando todos los resultados están registrados, y «Generar emparejamientos» vuelve a sortearlos). |
+| 2026-10-27 | Revisión del PR #3. Equipos queda fuera del MVP de forma definitiva: se quitan las menciones a equipos, escuadras, dúos y tríos, y las referencias a E1 a E3. |

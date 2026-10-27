@@ -54,9 +54,9 @@ Carpeta de pantallas: `design/flujos/jugador-progreso-y-cuenta/`
 - Tres datos: «14 Jugados», «62% Victorias» y «1.240 Puntos».
 - Lista de torneos, cada uno con el puesto, el nombre, el juego, la cantidad de participantes (o la modalidad), la fecha y los puntos ganados:
   - 1º · Liga Nocturna FC · EA FC 25 · 64 jugadores · 21 Sep · +60.
-  - 2º · Victory Royale Cup #3 · Fortnite · Dúos · 14 Sep · +45.
+  - 2º · Victory Royale Cup #3 · Fortnite · 14 Sep · +45.
   - 5º · Copa Chapinero · EA FC 25 · 32 jugadores · 7 Sep · +27.
-  - 3º · Liga Nocturna 5v5 · Valorant · 16 equipos · 30 Ago · +40.
+  - 3º · Liga Nocturna · Valorant · 30 Ago · +40.
   - 12º · Open Bogotá · EA FC 25 · 128 jugadores · 16 Ago · +8.
 
 **J20 · Rankings (se elimina)**
@@ -82,7 +82,7 @@ Carpeta de pantallas: `design/flujos/jugador-progreso-y-cuenta/`
   - «Resultado validado» · «Ganaste 2–0 a Kairo · +15 pts» · «2 h».
   - «Sh4dow te retó» · «Partido amistoso de Valorant» · «3 h».
 - Grupo «ESTA SEMANA»:
-  - «Inscripción confirmada» · «Liga Nocturna 5v5 · Vie 10 Oct» · «Lun».
+  - «Inscripción confirmada» · «Liga Nocturna · Vie 10 Oct» · «Lun».
   - «Nuevo torneo cerca» · «Grieta Andina · League of Legends» · «Dom».
   - «Subiste al puesto 5» · «Ranking global de EA FC 25» · «Sáb».
 
@@ -254,14 +254,12 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 
 Los puntos se suman **solo al cerrar el torneo**, según el puesto final, con esta regla de tres:
 
-> **Puntos = 100 × (N − puesto + 1) / N**, donde N es la cantidad de participantes (jugadores en un torneo individual, equipos en uno por equipos). Se redondea al entero más cercano.
+> **Puntos = 100 × (N − puesto + 1) / N**, donde N es la cantidad de jugadores del torneo. Se redondea al entero más cercano.
 
 - El primer puesto suma siempre 100. El último suma 100 / N.
-- En un torneo por equipos, **el equipo es la unidad que puntúa**: el puesto del equipo es el momento en que todo el equipo queda eliminado, y **todos sus integrantes reciben la misma cantidad de puntos**. No hay puntos individuales según cuándo muere cada integrante.
 - En una eliminación directa, los participantes eliminados en la misma ronda comparten el **mejor puesto del grupo**. El 3.º sale del partido por el tercer puesto, y el 4.º es su perdedor.
 
 Ejemplos:
-- **4 equipos de 4 jugadores:** el primer equipo eliminado suma 25, el siguiente 50, el siguiente 75 y el ganador 100.
 - **Eliminación directa de 16 jugadores:** el campeón suma 100, el 2.º suma 94, el 3.º suma 88, el 4.º suma 81, los eliminados en Cuartos (5.º) suman 75 y los eliminados en Octavos (9.º) suman 50.
 
 ### Otras reglas que dicen las pantallas
@@ -307,26 +305,25 @@ No entra al MVP, aunque está en el diseño:
 9. **Umbrales de nivel.** El nivel sale de los puntos totales, pero no están definidos los puntos que hacen falta para cada nivel, ni qué pasa al subir (aviso, logro).
 10. **Logros.** No se ve qué logros existen ni cómo se ganan («Primer título», «Racha x5», «Top 10 · EA FC 25»). «Top 10» depende de un ranking que se elimina.
 11. **Historial: filtros y estadísticas.** ¿Los chips de juego filtran también los tres datos de arriba (jugados, victorias y puntos)? ¿Cómo se calcula el «62% Victorias» (victorias sobre partidos jugados) y qué cuenta como victoria («38 Victorias» en J18)?
-12. **Torneos por equipos y dúos en el historial.** J19 incluye torneos de equipos («Liga Nocturna 5v5 · 16 equipos») y dúos. Con la regla de puntos por equipo, ¿qué puesto muestra cada integrante y cómo se cuenta la «cantidad de participantes»?
-13. **Quien pierde por W.O.** La spec de «incidencias-de-partido» dice que el torneo cuenta como jugado pero «sin puntos». Con la regla de tres, todos suman al menos 100 / N. Hay que decidir si el jugador eliminado por W.O. suma los puntos de su puesto o ninguno.
-14. **Cálculo de N y de los puestos.**
+12. **Quien pierde por W.O.** La spec de «incidencias-de-partido» dice que el torneo cuenta como jugado pero «sin puntos». Con la regla de tres, todos suman al menos 100 / N. Hay que decidir si el jugador eliminado por W.O. suma los puntos de su puesto o ninguno.
+13. **Cálculo de N y de los puestos.**
     - ¿Cuenta en N un jugador descalificado o que nunca hizo check-in?
     - En una Liga y en Rondas suizas, el puesto sale de la tabla de posiciones: ¿cómo se desempata?
     - ¿Qué pasa con los puntos si el torneo se cancela?
-15. **Battle royale con equipos.** La regla de que todo el equipo suma lo mismo hasta que el último integrante muere implica equipos en Battle royale. La spec de Battle royale dice que el MVP juega solo en modo Solo. Hay que revisarla.
-16. **Notificaciones.**
+14. **Notificaciones.**
     - El botón con el check parece marcar todo como leído (se asume por el ícono).
     - No se ve cómo se distinguen los avisos leídos de los no leídos.
     - Faltan tipos de aviso: disputa, W.O., lista de espera, mensajes del organizador, solicitudes de amistad y reto aceptado.
     - Faltan interruptores para los avisos de amistad y retos.
-17. **Cambio de modo desde el perfil.** Se decidió que el segmento del perfil y las tarjetas de Ajustes cambian el modo de toda la app. ¿El segmento «Organizador» del perfil lleva al Panel o muestra el perfil del organizador (O17)?
-18. **Privacidad.** Un jugador de las entrevistas quería decidir qué información ven los demás. «Privacidad y seguridad» no tiene pantalla, y no se sabe si un amigo ve todo el historial o solo los puntos.
-19. **Compartir.** El botón de compartir del perfil no muestra qué se comparte ni con qué formato.
-20. **Cerrar sesión.** ¿Pide confirmación (el UI kit pide un diálogo propio para acciones destructivas)? ¿A dónde lleva?
-21. **Otras specs afectadas por las nuevas reglas de ranking.** Hay que revisar «estado-vacio-sin-torneos» (V3), «eliminacion-directa-bracket», «battle-royale-bracket», «bracket-por-puntos» (los puntos del podio ya no vienen de la configuración del organizador, y ya no son +300, +150 y +80), «jugador-competir» (F1: «+150 Pts de ranking» y «↑3 Puestos en EA FC») y «jugador-descubrir-e-inscribirse» (los premios con puntos del Detalle, J09).
+15. **Cambio de modo desde el perfil.** Se decidió que el segmento del perfil y las tarjetas de Ajustes cambian el modo de toda la app. ¿El segmento «Organizador» del perfil lleva al Panel o muestra el perfil del organizador (O17)?
+16. **Privacidad.** Un jugador de las entrevistas quería decidir qué información ven los demás. «Privacidad y seguridad» no tiene pantalla, y no se sabe si un amigo ve todo el historial o solo los puntos.
+17. **Compartir.** El botón de compartir del perfil no muestra qué se comparte ni con qué formato.
+18. **Cerrar sesión.** ¿Pide confirmación (el UI kit pide un diálogo propio para acciones destructivas)? ¿A dónde lleva?
+19. **Otras specs afectadas por las nuevas reglas de ranking.** Hay que revisar «estado-vacio-sin-torneos» (V3), «eliminacion-directa-bracket», «battle-royale-bracket», «bracket-por-puntos» (los puntos del podio ya no vienen de la configuración del organizador, y ya no son +300, +150 y +80), «jugador-competir» (F1: «+150 Pts de ranking» y «↑3 Puestos en EA FC») y «jugador-descubrir-e-inscribirse» (los premios con puntos del Detalle, J09).
 
 ## Cambios
 
 | Fecha | Cambio |
 |---|---|
-| 2026-10-26 | Versión inicial. Basada en las pantallas J18 a J23, y en las respuestas del equipo: los puntos se suman solo al cerrar el torneo con la regla 100 × (N − puesto + 1) / N, redondeada al entero más cercano (el equipo suma lo mismo hasta que todo el equipo queda eliminado, y en eliminación directa el grupo eliminado comparte el mejor puesto); se elimina el ranking Global y Por juego, y queda solo el de amigos; «Retar» es un partido amistoso sin puntos; los amigos se agregan con enlace y búsqueda con solicitud; cada notificación lleva a su pantalla; el nivel sale de los puntos totales; y los dos controles de cambio de modo cambian toda la app. |
+| 2026-10-26 | Versión inicial. Basada en las pantallas J18 a J23, y en las respuestas del equipo: los puntos se suman solo al cerrar el torneo con la regla 100 × (N − puesto + 1) / N, redondeada al entero más cercano (en eliminación directa, el grupo eliminado comparte el mejor puesto); se elimina el ranking Global y Por juego, y queda solo el de amigos; «Retar» es un partido amistoso sin puntos; los amigos se agregan con enlace y búsqueda con solicitud; cada notificación lleva a su pantalla; el nivel sale de los puntos totales; y los dos controles de cambio de modo cambian toda la app. |
+| 2026-10-27 | Revisión del PR #3. Equipos queda fuera del MVP de forma definitiva: en la regla de puntos N es la cantidad de jugadores del torneo, y se quitan las reglas de equipos e integrantes, el ejemplo de 4 equipos y las preguntas sobre equipos y dúos. |

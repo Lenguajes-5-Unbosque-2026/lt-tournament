@@ -10,7 +10,7 @@ Carpeta de pantallas: `design/flujos/jugador-descubrir-e-inscribirse/`
 
 **Resultado:** el jugador queda con un cupo confirmado en el torneo, o en la lista de espera si el torneo está lleno.
 
-**Alcance del MVP:** la inscripción es gratuita y es **individual**: cada jugador se inscribe por su cuenta. No hay inscripción por equipos (crear equipo, invitar compañeros o unirse con código). Las pantallas solo muestran entrada «Gratis».
+**Alcance del MVP:** la inscripción es gratuita y es **individual**: cada jugador se inscribe por su cuenta. Las pantallas solo muestran entrada «Gratis».
 
 **Caso de ejemplo para el paso a paso:** Johitan (nivel 12, 1.240 pts) se inscribe en la **Copa Relámpago Bogotá**: EA FC 25, 1 vs 1, eliminación directa, sábado 4 de octubre a las 7:00 pm, gratis, 24/32 inscritos. Una variante usa otro torneo que aparece en las pantallas: **Clutch Masters Bogotá** (CS2, lleno).
 
@@ -31,7 +31,7 @@ Carpeta de pantallas: `design/flujos/jugador-descubrir-e-inscribirse/`
 **J06 · Inicio**
 - Cabecera con avatar, «Hola, Johitan», «Nivel 12 · 1.240 pts» y la campana de notificaciones.
 - «TU PRÓXIMO TORNEO»: tarjeta con la etiqueta CHECK-IN, la cuenta atrás («Falta 02:14:36»), el torneo («Copa Relámpago Bogotá»), el partido («Octavos vs NovaK · 7:40 pm») y el botón «Check-in».
-- Torneo destacado en tarjeta grande: «LIGA NOCTURNA 5V5», etiqueta ABIERTO, fecha («Vie 10 Oct»), cupos («20/32 cupos») y el botón «Inscribirme».
+- Torneo destacado en tarjeta grande, con el nombre, la etiqueta ABIERTO, la fecha, los cupos (por ejemplo, «20/32 cupos») y el botón «Inscribirme».
 - Sección «Para ti» con el link «Ver todo», chips de juego (Todos, EA FC 25, Valorant, Fortnite) y tarjetas de torneo.
 - Barra de navegación con Inicio activo.
 
@@ -46,7 +46,7 @@ Carpeta de pantallas: `design/flujos/jugador-descubrir-e-inscribirse/`
 **J08 · Filtros**
 - Hoja con el link «Limpiar» arriba.
 - JUEGO: chips de selección múltiple (EA FC 25, Valorant, CS2, LoL).
-- MODALIDAD: chips (1 vs 1, 2 vs 2, 5 vs 5, Dúos).
+- MODALIDAD: chips (1 vs 1).
 - FECHA: segmento (Hoy, Esta semana, Este mes).
 - Interruptor «Solo con cupos disponibles» («Oculta torneos llenos»).
 - Interruptor «Cerca de mí» («Bogotá · radio de 10 km»).
@@ -77,8 +77,8 @@ Carpeta de pantallas: `design/flujos/jugador-descubrir-e-inscribirse/`
 - Botones: «Ir al chat del torneo» (principal), «Ver bracket» (secundario) y el link «Agregar al calendario».
 
 **J12 · Torneo lleno**
-- Detalle de Clutch Masters Bogotá (CS2 · 5 vs 5), con etiqueta LLENO.
-- Aviso de advertencia «Cupos agotados: 16/16 equipos inscritos. Únete a la lista de espera y te avisamos si se libera un cupo». (El texto habla de equipos; ver Preguntas abiertas.)
+- Detalle de un torneo lleno (por ejemplo, Clutch Masters Bogotá, CS2), con etiqueta LLENO.
+- Aviso de advertencia «Cupos agotados: 16/16 inscritos. Únete a la lista de espera y te avisamos si se libera un cupo».
 - Tarjeta «Lista de espera»: «Serías el #3 · suele liberarse 1 de cada 5 cupos».
 - «Inscribirme» deshabilitado, «Unirme a la lista de espera» y el link «Ver torneos similares».
 
@@ -223,7 +223,6 @@ Esta spec no cubre lo siguiente, que tiene su propia spec:
 - **Acceso y registro** (J00 a J05): crear cuenta, ingresar, recuperar acceso y elegir juegos en el onboarding (J02).
 - **jugador-competir** (J13, J14, J15, F1): Mis torneos, la sala del torneo con el check-in y la cancelación de la inscripción, el chat y el resultado final. Aquí solo se describe a dónde se llega desde J11.
 - **eliminacion-directa-bracket** (J16, J16b, J17) y las otras modalidades (Battle royale y bracket-por-puntos): el bracket, el reporte de resultados y las pruebas.
-- **Inscripción por equipos** (crear equipo, invitar compañeros, unirse con código): no entra al MVP. En el MVP solo hay inscripción individual.
 - **jugador-progreso-y-cuenta** (J18 a J23): perfil, historial, rankings, notificaciones y ajustes. La campana de Inicio lleva a Notificaciones (J22).
 - **Estado vacío sin torneos** (J24, V1, V3, V4, V5).
 - **Organizador:** crear y publicar el torneo, gestionarlo, cerrarlo y ver sus estadísticas y perfil.
@@ -233,47 +232,39 @@ Esta spec no cubre lo siguiente, que tiene su propia spec:
 
 ## Preguntas abiertas
 
-**Ajustes pendientes en Figma (ya decididos por el equipo)**
-
-1. **Pantallas de equipos.** El MVP es solo con jugadores individuales, y las pantallas E1, E2 y E3 ya no forman parte del diseño. Sus archivos todavía están en `design/flujos/jugador-descubrir-e-inscribirse/` y deben quitarse. También hay que quitar de las pantallas que quedan todo lo que habla de equipos:
-   - **Inicio (J06) y Explorar (J07):** el torneo «Liga Nocturna 5v5» (20/32 cupos), que es de equipos.
-   - **Filtros (J08):** los chips de modalidad «2 vs 2», «5 vs 5» y «Dúos».
-   - **Torneo lleno (J12):** Clutch Masters Bogotá es 5 vs 5 y el aviso dice «16/16 equipos inscritos». Hay que cambiarlo por un torneo individual y por «inscritos».
-
 **Pendientes de definir**
 
-2. **Cancelación: desde cuándo se cuenta «1 h antes».** J10 dice «Puedes cancelar hasta 1 h antes». ¿Es 1 h antes de la hora de inicio del torneo (7:00 pm) o de la apertura del check-in (30 min antes, según las reglas)? Además, el flujo de cancelación está en la sala del torneo (J14), de otro flujo: hay que confirmarlo en esa spec.
-3. **Lista de espera: qué pasa al liberarse un cupo.** Cuando alguien cancela, ¿el primero de la lista se inscribe solo, o recibe una notificación y tiene que confirmar él mismo? Si confirma él mismo, ¿con qué tiempo límite? Tampoco está definido qué ve el jugador que se queda sin cupo ni qué pasa con su posición.
-4. **Lista de espera: pantalla de confirmación.** Se decidió que al unirse el botón cambia a «En lista de espera · #N» y sale un toast, pero esa variante del Detalle no está en Figma. Falta la pantalla de J12 ya unido, y cómo se sale de la lista.
-5. **Seed y cancelaciones.** El seed es el orden de inscripción y queda fijo. Si alguien cancela, su número queda vacío. ¿Se reasignan los seeds, o se compactan al generar el bracket?
-6. **Controles sin pantalla de destino:**
+1. **Cancelación: desde cuándo se cuenta «1 h antes».** J10 dice «Puedes cancelar hasta 1 h antes». ¿Es 1 h antes de la hora de inicio del torneo (7:00 pm) o de la apertura del check-in (30 min antes, según las reglas)? Además, el flujo de cancelación está en la sala del torneo (J14), de otro flujo: hay que confirmarlo en esa spec.
+2. **Lista de espera: qué pasa al liberarse un cupo.** Cuando alguien cancela, ¿el primero de la lista se inscribe solo, o recibe una notificación y tiene que confirmar él mismo? Si confirma él mismo, ¿con qué tiempo límite? Tampoco está definido qué ve el jugador que se queda sin cupo ni qué pasa con su posición.
+3. **Lista de espera: pantalla de confirmación.** Se decidió que al unirse el botón cambia a «En lista de espera · #N» y sale un toast, pero esa variante del Detalle no está en Figma. Falta la pantalla de J12 ya unido, y cómo se sale de la lista.
+4. **Seed y cancelaciones.** El seed es el orden de inscripción y queda fijo. Si alguien cancela, su número queda vacío. ¿Se reasignan los seeds, o se compactan al generar el bracket?
+5. **Controles sin pantalla de destino:**
    - **Ícono QR** en Explorar (J07): ¿qué hace? Posible uso: escanear el código de un torneo y abrir su Detalle.
    - **Corazón** en el Detalle (J09): ¿dónde se ven después los torneos guardados?
    - **«Seguir»** al organizador: ¿qué significa seguir y qué recibe el jugador (avisos de nuevos torneos)? Además, ¿lleva a un perfil público del organizador? Existe O17 «Perfil del organizador», pero es del flujo del organizador.
-7. **Criterio exacto de «Para ti».** Se sabe que es un criterio mixto (juegos del jugador más otros torneos) ordenado por fecha, pero falta la regla concreta: cuántos torneos, cuántos de cada tipo, y de dónde salen los chips (Todos, EA FC 25, Valorant, Fortnite).
-8. **«Ver todo» en Inicio.** Se asume que lleva a Explorar, pero la pantalla no lo muestra. ¿Con qué filtros llega?
+6. **Criterio exacto de «Para ti».** Se sabe que es un criterio mixto (juegos del jugador más otros torneos) ordenado por fecha, pero falta la regla concreta: cuántos torneos, cuántos de cada tipo, y de dónde salen los chips (Todos, EA FC 25, Valorant, Fortnite).
+7. **«Ver todo» en Inicio.** Se asume que lleva a Explorar, pero la pantalla no lo muestra. ¿Con qué filtros llega?
 
 **Observaciones sobre las pantallas (posibles pantallas o ajustes que faltan en Figma)**
 
-9. **Casilla de reglas.** En J10 hay una casilla de aceptación. ¿El botón «Confirmar inscripción» está deshabilitado hasta marcarla? No hay pantalla del estado sin marcar ni del error.
-10. **Sin resultados, carga y errores.** No hay pantalla para: búsqueda o filtros sin resultados, lista cargando, error de red, o error al inscribirse (por ejemplo, el último cupo se ocupó mientras confirmaba).
-11. **Cierre de inscripciones.** J09 muestra «Cierra Sáb 6:00 pm», pero no hay pantalla de un torneo con la inscripción cerrada y cupos libres. Tampoco está claro si «EN CURSO» es el único estado en que se cierra.
-12. **Destino del botón cerrar (X) en J11.** No se ve si vuelve al Detalle, a Inicio o a Mis torneos.
-13. **«Ver bracket» antes de generarse.** En J11 el bracket todavía no existe (se genera después del check-in). ¿Qué ve el jugador? El UI kit tiene el estado «El bracket aún no se publica», pero es de la spec del bracket.
-14. **Filtros: coherencia con Explorar.**
+8. **Casilla de reglas.** En J10 hay una casilla de aceptación. ¿El botón «Confirmar inscripción» está deshabilitado hasta marcarla? No hay pantalla del estado sin marcar ni del error.
+9. **Sin resultados, carga y errores.** No hay pantalla para: búsqueda o filtros sin resultados, lista cargando, error de red, o error al inscribirse (por ejemplo, el último cupo se ocupó mientras confirmaba).
+10. **Cierre de inscripciones.** J09 muestra «Cierra Sáb 6:00 pm», pero no hay pantalla de un torneo con la inscripción cerrada y cupos libres. Tampoco está claro si «EN CURSO» es el único estado en que se cierra.
+11. **Destino del botón cerrar (X) en J11.** No se ve si vuelve al Detalle, a Inicio o a Mis torneos.
+12. **«Ver bracket» antes de generarse.** En J11 el bracket todavía no existe (se genera después del check-in). ¿Qué ve el jugador? El UI kit tiene el estado «El bracket aún no se publica», pero es de la spec del bracket.
+13. **Filtros: coherencia con Explorar.**
     - Los chips de juego de J08 son EA FC 25, Valorant, CS2 y LoL, pero Explorar también lista Fortnite y Rocket League. ¿El filtro muestra todos los juegos disponibles o solo los populares?
     - «Cerca de mí» muestra «Bogotá · radio de 10 km»: ¿pide permiso de ubicación? ¿Qué pasa fuera de Bogotá?
     - Los filtros activos no se ven en Explorar una vez cerrada la hoja (los chips muestran «Todos» aunque haya filtros).
     - La pantalla de Filtros muestra «Ver 4 resultados» pero Explorar dice «6 torneos»; es coherente con filtrar, pero no hay pantalla del resultado.
-15. **Orden de la lista.** Explorar muestra «Más próximos». ¿Qué otras opciones hay (más cupos, recientes)?
-16. **Gamertag ausente.** J10 muestra el Gamertag del perfil. ¿Qué pasa si el jugador no tiene ID para ese juego (por ejemplo, nunca eligió Valorant en «Tus juegos»)? Falta el camino para completarlo y no hay pantalla.
-17. **Inscripción en torneos que se cruzan.** ¿Puede inscribirse en dos torneos a la misma hora? Las pantallas no lo restringen ni avisan.
-18. **Premios con puntos.** Los puntos de 1.º, 2.º y 3.º (300 / 150 / 80) los define el organizador al crear el torneo (el UI kit sugiere valores por juego). ¿Se muestran también torneos sin premio en puntos, o sin trofeo físico?
-19. **Entradas de pago.** El UI kit describe una variante «Paga» con métodos de pago, que el MVP no incluye. ¿Se deja la entrada «Gratis» fija en estas pantallas y se limpia el kit?
+14. **Orden de la lista.** Explorar muestra «Más próximos». ¿Qué otras opciones hay (más cupos, recientes)?
+15. **Gamertag ausente.** J10 muestra el Gamertag del perfil. ¿Qué pasa si el jugador no tiene ID para ese juego (por ejemplo, nunca eligió Valorant en «Tus juegos»)? Falta el camino para completarlo y no hay pantalla.
+16. **Inscripción en torneos que se cruzan.** ¿Puede inscribirse en dos torneos a la misma hora? Las pantallas no lo restringen ni avisan.
+17. **Premios con puntos.** Los puntos de 1.º, 2.º y 3.º (300 / 150 / 80) los define el organizador al crear el torneo (el UI kit sugiere valores por juego). ¿Se muestran también torneos sin premio en puntos, o sin trofeo físico?
+18. **Entradas de pago.** El UI kit describe una variante «Paga» con métodos de pago, que el MVP no incluye. ¿Se deja la entrada «Gratis» fija en estas pantallas y se limpia el kit?
 
 ## Cambios
 
 | Fecha | Cambio |
 |---|---|
-| 2026-10-25 | Versión inicial. Basada en las pantallas J06 a J12 y E1 a E3, y en las respuestas del equipo: Gamertag viene del perfil, seed por orden de inscripción, cancelación desde la sala del torneo (J14), unirse a la lista de espera queda inmediato con toast, el equipo puede completarse hasta el último momento y pierde el cupo si no llega completo al check-in, el torneo En curso abre el Detalle con «Inscribirme» deshabilitado, y «Para ti» usa un criterio mixto. |
-| 2026-10-26 | Se quita todo lo relacionado con la inscripción por equipos (pantallas E1, E2 y E3, sus estados, datos, reglas y preguntas), porque el MVP es solo con jugadores individuales. Se agrega como fuera de alcance y como ajuste pendiente en Figma quitar lo que habla de equipos en J06, J07, J08 y J12. |
+| 2026-10-26 | Equipos queda fuera del MVP de forma definitiva: el MVP solo tiene jugadores individuales, y no existen equipos, escuadras ni integrantes en esta spec ni en sus pantallas. |

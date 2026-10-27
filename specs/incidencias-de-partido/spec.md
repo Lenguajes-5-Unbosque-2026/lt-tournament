@@ -269,11 +269,11 @@ No entra al MVP, aunque está en el diseño:
 18. **W2 y W3 como aviso.** W2 es una pantalla completa y W3 un diálogo sobre el bracket. ¿Se abren al entrar a la app, llegan como notificación, o solo se ven al abrir el bracket?
 19. **Chat en D1.** «Ir al chat del torneo» lleva al chat general del torneo. ¿El jugador habla ahí con el organizador sobre la disputa, o hay una conversación aparte?
 20. **Otras modalidades.** Las cinco pantallas son de un partido de eliminación directa entre dos jugadores. Las specs de Battle royale y bracket-por-puntos mandan los reportes distintos a D1 y D2. Falta definir cómo se ven en esas modalidades (en Por puntos, un W.O. puede dar derrota 0 pts; en Battle royale, no aplica un partido de dos jugadores).
-21. **Modalidad con equipos.** La modalidad con equipos entra al MVP. Falta definir el check-in por equipo, quién se presenta, y quién reporta o disputa cuando cada lado son varios jugadores.
-22. **Apelar y reincidencia.** No hay forma de apelar la decisión del organizador, ni de registrar que un jugador faltó antes. Queda fuera de las pantallas actuales.
+21. **Apelar y reincidencia.** No hay forma de apelar la decisión del organizador, ni de registrar que un jugador faltó antes. Queda fuera de las pantallas actuales.
 
 ## Cambios
 
 | Fecha | Cambio |
 |---|---|
 | 2026-10-26 | Versión inicial. Basada en las pantallas D1, D2, W1, W2 y W3, y en las respuestas del equipo: el segundo en reportar ve D1 enseguida y el primero recibe una notificación, el jugador solo corrige su reporte si el organizador pide una nueva captura, «Pedir nueva captura» avisa a los dos jugadores con un tiempo límite, el W.O. se detecta automáticamente al vencer la tolerancia (que define el organizador, 10 minutos por defecto), solo entra la victoria por W.O. (no descalificar ni reprogramar), y «sumas tu participación» significa que el torneo cuenta como jugado sin puntos ni victorias. |
+| 2026-10-27 | Revisión del PR #3. Equipos queda fuera del MVP de forma definitiva: se quita la pregunta sobre la modalidad con equipos. |

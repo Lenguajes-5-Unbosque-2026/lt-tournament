@@ -20,3 +20,11 @@ Cambios de diseño que salen de la revisión del PR #3 y que no se pueden hacer 
 | J16 · Bracket | Cambiar «16 equipos» por «16 jugadores» donde aparezca. | 1 |
 | J04 · Ingresar | Quitar el separador «o continúa con» y los botones «Continuar con Google» y «Continuar con Discord». Re-exportar `J04 · Ingresar.png`. | 2 |
 | J10 · Confirmar inscripción | Mostrar solo el ID público del jugador, solo lectura, en lugar de «Gamertag · ID FC 25» («Johitan · johi-2231» pasa a «Johitan»). | 3 |
+| PTS · O4 · Cierre y podio | Cambiar +300, +150 y +80 por +100, +94 y +88 (con N = 16). | 4 |
+| BR · O4 · Cierre y podio | Cambiar +300, +150 y +80 por +100, +99 y +98 (con N = 100 jugadores). | 4 |
+| O15 · Cerrar torneo | Cambiar +300, +150 y +80 por +100, +97 y +94 (con N = 32 jugadores). | 4 |
+| F1 · Jugador · Tu resultado final | Cambiar el podio a +100, +97 y +94 y «+150 Pts de ranking» a «+97 Pts de ranking» (con N = 32). | 4 |
+| J09 · Detalle del torneo | En «Premios» quitar «Trofeo + 300 pts», «150 pts» y «80 pts», y mostrar los puntos que da la regla 100 × (N − puesto + 1) / N. | 4 |
+| O04 · Crear · Fecha y reglas | En «Premios» quitar «300 pts de ranking» del ejemplo: los puntos de ranking son automáticos. | 4 |
+| J18 · Perfil competitivo y J19 · Historial | Recalcular los puntos de cada torneo con la regla (por ejemplo, un 1.º suma 100). | 4 |
+| UI kit (`design/ui kit`) | Quitar los puntos de 1.º, 2.º y 3.º por juego (§5.18 y §7), que contradicen la regla. | 4 |

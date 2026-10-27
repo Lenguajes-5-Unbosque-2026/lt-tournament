@@ -57,7 +57,7 @@ Carpeta de pantallas: `design/flujos/jugador-descubrir-e-inscribirse/`
 - Portada, etiqueta de estado, juego, modalidad y formato (por ejemplo «ABIERTO · EA FC 25 · 1 vs 1 · Eliminación directa»), y el nombre en display.
 - Tres datos: fecha (Sáb 4), hora (7:00 pm) y entrada (Gratis).
 - Barra de cupos: «24 / 32 inscritos» y «Quedan 8 cupos».
-- Premios: 1.er puesto «Trofeo + 300 pts», 2.º «150 pts», 3.º «80 pts».
+- Premios del torneo, con los puntos de ranking que da cada puesto según la regla única 100 × (N − puesto + 1) / N.
 - Reglas: «Check-in 30 min antes en la app», «Partidos al mejor de 3 · 6 min por tiempo», «Reporta tu marcador con captura».
 - Bloque de acción: «Inscripción gratis», «Cierra Sáb 6:00 pm» y el botón «Inscribirme».
 - Tarjeta del creador: avatar, nombre (StreamerNova), «Organizador verificado · 7 torneos» y el botón «Seguir».
@@ -258,8 +258,7 @@ Esta spec no cubre lo siguiente, que tiene su propia spec:
     - La pantalla de Filtros muestra «Ver 4 resultados» pero Explorar dice «6 torneos»; es coherente con filtrar, pero no hay pantalla del resultado.
 14. **Orden de la lista.** Explorar muestra «Más próximos». ¿Qué otras opciones hay (más cupos, recientes)?
 15. **Inscripción en torneos que se cruzan.** ¿Puede inscribirse en dos torneos a la misma hora? Las pantallas no lo restringen ni avisan.
-16. **Premios con puntos.** Los puntos de 1.º, 2.º y 3.º (300 / 150 / 80) los define el organizador al crear el torneo (el UI kit sugiere valores por juego). ¿Se muestran también torneos sin premio en puntos, o sin trofeo físico?
-17. **Entradas de pago.** El UI kit describe una variante «Paga» con métodos de pago, que el MVP no incluye. ¿Se deja la entrada «Gratis» fija en estas pantallas y se limpia el kit?
+16. **Entradas de pago.** El UI kit describe una variante «Paga» con métodos de pago, que el MVP no incluye. ¿Se deja la entrada «Gratis» fija en estas pantallas y se limpia el kit?
 
 ## Cambios
 
@@ -267,3 +266,4 @@ Esta spec no cubre lo siguiente, que tiene su propia spec:
 |---|---|
 | 2026-10-26 | Equipos queda fuera del MVP de forma definitiva: el MVP solo tiene jugadores individuales, y no existen equipos, escuadras ni integrantes en esta spec ni en sus pantallas. |
 | 2026-10-27 | Revisión del PR #3. Se usa solo el ID público único que se captura al crear la cuenta: no hay ID por juego ni Gamertag, y se borra la pregunta sobre el Gamertag ausente. |
+| 2026-10-27 | Revisión del PR #3 (puntos). Los puntos de ranking de los premios siguen la regla única 100 × (N − puesto + 1) / N, y se borra la pregunta sobre los puntos definidos por el organizador. |

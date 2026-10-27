@@ -85,7 +85,7 @@ Carpeta de pantallas: `design/flujos/battle-royale-bracket/`
 
 **BR · O4 · Cierre y podio**
 - Barra superior con volver, título «Cerrar torneo» y subtítulo «Victory Royale Cup».
-- Título «¡FINAL REGISTRADA!» y el podio con ZeroX (1.º, +300 pts), Johitan (2.º, +150 pts) y Sh4dow (3.º, +80 pts).
+- Título «¡FINAL REGISTRADA!» y el podio con ZeroX (1.º, +100 pts), Johitan (2.º, +99 pts) y Sh4dow (3.º, +98 pts).
 - Tres datos: 100 Jugadores, 3 Partidas y 412 Kills.
 - Lista de verificación: «Todos los resultados registrados», «Tabla final completa» y «Puntos de ranking calculados».
 - Aviso informativo: «Al cerrar se actualiza todo. Historial y rankings de los 100 jugadores se actualizan al instante.»
@@ -140,7 +140,7 @@ Caso: Victory Royale Cup, Partida 3 en vivo.
 ### E. El organizador cierra el torneo
 
 20. Cuando las 3 partidas están registradas, toca «Ir al cierre del torneo» y llega a **Cierre y podio (BR · O4)**.
-21. Ve «¡FINAL REGISTRADA!», el podio (ZeroX +300 pts, Johitan +150 pts, Sh4dow +80 pts), el resumen (100 jugadores, 3 partidas, 412 kills) y la lista de verificación: todos los resultados registrados, tabla final completa y puntos de ranking calculados.
+21. Ve «¡FINAL REGISTRADA!», el podio (ZeroX +100 pts, Johitan +99 pts, Sh4dow +98 pts), el resumen (100 jugadores, 3 partidas, 412 kills) y la lista de verificación: todos los resultados registrados, tabla final completa y puntos de ranking calculados.
 22. Toca «Finalizar y publicar resultados». Los resultados se publican y el historial y los rankings de los 100 jugadores se actualizan al instante.
 23. También puede tocar «Compartir resultados».
 
@@ -191,7 +191,7 @@ Caso: Victory Royale Cup, Partida 3 en vivo.
 - **Confirmar resultados:** la partida pasa a Finalizada. La captura de la tabla final queda visible para los jugadores con «Ver prueba». La tabla general se actualiza con los puntos, kills y mejor puesto.
 - **Reportes que no coinciden:** se abre una disputa formal en el flujo «incidencias-de-partido» (D1 para el jugador y D2 para el organizador). Esta spec solo menciona a dónde se va.
 - **Cierre del torneo:** al finalizar y publicar los resultados se actualizan al instante el historial y los rankings de los 100 jugadores (flujo «jugador-progreso-y-cuenta», J18 a J21). Cada jugador puede ver su resultado final (pantalla F1 de «jugador-competir»).
-- **Puntos de ranking:** los 3 primeros reciben puntos (+300, +150, +80 en el ejemplo). Los valores salen de la configuración del torneo.
+- **Puntos de ranking:** los puntos de ranking de cada jugador siguen la regla única 100 × (N − puesto + 1) / N, redondeada al entero más cercano. Con N = 100 jugadores, el 1.º suma 100, el 2.º suma 99 y el 3.º suma 98.
 - **Compartir:** J1 y O4 tienen botones de compartir; el contenido que se comparte no está definido.
 
 ## Datos que usa
@@ -206,7 +206,6 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 - Cantidad de jugadores (de 2 a 100).
 - Número de partidas (en el ejemplo, 3) y tiempo por partida (25 min).
 - Puntos por eliminación (activado: posición más 1 punto por kill).
-- Puntos de ranking del podio (1.º, 2.º y 3.º).
 
 **Jugadores del torneo**
 - Nombre, avatar y color.
@@ -244,6 +243,7 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 - La captura de un jugador solo la ve el organizador. La captura de la tabla final la ven los jugadores.
 - Si los reportes no coinciden con lo registrado, se abre una disputa formal.
 - El cierre exige tener todos los resultados registrados, la tabla final completa y los puntos de ranking calculados (O4).
+- Los puntos de ranking siguen la regla única 100 × (N − puesto + 1) / N, redondeada al entero más cercano (N es la cantidad de jugadores del torneo).
 
 ## Fuera de alcance
 
@@ -282,14 +282,13 @@ Dentro del MVP, no incluido en este flujo por falta de pantallas:
 13. **«Iniciar siguiente partida» en la última partida.** En O2 la Partida 3 es la última (el torneo tiene 3), pero el botón sigue visible. Debería estar deshabilitado o cambiar a «Ir al cierre».
 14. **Cierre con partidas pendientes.** ¿Se puede cerrar el torneo sin haber registrado todas las partidas? O4 muestra la lista de verificación completa, pero no cómo se ve con puntos pendientes.
 15. **Después de «Finalizar y publicar resultados».** No hay pantalla de confirmación ni de torneo finalizado. ¿Se notifica a los jugadores? ¿Se puede deshacer?
-16. **Valores de los puntos del ranking.** O4 muestra +300, +150 y +80 puntos. El UI kit propone otros valores para otros juegos (por ejemplo, 250, 125 y 60 para Fortnite). ¿Cuáles son los de este torneo?
-17. **Compartir.** J1 (botón de compartir en la barra) y O4 («Compartir resultados») no muestran qué se comparte ni con qué formato.
-18. **Columna «Mejor».** Se asume que es el mejor puesto entre las partidas, por los valores de la tabla. Hay que confirmarlo.
-19. **Datos de ejemplo que no cuadran.**
+16. **Compartir.** J1 (botón de compartir en la barra) y O4 («Compartir resultados») no muestran qué se comparte ni con qué formato.
+17. **Columna «Mejor».** Se asume que es el mejor puesto entre las partidas, por los valores de la tabla. Hay que confirmarlo.
+18. **Datos de ejemplo que no cuadran.**
     - La Victory Royale Cup aparece en Explorar con 48/50 y aquí tiene 100 jugadores.
     - En O3, los avatares de las filas de ZeroX y de Johitan en «Reportes de los jugadores» parecen intercambiados.
-20. **Falta una pantalla.** La carpeta tiene J1 a J3 y O2 a O4, pero no hay «BR · O1». ¿Es la pantalla de cupos personalizados (BR · O1b), que está en otra carpeta, o falta una pantalla por exportar?
-21. **Nombre del flujo.** La carpeta se llama «battle-royale-bracket», pero también cubre el cierre del torneo, que en otros formatos es una pantalla aparte (O15). ¿Se mantiene el cierre aquí?
+19. **Falta una pantalla.** La carpeta tiene J1 a J3 y O2 a O4, pero no hay «BR · O1». ¿Es la pantalla de cupos personalizados (BR · O1b), que está en otra carpeta, o falta una pantalla por exportar?
+20. **Nombre del flujo.** La carpeta se llama «battle-royale-bracket», pero también cubre el cierre del torneo, que en otros formatos es una pantalla aparte (O15). ¿Se mantiene el cierre aquí?
 
 ## Cambios
 
@@ -297,3 +296,4 @@ Dentro del MVP, no incluido en este flujo por falta de pantallas:
 |---|---|
 | 2026-10-25 | Versión inicial. Basada en las pantallas BR · J1 a J3 y BR · O2 a O4, y en las respuestas del equipo: el organizador llena la tabla a mano, los reportes que no coinciden abren una disputa formal, los puntos por posición dependen de una fórmula según el número de jugadores, el MVP juega en modo Solo, los tres formatos entran al MVP (solo «Partidas acumuladas» está dibujado) y el jugador solo puede reportar cuando ya fue eliminado o la partida terminó. |
 | 2026-10-27 | Revisión del PR #3. Equipos queda fuera del MVP de forma definitiva: se quitan las menciones a equipos, escuadras, dúos y tríos, y las referencias a E1 a E3. |
+| 2026-10-27 | Revisión del PR #3. Puntos de ranking con una sola regla: 100 × (N − puesto + 1) / N, redondeada al entero más cercano. Se borra la pregunta sobre los valores de los puntos del podio. |

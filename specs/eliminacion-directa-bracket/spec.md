@@ -83,7 +83,7 @@ Carpeta de pantallas: `design/flujos/eliminacion-directa-bracket/`
 
 **O15 · Cerrar torneo**
 - Barra superior con volver, título «Cerrar torneo» y subtítulo «Copa Relámpago Bogotá».
-- Título «¡FINAL REGISTRADA!» y el podio con Johitan (1.º, +300 pts), NovaK (2.º, +150 pts) y Sh4dow (3.º, +80 pts).
+- Título «¡FINAL REGISTRADA!» y el podio con Johitan (1.º, +100 pts), NovaK (2.º, +97 pts) y Sh4dow (3.º, +94 pts).
 - Tres datos: 32 Jugadores, 31 Partidos y 5 Rondas.
 - Lista de verificación: «Todos los resultados registrados», «Bracket completo» y «Puntos de ranking calculados».
 - Aviso informativo: «Al cerrar se actualiza todo. Historial y rankings de los 32 jugadores se actualizan al instante.»
@@ -143,7 +143,7 @@ Caso: Copa Relámpago Bogotá, Octavos, Partido 1: Johitan contra NovaK.
 ### F. El organizador cierra el torneo
 
 22. Con todos los resultados registrados, toca «Ir al cierre del torneo» y llega a **Cerrar torneo (O15)**.
-23. Ve «¡FINAL REGISTRADA!», el podio (Johitan +300 pts, NovaK +150 pts, Sh4dow +80 pts), el resumen (32 jugadores, 31 partidos, 5 rondas) y la lista de verificación: todos los resultados registrados, bracket completo y puntos de ranking calculados.
+23. Ve «¡FINAL REGISTRADA!», el podio (Johitan +100 pts, NovaK +97 pts, Sh4dow +94 pts), el resumen (32 jugadores, 31 partidos, 5 rondas) y la lista de verificación: todos los resultados registrados, bracket completo y puntos de ranking calculados.
 24. Toca «Finalizar y publicar resultados». Los resultados se publican y el historial y los rankings de todos los jugadores se actualizan al instante.
 25. También puede tocar «Compartir resultados».
 
@@ -192,7 +192,7 @@ Caso: Copa Relámpago Bogotá, Octavos, Partido 1: Johitan contra NovaK.
 - **Reportes que no coinciden:** se abre una disputa formal en el flujo «incidencias-de-partido» (D1 para el jugador y D2 para el organizador). Esta spec solo menciona a dónde se va.
 - **Avanzar de ronda:** al avanzar, los ganadores ocupan los lugares «Por definir» de la ronda siguiente.
 - **Cierre del torneo:** al finalizar y publicar los resultados se actualizan al instante el historial y los rankings de todos los jugadores (flujo «jugador-progreso-y-cuenta», J18 a J21). Cada jugador puede ver su resultado final (pantalla F1 de «jugador-competir»).
-- **Puntos de ranking:** los 3 primeros reciben puntos (+300, +150, +80 en el ejemplo). Los valores salen de la configuración del torneo.
+- **Puntos de ranking:** los puntos de ranking de cada jugador siguen la regla única 100 × (N − puesto + 1) / N, redondeada al entero más cercano. Con N = 32 jugadores (los que muestra O15), el 1.º suma 100, el 2.º suma 97 y el 3.º suma 94.
 - **Compartir:** J16 y O15 tienen botones de compartir; el contenido que se comparte no está definido.
 
 ## Datos que usa
@@ -206,7 +206,6 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 - Formato: eliminación directa (el único que entra al MVP).
 - Cupos (cantidad de jugadores; potencias de 2, con una ronda previa si no lo son).
 - Tiempo por partida («el reloj corre al iniciar»).
-- Puntos de ranking del podio (1.º, 2.º y 3.º).
 
 **Participantes**
 - Nombre, avatar, color y seed (viene de la inscripción).
@@ -245,6 +244,7 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 - Los cupos pueden ser de 2 a 128 jugadores.
 - El 3.º puesto sale de un partido entre los perdedores de las semifinales.
 - El cierre exige tener todos los resultados registrados, el bracket completo y los puntos de ranking calculados (O15).
+- Los puntos de ranking siguen la regla única 100 × (N − puesto + 1) / N, redondeada al entero más cercano (N es la cantidad de jugadores del torneo).
 
 ## Fuera de alcance
 
@@ -289,7 +289,6 @@ Dentro del MVP, no incluido en este flujo:
 15. **Cierre del torneo.**
     - O15 muestra la lista de verificación completa, pero no cómo se ve con resultados pendientes, ni si se puede cerrar así.
     - Después de «Finalizar y publicar resultados» no hay pantalla de confirmación; ¿se notifica a los jugadores? ¿Se puede deshacer?
-    - Los puntos de ranking (+300, +150, +80) vienen de la configuración; el UI kit propone valores distintos según el juego, y las pantallas no muestran el juego de la Copa Relámpago.
 16. **Compartir y botón de intercambio.** J16 y O15 tienen botones de compartir, y no muestran qué se comparte ni con qué formato. El botón de intercambio de O12 no tiene destino.
 17. **Cómo se llega a J16 y O12.** Las pantallas no muestran el camino desde «Ver bracket» (J11), Mis torneos o la gestión del torneo. J11 promete ver el bracket antes de que exista (se genera después del check-in): ¿qué ve el jugador? El UI kit tiene el estado «El bracket aún no se publica».
 
@@ -299,3 +298,4 @@ Dentro del MVP, no incluido en este flujo:
 |---|---|
 | 2026-10-26 | Versión inicial. Basada en las pantallas J16, J16b, J17, O12, O13 y O15, y en las respuestas del equipo: solo entra la eliminación directa, los reportes que no coinciden abren una disputa formal, «Reordenar semillas» queda sin definir, el 3.º puesto sale de un partido entre los perdedores de las semifinales (falta en Figma), y el partido no tiene marcador en vivo. |
 | 2026-10-27 | Revisión del PR #3. La carpeta pasa a `eliminacion-directa-bracket` y la modalidad «Equipo vs equipo» pasa a «1 vs 1». Equipos queda fuera del MVP de forma definitiva: se quitan jugadores por equipo, inscripción por equipo y las preguntas sobre equipos. |
+| 2026-10-27 | Revisión del PR #3 (puntos). Puntos de ranking con una sola regla: 100 × (N − puesto + 1) / N, redondeada al entero más cercano. |

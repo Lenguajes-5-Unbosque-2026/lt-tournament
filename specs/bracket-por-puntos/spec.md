@@ -84,7 +84,7 @@ Carpeta de pantallas: `design/flujos/bracket-por-puntos/`
 
 **PTS · O4 · Cierre y podio**
 - Barra superior con volver, título «Cerrar torneo» y subtítulo «Liga Relámpago Bogotá».
-- Título «¡FINAL REGISTRADA!» y el podio con Sh4dow (1.º, +300 pts), Johitan (2.º, +150 pts) y Lupe (3.º, +80 pts).
+- Título «¡FINAL REGISTRADA!» y el podio con Sh4dow (1.º, +100 pts), Johitan (2.º, +94 pts) y Lupe (3.º, +88 pts).
 - Tres datos: 16 Participantes, 40 Partidos y 5 Rondas.
 - Lista de verificación: «Todos los resultados registrados», «Tabla de posiciones completa» y «Puntos de ranking calculados».
 - Aviso informativo: «Al cerrar se actualiza todo. Historial y rankings de los 16 participantes se actualizan al instante.»
@@ -144,7 +144,7 @@ Los empates no se reportan desde este formulario: los registra directamente el o
 21. Cuando todos los partidos de la Ronda 3 están registrados, toca «Avanzar a Ronda 4». Los emparejamientos de la ronda siguiente se generan solos.
 22. Repite el ciclo (secciones C y D) hasta la última ronda (la 5).
 23. Con todos los resultados registrados, toca «Ir al cierre del torneo» y llega a **Cierre y podio (PTS · O4)**.
-24. Ve «¡FINAL REGISTRADA!», el podio (Sh4dow +300 pts, Johitan +150 pts, Lupe +80 pts), el resumen (16 participantes, 40 partidos, 5 rondas) y la lista de verificación: todos los resultados registrados, tabla de posiciones completa y puntos de ranking calculados.
+24. Ve «¡FINAL REGISTRADA!», el podio (Sh4dow +100 pts, Johitan +94 pts, Lupe +88 pts), el resumen (16 participantes, 40 partidos, 5 rondas) y la lista de verificación: todos los resultados registrados, tabla de posiciones completa y puntos de ranking calculados.
 25. Toca «Finalizar y publicar resultados». Los resultados se publican y el historial y los rankings de los 16 participantes se actualizan al instante.
 26. También puede tocar «Compartir resultados».
 
@@ -198,7 +198,7 @@ Los empates no se reportan desde este formulario: los registra directamente el o
 - **Reportes que no coinciden:** se abre una disputa formal en el flujo «incidencias-de-partido» (D1 para el jugador y D2 para el organizador). Esta spec solo menciona a dónde se va.
 - **Avanzar de ronda:** al avanzar, los emparejamientos de la ronda siguiente se generan solos.
 - **Cierre del torneo:** al finalizar y publicar los resultados se actualizan al instante el historial y los rankings de los 16 participantes (flujo «jugador-progreso-y-cuenta», J18 a J21). Cada jugador puede ver su resultado final (pantalla F1 de «jugador-competir»).
-- **Puntos de ranking:** los 3 primeros reciben puntos (+300, +150, +80 en el ejemplo). Los valores salen de la configuración del torneo.
+- **Puntos de ranking:** los puntos de ranking de cada jugador siguen la regla única 100 × (N − puesto + 1) / N, redondeada al entero más cercano. Con N = 16, el 1.º suma 100, el 2.º suma 94 y el 3.º suma 88.
 - **Compartir:** J1 y O4 tienen botones de compartir; el contenido que se comparte no está definido.
 
 ## Datos que usa
@@ -213,7 +213,6 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 - Cantidad de participantes y número de rondas (en el ejemplo, 16 y 5).
 - Puntos por resultado, editables (en el ejemplo, victoria 3, empate 1 y derrota 0).
 - Tiempo por partida (20 min).
-- Puntos de ranking del podio (1.º, 2.º y 3.º).
 
 **Participantes**
 - Nombre, avatar y color.
@@ -252,6 +251,7 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 - Los emparejamientos de cada ronda se generan solos al avanzar. El organizador puede volver a sortearlos.
 - Con una cantidad impar de participantes, uno descansa cada ronda (lo dice PTS · O1b).
 - El cierre exige tener todos los resultados registrados, la tabla de posiciones completa y los puntos de ranking calculados (O4).
+- Los puntos de ranking siguen la regla única 100 × (N − puesto + 1) / N, redondeada al entero más cercano (N es la cantidad de jugadores del torneo).
 
 ## Fuera de alcance
 
@@ -292,12 +292,11 @@ Dentro del MVP, no incluido en este flujo por falta de pantallas:
 15. **Rango del marcador.** Los contadores de J2 y O3 muestran 21 y 18, mientras la Ronda 2 fue 3 – 1 y la Ronda 1 fue 1 – 1. ¿El marcador tiene un máximo, o depende del juego?
 16. **Prueba del resultado (J3).** La imagen parece una tarjeta ilustrada («FINAL · RONDA 2 · JOHITAN 3 – 1 LUPE»), no una captura real. ¿Es la captura que sube el organizador o una tarjeta generada? Además, dice «FINAL» siendo la Ronda 2 de 5.
 17. **Cierre con resultados pendientes.** O4 muestra la lista de verificación completa, pero no cómo se ve con resultados pendientes ni si se puede cerrar así. Después de «Finalizar y publicar resultados» no hay pantalla de confirmación; ¿se notifica a los participantes? ¿Se puede deshacer?
-18. **Valores de los puntos del ranking.** O4 muestra +300, +150 y +80 puntos. El UI kit propone otros valores según el juego. Además, las pantallas no muestran de qué juego es la Liga Relámpago. ¿De dónde salen los valores?
-19. **Compartir.** J1 y O4 tienen botones de compartir, y no muestran qué se comparte ni con qué formato.
-20. **Botón de intercambio en O2.** El ícono de la barra superior no tiene destino: ¿cambia a la vista del jugador, o a otro bracket?
-21. **Cómo se llega a J1 y O2.** Las pantallas no muestran el camino desde Mis torneos, desde «Ver bracket» (J11) o desde la gestión del torneo.
-22. **Falta una pantalla.** La carpeta tiene J1 a J3 y O2 a O4, pero no hay «PTS · O1». ¿Es la pantalla de cupos personalizados (PTS · O1b), que está en otra carpeta, o falta una pantalla por exportar?
-23. **Nombre del torneo.** J1 llama al torneo «Liga Relámpago» y O4 «Liga Relámpago Bogotá». Hay que unificar el nombre.
+18. **Compartir.** J1 y O4 tienen botones de compartir, y no muestran qué se comparte ni con qué formato.
+19. **Botón de intercambio en O2.** El ícono de la barra superior no tiene destino: ¿cambia a la vista del jugador, o a otro bracket?
+20. **Cómo se llega a J1 y O2.** Las pantallas no muestran el camino desde Mis torneos, desde «Ver bracket» (J11) o desde la gestión del torneo.
+21. **Falta una pantalla.** La carpeta tiene J1 a J3 y O2 a O4, pero no hay «PTS · O1». ¿Es la pantalla de cupos personalizados (PTS · O1b), que está en otra carpeta, o falta una pantalla por exportar?
+22. **Nombre del torneo.** J1 llama al torneo «Liga Relámpago» y O4 «Liga Relámpago Bogotá». Hay que unificar el nombre.
 
 ## Cambios
 
@@ -305,3 +304,4 @@ Dentro del MVP, no incluido en este flujo por falta de pantallas:
 |---|---|
 | 2026-10-26 | Versión inicial. Basada en las pantallas PTS · J1 a J3 y PTS · O2 a O4, y en las respuestas del equipo: los empates los registra directamente el organizador, los reportes que no coinciden abren una disputa formal, los tres formatos entran al MVP (solo la Liga está dibujada), el MVP juega de forma individual, y los emparejamientos de cada ronda se generan solos al avanzar («Avanzar a Ronda N» se habilita cuando todos los resultados están registrados, y «Generar emparejamientos» vuelve a sortearlos). |
 | 2026-10-27 | Revisión del PR #3. Equipos queda fuera del MVP de forma definitiva: se quitan las menciones a equipos, escuadras, dúos y tríos, y las referencias a E1 a E3. |
+| 2026-10-27 | Revisión del PR #3. Puntos de ranking con una sola regla: 100 × (N − puesto + 1) / N, redondeada al entero más cercano (con N = 16: 100, 94 y 88). Se borra la pregunta sobre los valores de los puntos del podio. |

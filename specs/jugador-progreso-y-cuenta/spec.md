@@ -319,7 +319,6 @@ No entra al MVP, aunque está en el diseño:
 16. **Privacidad.** Un jugador de las entrevistas quería decidir qué información ven los demás. «Privacidad y seguridad» no tiene pantalla, y no se sabe si un amigo ve todo el historial o solo los puntos.
 17. **Compartir.** El botón de compartir del perfil no muestra qué se comparte ni con qué formato.
 18. **Cerrar sesión.** ¿Pide confirmación (el UI kit pide un diálogo propio para acciones destructivas)? ¿A dónde lleva?
-19. **Otras specs afectadas por las nuevas reglas de ranking.** Hay que revisar «estado-vacio-sin-torneos» (V3), «eliminacion-directa-bracket», «battle-royale-bracket», «bracket-por-puntos» (los puntos del podio ya no vienen de la configuración del organizador, y ya no son +300, +150 y +80), «jugador-competir» (F1: «+150 Pts de ranking» y «↑3 Puestos en EA FC») y «jugador-descubrir-e-inscribirse» (los premios con puntos del Detalle, J09).
 
 ## Cambios
 
@@ -327,3 +326,4 @@ No entra al MVP, aunque está en el diseño:
 |---|---|
 | 2026-10-26 | Versión inicial. Basada en las pantallas J18 a J23, y en las respuestas del equipo: los puntos se suman solo al cerrar el torneo con la regla 100 × (N − puesto + 1) / N, redondeada al entero más cercano (en eliminación directa, el grupo eliminado comparte el mejor puesto); se elimina el ranking Global y Por juego, y queda solo el de amigos; «Retar» es un partido amistoso sin puntos; los amigos se agregan con enlace y búsqueda con solicitud; cada notificación lleva a su pantalla; el nivel sale de los puntos totales; y los dos controles de cambio de modo cambian toda la app. |
 | 2026-10-27 | Revisión del PR #3. Equipos queda fuera del MVP de forma definitiva: en la regla de puntos N es la cantidad de jugadores del torneo, y se quitan las reglas de equipos e integrantes, el ejemplo de 4 equipos y las preguntas sobre equipos y dúos. |
+| 2026-10-27 | Revisión del PR #3 (puntos). Una sola regla de puntos: 100 × (N − puesto + 1) / N, redondeada al entero más cercano. Se borra la pregunta sobre otras specs afectadas, porque las specs de los brackets, Resultado final y descubrir ya usan la regla. |

@@ -64,8 +64,8 @@ Carpeta de pantallas: `design/flujos/jugador-competir/`
 
 **F1 · Jugador · Tu resultado final**
 - Barra superior con volver, título «Resultado final» y subtítulo «Copa Relámpago Bogotá».
-- Título «¡QUEDASTE 2º!» y el podio: NovaK (1.º, +300 pts), Johitan (2.º, +150 pts, resaltado como el propio) y Sh4dow (3.º, +80 pts).
-- Tres datos: «+150 Pts de ranking», «↑3 Puestos en EA FC» y «3 Victorias».
+- Título «¡QUEDASTE 2º!» y el podio: NovaK (1.º, +100 pts), Johitan (2.º, +97 pts, resaltado como el propio) y Sh4dow (3.º, +94 pts).
+- Tres datos: «+97 Pts de ranking», «↑3 Puestos en EA FC» y «3 Victorias».
 - Botones «Ver bracket completo» (principal) y «Compartir mi resultado» (secundario).
 
 ## Paso a paso
@@ -103,7 +103,7 @@ Caso: Johitan, inscrito en la Copa Relámpago Bogotá.
 
 ### E. Ver el resultado final
 
-15. Cuando el organizador cierra y publica el torneo, **los tres primeros** reciben **Resultado final (F1)**. Johitan, que quedó 2.º, ve «¡QUEDASTE 2º!», el podio, y sus datos: +150 pts de ranking, ↑3 puestos en EA FC y 3 victorias.
+15. Cuando el organizador cierra y publica el torneo, **los tres primeros** reciben **Resultado final (F1)**. Johitan, que quedó 2.º, ve «¡QUEDASTE 2º!», el podio, y sus datos: +97 pts de ranking, ↑3 puestos en EA FC y 3 victorias.
 16. Desde F1 puede:
     - **Ver bracket completo** (J16).
     - **Compartir mi resultado.**
@@ -201,7 +201,7 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 - Hay un solo chat público por torneo. Los mensajes del organizador llevan una etiqueta; el organizador puede fijar un anuncio.
 - Todas las tarjetas de Mis torneos llevan a la Sala del torneo.
 - El Resultado final solo lo ven los tres primeros.
-- Los puntos de ranking del podio son los de la configuración del torneo (+300, +150 y +80 en el ejemplo).
+- Los puntos de ranking siguen la regla única 100 × (N − puesto + 1) / N, redondeada al entero más cercano (con N = 32 jugadores: +100, +97 y +94 para el podio).
 
 ## Fuera de alcance
 
@@ -237,7 +237,7 @@ Esta spec no cubre lo siguiente, que tiene su propia spec:
 13. **Chat: controles sin destino.** El botón «+» del campo de mensaje (¿adjuntar una imagen?) y el menú «⋯» de la barra superior (¿silenciar, reportar?) no tienen pantalla. Tampoco se ve quién puede fijar anuncios (se asume que el organizador), si hay moderación, ni los límites del mensaje.
 14. **Chat: quién lo ve y cuándo.** ¿Los jugadores en lista de espera ven el chat? ¿El chat sigue abierto después de que el torneo termina? ¿El «en línea» y el «Leído» cuentan a todos?
 15. **Cuenta atrás.** ¿Qué pasa cuando llega a cero? ¿Se muestra el check-in cerrado?
-16. **Resultado final: datos.** No queda claro cómo se calculan «↑3 Puestos en EA FC» y «+150 Pts de ranking», ni qué cuenta como «Victorias» (¿incluye W.O.?). El contenido de «Compartir mi resultado» tampoco está definido.
+16. **Resultado final: datos.** No queda claro cómo se calcula «↑3 Puestos en EA FC», ni qué cuenta como «Victorias» (¿incluye W.O.?). El contenido de «Compartir mi resultado» tampoco está definido.
 17. **Avisos.** ¿El jugador recibe una notificación cuando se abre el check-in, cuando se publica el bracket y cuando el torneo termina? Es del flujo «jugador-progreso-y-cuenta» (J22).
 
 ## Cambios
@@ -246,3 +246,4 @@ Esta spec no cubre lo siguiente, que tiene su propia spec:
 |---|---|
 | 2026-10-26 | Versión inicial. Basada en las pantallas J13, J14, J15 y F1, y en las respuestas del equipo: PENDIENTE significa que el jugador todavía no ha hecho algo que le pide el torneo (sin definir qué), hay un check-in por torneo y otro por partido, hay un solo chat público por torneo, el Resultado final solo lo ven los tres primeros, y todas las tarjetas de Mis torneos llevan a la Sala del torneo, que cambia según el estado. |
 | 2026-10-27 | Revisión del PR #3. Equipos queda fuera del MVP de forma definitiva: se quita la pregunta sobre la modalidad con equipos y la referencia a la inscripción por equipo. |
+| 2026-10-27 | Revisión del PR #3 (puntos). Puntos de ranking con una sola regla: 100 × (N − puesto + 1) / N, redondeada al entero más cercano. El podio de Resultado final pasa a +100, +97 y +94 (con N = 32). |

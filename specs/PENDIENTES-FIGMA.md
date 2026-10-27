@@ -19,3 +19,4 @@ Cambios de diseño que salen de la revisión del PR #3 y que no se pueden hacer 
 | O12 · Bracket · Equipo vs equipo | Renombrar la pantalla a «Bracket · 1 vs 1» y cambiar el subtítulo «16 equipos · Eliminación directa» por «16 jugadores · Eliminación directa». | 1 |
 | J16 · Bracket | Cambiar «16 equipos» por «16 jugadores» donde aparezca. | 1 |
 | J04 · Ingresar | Quitar el separador «o continúa con» y los botones «Continuar con Google» y «Continuar con Discord». Re-exportar `J04 · Ingresar.png`. | 2 |
+| J10 · Confirmar inscripción | Mostrar solo el ID público del jugador, solo lectura, en lugar de «Gamertag · ID FC 25» («Johitan · johi-2231» pasa a «Johitan»). | 3 |

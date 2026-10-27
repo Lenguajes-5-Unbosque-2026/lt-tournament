@@ -4,7 +4,7 @@ Carpeta de pantallas: `design/flujos/jugador-descubrir-e-inscribirse/`
 
 ## Quién y para qué
 
-**Quién:** el jugador, con la cuenta en modo Jugador (acento naranja). Ya tiene cuenta y perfil, con su Gamertag / ID por juego cargado.
+**Quién:** el jugador, con la cuenta en modo Jugador (acento naranja). Ya tiene cuenta y perfil, con su ID público (el que escribió al crear la cuenta).
 
 **Para qué:** encontrar un torneo que le interese e inscribirse en él con el menor número de pasos posible. Es el flujo core del producto: entrega la propuesta de valor del jugador («encontrar torneos, inscribirse fácil») y es lo que alimenta todo lo demás. Sin inscripción no hay check-in, bracket, resultados ni ranking.
 
@@ -65,7 +65,7 @@ Carpeta de pantallas: `design/flujos/jugador-descubrir-e-inscribirse/`
 **J10 · Confirmar inscripción**
 - Hoja sobre el Detalle.
 - Resumen del torneo: portada, nombre y «Sáb 4 Oct · 7:00 pm · 1 vs 1».
-- Gamertag · ID del juego («Johitan · johi-2231»), solo lectura (viene del perfil) y entrada («Gratis»).
+- ID público («Johitan»), solo lectura (viene del perfil), y entrada («Gratis»).
 - Casilla «Acepto las reglas del torneo y el check-in obligatorio».
 - Aviso informativo: «Puedes cancelar hasta 1 h antes. Así liberas tu cupo para la lista de espera».
 - Botones «Confirmar inscripción» y «Cancelar».
@@ -117,7 +117,7 @@ Caso: Johitan se inscribe en la Copa Relámpago Bogotá (1 vs 1, gratis).
 ### C. Inscribirse
 
 7. Toca «Inscribirme». Se abre la hoja **Confirmar inscripción (J10)** sobre el Detalle.
-8. Revisa el resumen: torneo, fecha y hora, modalidad, su Gamertag (que viene de su perfil y no se edita aquí) y la entrada «Gratis».
+8. Revisa el resumen: torneo, fecha y hora, modalidad, su ID público (que viene de su perfil y no se edita aquí) y la entrada «Gratis».
 9. Marca la casilla «Acepto las reglas del torneo y el check-in obligatorio». Lee el aviso: puede cancelar hasta 1 h antes.
 10. Toca «Confirmar inscripción». Pasa a **Inscripción confirmada (J11)**.
     - «Cancelar» cierra la hoja y vuelve al Detalle sin inscribirlo.
@@ -186,14 +186,13 @@ Datos que esta spec lee o escribe, como puente hacia la base de datos en Supabas
 
 **Juego**
 - Nombre, color de portada y emblema (para el arte de las tarjetas).
-- Lo que identifica al jugador en ese juego (por ejemplo «ID FC 25»).
 
 **Organizador**
 - Nombre, avatar, si está verificado, cantidad de torneos organizados.
 
 **Jugador (el que usa la app)**
 - Nombre, avatar, nivel, puntos.
-- Gamertag e ID por juego (viene del perfil).
+- ID público (el que se captura al crear la cuenta).
 - Juegos de interés (para «Para ti»).
 - Ubicación o ciudad (para «Cerca de mí»).
 
@@ -258,13 +257,13 @@ Esta spec no cubre lo siguiente, que tiene su propia spec:
     - Los filtros activos no se ven en Explorar una vez cerrada la hoja (los chips muestran «Todos» aunque haya filtros).
     - La pantalla de Filtros muestra «Ver 4 resultados» pero Explorar dice «6 torneos»; es coherente con filtrar, pero no hay pantalla del resultado.
 14. **Orden de la lista.** Explorar muestra «Más próximos». ¿Qué otras opciones hay (más cupos, recientes)?
-15. **Gamertag ausente.** J10 muestra el Gamertag del perfil. ¿Qué pasa si el jugador no tiene ID para ese juego (por ejemplo, nunca eligió Valorant en «Tus juegos»)? Falta el camino para completarlo y no hay pantalla.
-16. **Inscripción en torneos que se cruzan.** ¿Puede inscribirse en dos torneos a la misma hora? Las pantallas no lo restringen ni avisan.
-17. **Premios con puntos.** Los puntos de 1.º, 2.º y 3.º (300 / 150 / 80) los define el organizador al crear el torneo (el UI kit sugiere valores por juego). ¿Se muestran también torneos sin premio en puntos, o sin trofeo físico?
-18. **Entradas de pago.** El UI kit describe una variante «Paga» con métodos de pago, que el MVP no incluye. ¿Se deja la entrada «Gratis» fija en estas pantallas y se limpia el kit?
+15. **Inscripción en torneos que se cruzan.** ¿Puede inscribirse en dos torneos a la misma hora? Las pantallas no lo restringen ni avisan.
+16. **Premios con puntos.** Los puntos de 1.º, 2.º y 3.º (300 / 150 / 80) los define el organizador al crear el torneo (el UI kit sugiere valores por juego). ¿Se muestran también torneos sin premio en puntos, o sin trofeo físico?
+17. **Entradas de pago.** El UI kit describe una variante «Paga» con métodos de pago, que el MVP no incluye. ¿Se deja la entrada «Gratis» fija en estas pantallas y se limpia el kit?
 
 ## Cambios
 
 | Fecha | Cambio |
 |---|---|
 | 2026-10-26 | Equipos queda fuera del MVP de forma definitiva: el MVP solo tiene jugadores individuales, y no existen equipos, escuadras ni integrantes en esta spec ni en sus pantallas. |
+| 2026-10-27 | Revisión del PR #3. Se usa solo el ID público único que se captura al crear la cuenta: no hay ID por juego ni Gamertag, y se borra la pregunta sobre el Gamertag ausente. |

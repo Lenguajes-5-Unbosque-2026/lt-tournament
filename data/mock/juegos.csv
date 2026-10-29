@@ -1,0 +1,25 @@
+id,nombre,abreviatura,color_1,color_2,popular,etiquetas,imagen
+fc25,EA FC 25,FC25,#2fb35a,#0b3a19,true,fútbol|deportes|consola,portada-fc25.jpg
+valorant,Valorant,VAL,#e8473f,#4a0d0e,true,shooter|táctico|pc,portada-valorant.jpg
+cs2,CS2,CS2,#f2a33a,#4f2a07,true,shooter|táctico|pc,portada-cs2.jpg
+lol,League of Legends,LOL,#5d55e0,#171447,true,moba|estrategia|pc,portada-lol.jpg
+fortnite,Fortnite,FN,#f07a2c,#4a1a05,true,battle royale|shooter,portada-fortnite.jpg
+rocket,Rocket League,RL,#3f78e8,#0c1d4b,false,fútbol|autos|deportes,portada-rocket.jpg
+freefire,Free Fire,FF,#ff9f1c,#5a2600,true,battle royale|móvil,
+codm,CoD Mobile,CODM,#7a8a6a,#1d2416,false,shooter|móvil,
+clash,Clash Royale,CR,#3b82f6,#172554,false,estrategia|móvil|cartas,
+brawl,Brawl Stars,BS,#facc15,#713f12,false,acción|móvil,
+apex,Apex Legends,APEX,#dc2626,#3f0a0a,false,battle royale|shooter,
+ow2,Overwatch 2,OW2,#f97316,#3b1606,false,shooter|héroes,
+dota2,Dota 2,DOTA,#b91c1c,#1c0606,false,moba|estrategia|pc,
+r6,Rainbow Six Siege,R6,#64748b,#0f172a,false,shooter|táctico,
+sf6,Street Fighter 6,SF6,#e11d48,#3f0616,false,pelea|consola,
+tekken,Tekken 8,TK8,#a855f7,#2e1065,false,pelea|consola,
+smash,Smash Bros. Ultimate,SSBU,#ef4444,#450a0a,false,pelea|nintendo,
+mlbb,Mobile Legends,MLBB,#0ea5e9,#082f49,false,moba|móvil,
+pubg,PUBG,PUBG,#d4a017,#3d2e05,false,battle royale|shooter,
+efootball,eFootball,EFB,#16a34a,#052e16,false,fútbol|deportes,
+nba2k,NBA 2K25,2K25,#2563eb,#1e1b4b,false,baloncesto|deportes,
+mk1,Mortal Kombat 1,MK1,#ca8a04,#1c1402,false,pelea|consola,
+halo,Halo Infinite,HALO,#22c55e,#052e1a,false,shooter|consola,
+minecraft,Minecraft,MC,#65a30d,#1a2e05,false,construcción|creativo,

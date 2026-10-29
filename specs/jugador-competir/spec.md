@@ -99,7 +99,7 @@ Caso: Johitan, inscrito en la Copa Relámpago Bogotá.
 
 ### D. Jugar
 
-14. Tras el check-in, el bracket se publica (según el anuncio, a las 6:45 pm) y el jugador juega su partido (flujo «eliminacion-directa-bracket» y las otras modalidades).
+14. Tras el check-in, el bracket se publica (según el anuncio, a las 6:45 pm) y el jugador juega su partido (flujo «1v1-bracket» y las otras modalidades).
 
 ### E. Ver el resultado final
 
@@ -150,7 +150,7 @@ Caso: Johitan, inscrito en la Copa Relámpago Bogotá.
 
 - **Check-in hecho:** el jugador queda listo para el bracket, que se publica a la hora que indica el organizador (en el ejemplo, a las 6:45 pm). Qué pasa con quien no hace el check-in del torneo no está definido (ver Preguntas abiertas).
 - **Check-in por partido:** al acercarse cada partido, si un jugador no hace su check-in dentro de la tolerancia, el organizador resuelve el partido con una victoria por W.O. (flujo «incidencias-de-partido»).
-- **Bracket y partidos:** el bracket, reportar el resultado y las disputas están en «eliminacion-directa-bracket», «battle-royale-bracket», «bracket-por-puntos» e «incidencias-de-partido».
+- **Bracket y partidos:** el bracket, reportar el resultado y las disputas están en «1v1-bracket», «battle-royale-bracket», «bracket-por-puntos» e «incidencias-de-partido».
 - **Chat:** el chat se usa durante todo el torneo. El organizador fija anuncios y responde a los jugadores.
 - **Cancelar la inscripción:** se hace desde la Sala, antes del check-in y hasta 1 h antes (decidido en la spec de inscripción). El cupo se libera para la lista de espera.
 - **Cierre del torneo:** al publicar el organizador los resultados (O15), el historial y los rankings se actualizan, y los tres primeros reciben el Resultado final (F1). El resto de jugadores ve su resultado en su historial.
@@ -208,7 +208,7 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 Esta spec no cubre lo siguiente, que tiene su propia spec:
 
 - **Inscribirse** (J06 a J12), en «jugador-descubrir-e-inscribirse». Ahí también está la regla de cancelar la inscripción.
-- **El bracket y los partidos** (J16, J16b, J17, O12, O13, O15), en «eliminacion-directa-bracket», «battle-royale-bracket» y «bracket-por-puntos».
+- **El bracket y los partidos** (J16, J16b, J17, O12, O13, O15), en «1v1-bracket», «battle-royale-bracket» y «bracket-por-puntos».
 - **Disputas y W.O.** (D1, D2, W1, W2, W3), en «incidencias-de-partido».
 - **Check-in en vivo del organizador** (O11) y **chat del organizador** (O14), en «organizador-gestion-del-torneo».
 - **Estados vacíos de Mis torneos** (J24), en «estado-vacio-sin-torneos».

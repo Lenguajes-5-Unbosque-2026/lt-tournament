@@ -191,7 +191,7 @@ Caso: Johitan revisa su progreso y ajusta su cuenta.
 
 ## Qué pasa después
 
-- **Después de cada torneo:** al cerrar el torneo, los puntos de ranking se suman al perfil, el torneo entra en el historial y el nivel se actualiza (flujos «eliminacion-directa-bracket», «battle-royale-bracket» y «bracket-por-puntos»). Los tres primeros reciben además el Resultado final (F1).
+- **Después de cada torneo:** al cerrar el torneo, los puntos de ranking se suman al perfil, el torneo entra en el historial y el nivel se actualiza (flujos «1v1-bracket», «battle-royale-bracket» y «bracket-por-puntos»). Los tres primeros reciben además el Resultado final (F1).
 - **Nivel:** el nivel sale de los puntos totales acumulados, con umbrales por nivel (los umbrales no están definidos).
 - **Ranking de amigos:** el jugador ve a sus amigos ordenados por puntos totales.
 - **Retar:** cuando un amigo reta al jugador, le llega una notificación. Aceptar, jugar y reportar el reto no tiene pantallas.

@@ -165,7 +165,7 @@ Caso: Copa Relámpago Bogotá, Octavos, Partido 1: Johitan contra NovaK.
 
 ## Qué pasa después
 
-- **Disputa resuelta:** el ganador elegido por el organizador avanza a la siguiente ronda. La prueba oficial aparece en el bracket con «Ver prueba» (flujo «eliminacion-directa-bracket», J16 y O12). El partido ya cuenta como resultado registrado, y «Avanzar de ronda» se habilita cuando todos los resultados están.
+- **Disputa resuelta:** el ganador elegido por el organizador avanza a la siguiente ronda. La prueba oficial aparece en el bracket con «Ver prueba» (flujo «1v1-bracket», J16 y O12). El partido ya cuenta como resultado registrado, y «Avanzar de ronda» se habilita cuando todos los resultados están.
 - **Notificaciones:** el primer jugador en reportar recibe un aviso cuando el segundo reporta, y los dos reciben un aviso cuando el organizador decide. Las notificaciones son del flujo «jugador-progreso-y-cuenta» (J22).
 - **Nueva captura:** si el organizador pide una nueva captura, los dos jugadores reciben el aviso y pueden corregir su reporte dentro del tiempo límite. Si no responden, el organizador decide sin más evidencia.
 - **W.O.:** el ganador pasa a la siguiente ronda sin jugar (por ejemplo, a Cuartos), con la hora de su siguiente partido. El perdedor queda fuera del torneo.
@@ -231,9 +231,9 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 
 Esta spec no cubre lo siguiente, que tiene su propia spec:
 
-- **Reportar el resultado cuando los reportes coinciden** (J17, O13), en «eliminacion-directa-bracket».
+- **Reportar el resultado cuando los reportes coinciden** (J17, O13), en «1v1-bracket».
 - **Check-in** (J14, O11), en «jugador-competir» y «organizador-gestion-del-torneo».
-- **El bracket** (J16, O12) y su cierre (O15), en «eliminacion-directa-bracket».
+- **El bracket** (J16, O12) y su cierre (O15), en «1v1-bracket».
 - **Chat del torneo** (J15, O14).
 - **Notificaciones** (J22) y **perfil e historial** (J18, J19), en «jugador-progreso-y-cuenta».
 - **Explorar torneos** (J07), destino de «Ver otros torneos».

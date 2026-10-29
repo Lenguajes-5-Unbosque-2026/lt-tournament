@@ -182,7 +182,7 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 
 Esta spec no cubre lo siguiente, que tiene su propia spec:
 
-- **Cerrar el torneo y publicar los resultados** (O15 y los cierres de las otras modalidades), que habilita las estadísticas, en «eliminacion-directa-bracket», «battle-royale-bracket» y «bracket-por-puntos».
+- **Cerrar el torneo y publicar los resultados** (O15 y los cierres de las otras modalidades), que habilita las estadísticas, en «1v1-bracket», «battle-royale-bracket» y «bracket-por-puntos».
 - **Gestionar el torneo** (O07 a O14), de donde sale el menú que lleva a cancelar, en «organizador-gestion-del-torneo».
 - **Crear el torneo** (O01 a O06), destino de editar un borrador, en «organizador-panel-y-creacion».
 - **Panel del organizador** (O01) y **Ajustes y modo** (J23), en «organizador-panel-y-creacion» y «jugador-progreso-y-cuenta».

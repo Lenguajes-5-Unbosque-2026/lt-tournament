@@ -221,7 +221,7 @@ Esta spec no cubre lo siguiente, que tiene su propia spec:
 
 - **Acceso y registro** (J00 a J05): crear cuenta, ingresar, recuperar acceso y elegir juegos en el onboarding (J02).
 - **jugador-competir** (J13, J14, J15, F1): Mis torneos, la sala del torneo con el check-in y la cancelación de la inscripción, el chat y el resultado final. Aquí solo se describe a dónde se llega desde J11.
-- **eliminacion-directa-bracket** (J16, J16b, J17) y las otras modalidades (Battle royale y bracket-por-puntos): el bracket, el reporte de resultados y las pruebas.
+- **1v1-bracket** (J16, J16b, J17) y las otras modalidades (Battle royale y bracket-por-puntos): el bracket, el reporte de resultados y las pruebas.
 - **jugador-progreso-y-cuenta** (J18 a J23): perfil, historial, rankings, notificaciones y ajustes. La campana de Inicio lleva a Notificaciones (J22).
 - **Estado vacío sin torneos** (J24, V1, V3, V4, V5).
 - **Organizador:** crear y publicar el torneo, gestionarlo, cerrarlo y ver sus estadísticas y perfil.

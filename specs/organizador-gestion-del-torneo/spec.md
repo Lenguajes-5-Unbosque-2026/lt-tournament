@@ -124,7 +124,7 @@ Caso: StreamerNova gestiona la Copa Relámpago Bogotá.
 9. Se abre **Check-in en vivo (O11)**. Ve cuántos jugadores confirmaron (18/24), una barra de progreso, la hora de cierre y el aviso de que los jugadores sin check-in al cierre pierden su cupo, que pasa a la lista de espera.
 10. En la lista ve quién confirmó y a qué hora, y quién no. Junto a cada jugador sin confirmar toca **«Recordar»** para avisarle.
 11. Si un jugador no puede hacer su check-in, lo marca a mano desde O09 («Marcar check-in manual»).
-12. Cuando termina el check-in, toca **«Cerrar check-in y generar bracket»**. Los jugadores que no confirmaron pierden su cupo, que pasa a la lista de espera, y se genera el bracket (flujo «eliminacion-directa-bracket» y las otras modalidades).
+12. Cuando termina el check-in, toca **«Cerrar check-in y generar bracket»**. Los jugadores que no confirmaron pierden su cupo, que pasa a la lista de espera, y se genera el bracket (flujo «1v1-bracket» y las otras modalidades).
 
 ### D. Cubrir los cupos que se liberan
 
@@ -193,7 +193,7 @@ Caso: StreamerNova gestiona la Copa Relámpago Bogotá.
 ## Qué pasa después
 
 - **Abrir el check-in:** los jugadores reciben el aviso y pueden hacer su check-in en la Sala del torneo (flujo «jugador-competir», J14).
-- **Cerrar el check-in:** los jugadores sin check-in pierden su cupo, que pasa a la lista de espera, y el bracket se genera. El bracket y los resultados están en «eliminacion-directa-bracket», «battle-royale-bracket» y «bracket-por-puntos».
+- **Cerrar el check-in:** los jugadores sin check-in pierden su cupo, que pasa a la lista de espera, y el bracket se genera. El bracket y los resultados están en «1v1-bracket», «battle-royale-bracket» y «bracket-por-puntos».
 - **Lista de espera:** al liberarse un cupo (check-in no confirmado, mover a la lista, expulsión o cancelación), el primero de la lista recibe un aviso y un tiempo límite para confirmar. Si no confirma, pasa al siguiente.
 - **Expulsión:** el jugador recibe un aviso con el motivo, pierde su cupo y no puede volver a inscribirse en ese torneo. La acción no se puede deshacer.
 - **Anuncio:** queda fijado en el chat de los jugadores (J15) si se activó «Fijar en el chat», y los jugadores reciben una notificación push si se activó. Según los ajustes del jugador, los avisos del chat son «solo menciones y anuncios».
@@ -260,7 +260,7 @@ Datos que esta spec lee o escribe, como puente hacia Supabase. Los nombres son p
 Esta spec no cubre lo siguiente, que tiene su propia spec:
 
 - **Crear y publicar el torneo** (O01 a O06), en «organizador-panel-y-creacion».
-- **El bracket y los resultados** (O12, O13, O15, y las vistas de las otras modalidades), en «eliminacion-directa-bracket», «battle-royale-bracket» y «bracket-por-puntos».
+- **El bracket y los resultados** (O12, O13, O15, y las vistas de las otras modalidades), en «1v1-bracket», «battle-royale-bracket» y «bracket-por-puntos».
 - **Disputas y W.O.** (D2, W1), en «incidencias-de-partido».
 - **Estadísticas, perfil del organizador y cancelar el torneo** (O16, O17, O18), en «organizador-cierre-datos-y-perfil».
 - **Lo que ve el jugador:** Sala del torneo y chat (J14, J15), en «jugador-competir», y la inscripción, en «jugador-descubrir-e-inscribirse».
@@ -296,7 +296,7 @@ Esta spec no cubre lo siguiente, que tiene su propia spec:
     - «Mover a lista de espera»: ¿en qué posición queda?, ¿se puede deshacer?
     - «Expulsar»: ¿qué pasa con su historial y sus puntos?, ¿se puede expulsar con el torneo en curso?
 12. **Ver perfil competitivo.** No hay pantalla del perfil público de otro jugador.
-13. **Generar el bracket.** ¿Hay un mínimo de jugadores? ¿Cómo se ordenan los seeds (por orden de inscripción)? ¿Qué pasa si la cantidad de confirmados no es una potencia de 2? «Reordenar semillas» está sin definir en «eliminacion-directa-bracket».
+13. **Generar el bracket.** ¿Hay un mínimo de jugadores? ¿Cómo se ordenan los seeds (por orden de inscripción)? ¿Qué pasa si la cantidad de confirmados no es una potencia de 2? «Reordenar semillas» está sin definir en «1v1-bracket».
 14. **Recordar.** ¿Qué envía (una notificación push) y cuántas veces se puede usar sobre el mismo jugador?
 15. **Anuncios.**
     - ¿Un anuncio nuevo fijado reemplaza al anterior, o puede haber varios fijados?

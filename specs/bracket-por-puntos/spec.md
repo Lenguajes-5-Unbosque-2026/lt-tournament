@@ -260,7 +260,7 @@ Esta spec no cubre lo siguiente, que tiene su propia spec:
 - **Crear y configurar el torneo** (O01 a O06, O03c, PTS · O1b), en «organizador-panel-y-creacion».
 - **Inscribirse** (J06 a J12), en «jugador-descubrir-e-inscribirse».
 - **Check-in y chat** (J14, J15, O11, O14), en «jugador-competir» y «organizador-gestion-del-torneo».
-- **eliminacion-directa-bracket** y **battle-royale-bracket**, las otras modalidades, con sus propias carpetas.
+- **1v1-bracket** y **battle-royale-bracket**, las otras modalidades, con sus propias carpetas.
 - **incidencias-de-partido** (D1, D2, W1, W2, W3): disputas y W.O., con su propia spec.
 - **Ranking e historial** (J18 a J21) y **resultado final del jugador** (F1): se actualizan al cerrar, pero se describen en sus carpetas.
 - **Estadísticas del torneo** (O16), en «organizador-cierre-datos-y-perfil».

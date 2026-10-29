@@ -1,0 +1,6 @@
+id,torneo_id,nombre,tag,capitan_id,codigo_invitacion,creado_en
+eq_001,tor_002,Los Cóndores,CND,usr_001,CND-7K2Q,2026-10-24T20:00:00-05:00
+eq_002,tor_002,Parche Sur,PSR,usr_016,PSR-4M8T,2026-10-24T20:00:00-05:00
+eq_003,tor_005,Barón Andino,BRN,usr_006,BRN-2X9P,2026-11-01T15:00:00-05:00
+eq_004,tor_006,Turbo Chía,TRB,usr_022,TRB-8Q1L,2026-10-25T17:00:00-05:00
+eq_005,tor_006,Los Que Vuelan Sin Frenos y Sin Saber Aterrizar,LQV,usr_027,LQV-5H3D,2026-10-25T17:00:00-05:00

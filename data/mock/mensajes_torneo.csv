@@ -1,0 +1,17 @@
+id,torneo_id,autor_id,contenido,es_anuncio,fijado,creado_en
+msg_001,tor_001,usr_031,Check-in abierto hasta las 6:30 pm. El bracket se publica a las 6:45 pm.,true,true,2026-10-22T17:40:00-05:00
+msg_002,tor_001,usr_002,¿A qué hora arranca la ronda 1?,false,false,2026-10-22T18:12:00-05:00
+msg_003,tor_001,usr_031,7:00 pm en punto. Revisen su check-in,false,false,2026-10-22T18:13:00-05:00
+msg_004,tor_001,usr_001,"Listo, ya hice check-in. ¡Suerte a todos!",false,false,2026-10-22T18:14:00-05:00
+msg_005,tor_001,usr_003,GG desde ya,false,false,2026-10-22T18:15:00-05:00
+msg_006,tor_001,usr_007,"¿Se puede jugar con cualquier equipo o solo clubes? Pregunto porque la vez pasada en otro torneo hubo problema con eso y al final repitieron dos partidos por lo mismo, entonces mejor aclararlo desde ya para que nadie se quede por fuera ni toque repetir nada 🙏",false,false,2026-10-22T18:20:00-05:00
+msg_007,tor_001,usr_031,"Cualquier club, sin selecciones. Partidos de 6 min por tiempo.",false,false,2026-10-22T18:22:00-05:00
+msg_008,tor_001,usr_005,⚽🔥,false,false,2026-10-22T18:23:00-05:00
+msg_009,tor_007,usr_031,Ronda 3 hoy a las 7:00 pm. Reporten el marcador con captura.,true,true,2026-10-22T12:00:00-05:00
+msg_010,tor_007,usr_004,"Johitan, ¿jugamos a las 7 o un poquito más tarde?",false,false,2026-10-22T17:05:00-05:00
+msg_011,tor_007,usr_001,A las 7 de una 💪,false,false,2026-10-22T17:07:00-05:00
+msg_012,tor_007,usr_006,"NovaK yo reporté 2–1 a mi favor, revisa la captura",false,false,2026-10-22T19:33:00-05:00
+msg_013,tor_003,usr_031,Partida 3 en curso. Al terminar suban la captura de la tabla final.,true,true,2026-10-22T19:10:00-05:00
+msg_014,tor_003,usr_017,Me sacaron en el primer círculo 😭,false,false,2026-10-22T19:18:00-05:00
+msg_015,tor_002,usr_031,Equipos: completen sus 5 integrantes antes del check-in.,true,true,2026-10-21T10:00:00-05:00
+msg_016,tor_010,usr_001,"Check-in abierto. Faltan CaroGG... ¡ah no, ya entró! Falta Nubecita.",false,false,2026-10-22T19:41:00-05:00

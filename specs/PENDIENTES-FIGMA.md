@@ -19,7 +19,7 @@ Cambios de diseño que salen de la revisión del PR #3 y que no se pueden hacer 
 | F1 · Jugador · Tu resultado final | Cambiar el podio a +100, +97 y +94 y «+150 Pts de ranking» a «+97 Pts de ranking» (con N = 32). | 4 |
 | J09 · Detalle del torneo | En «Premios» quitar «Trofeo + 300 pts», «150 pts» y «80 pts», y mostrar los puntos que da la regla 100 × (N − puesto + 1) / N. | 4 |
 | J18 · Perfil competitivo y J19 · Historial | Recalcular los puntos de cada torneo con la regla (por ejemplo, un 1.º suma 100). | 4 |
-| UI kit (`design/ui kit`) | Quitar los puntos de 1.º, 2.º y 3.º por juego (§5.18 y §7), que contradicen la regla. | 4 |
+| UI kit (`design/ui kit.md`) | Quitar los puntos de 1.º, 2.º y 3.º por juego (§5.18 y §7), que contradicen la regla. | 4 |
 | J20 · Rankings | Eliminar la pantalla (Global y Por juego). El PNG ya se eliminó del repositorio. | 5 |
 | J21 · Rankings · Amigos | Quitar las pestañas Global y Por juego: Rankings queda solo con el ranking de amigos. | 5 |
 | V3 · Rankings · Sin posición | Rediseñar para el ranking entre amigos (sin pestañas Global y Por juego, sin chips de juego ni podio global). | 5 |

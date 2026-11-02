@@ -1,5 +1,5 @@
 import { diasHasta } from "./format";
-import type { Torneo } from "./types";
+import type { Formato, Torneo } from "./types";
 
 export type EtiquetaEstado = "abierto" | "en_curso" | "lleno" | "checkin";
 
@@ -64,4 +64,18 @@ export function aplicarFiltros(t: Torneo, f: Filtros, ahora: string) {
     if (dias < 0 || dias > limite) return false;
   }
   return true;
+}
+
+const FORMATOS: Record<Formato, string> = {
+  eliminacion_directa: "Eliminación directa",
+  doble_eliminacion: "Doble eliminación",
+  liga: "Liga",
+  rondas_suizas: "Rondas suizas",
+  partidas_acumuladas: "Partidas acumuladas",
+  clasificacion_lobbies: "Clasificación por lobbies",
+  record_puntos: "Récord de puntos",
+};
+
+export function nombreFormato(formato: Formato) {
+  return FORMATOS[formato];
 }

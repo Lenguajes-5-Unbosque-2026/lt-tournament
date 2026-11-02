@@ -4,11 +4,15 @@ import { join } from "node:path";
 import { AHORA } from "./ahora";
 import { parseCsv } from "./csv";
 import type {
+  EstadoInscripcion,
   EstadoTorneo,
+  Formato,
+  InscripcionPropia,
   Jugador,
   Juego,
   Organizador,
   ProximoTorneo,
+  TorneoDetalle,
   Torneo,
 } from "./types";
 
@@ -137,4 +141,45 @@ export function getProximoTorneo(torneos: Torneo[]): ProximoTorneo | undefined {
     checkinAbierto:
       filaTorneo.checkin_obligatorio === "true" && faltanSegundos <= minutosAntes * 60,
   };
+}
+
+export function getTorneoDetalle(id: string): TorneoDetalle | undefined {
+  const torneo = todosLosTorneos().find((t) => t.id === id);
+  if (!torneo) return undefined;
+  const fila = leer("torneos").find((r) => r.id === id)!;
+
+  return {
+    ...torneo,
+    formato: fila.formato as Formato,
+    cierreInscripciones: fila.cierre_inscripciones,
+    premio: fila.premio,
+    puntos: [Number(fila.puntos_1), Number(fila.puntos_2), Number(fila.puntos_3)],
+    reglas: fila.reglas ? fila.reglas.split("|") : [],
+    torneosDelOrganizador: leer("torneos").filter(
+      (r) => r.organizador_id === fila.organizador_id,
+    ).length,
+    enEspera: leer("inscripciones").filter(
+      (i) => i.torneo_id === id && i.estado === "espera",
+    ).length,
+  };
+}
+
+/** Inscripción del jugador actual en el torneo, o `undefined` si no tiene (o la canceló). */
+export function getInscripcionPropia(torneoId: string): InscripcionPropia | undefined {
+  const fila = leer("inscripciones").find(
+    (i) => i.torneo_id === torneoId && i.jugador_id === JUGADOR_ACTUAL_ID,
+  );
+  if (!fila || fila.estado === "cancelada") return undefined;
+  return {
+    estado: fila.estado as EstadoInscripcion,
+    seed: fila.seed ? Number(fila.seed) : null,
+    posicionEspera: fila.posicion_espera ? Number(fila.posicion_espera) : null,
+  };
+}
+
+/** Otros torneos del mismo juego (enlace «Ver torneos similares» de J12). */
+export function getTorneosSimilares(torneo: Torneo): Torneo[] {
+  return getTorneosVisibles().filter(
+    (t) => t.id !== torneo.id && t.juego.id === torneo.juego.id,
+  );
 }

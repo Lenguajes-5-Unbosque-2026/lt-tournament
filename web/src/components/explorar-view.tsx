@@ -29,15 +29,21 @@ export function ExplorarView({
   torneos,
   juegos,
   ahora,
+  juegosIniciales = [],
 }: {
   /** Ya vienen ordenados del más próximo al más lejano. */
   torneos: Torneo[];
   /** Chips de juego de J07 y opciones del filtro «Juego» de J08. */
   juegos: { id: string; nombre: string }[];
   ahora: string;
+  /** Juegos preseleccionados al abrir (por ejemplo desde J12). */
+  juegosIniciales?: string[];
 }) {
   const [busqueda, setBusqueda] = useState("");
-  const [filtros, setFiltros] = useState<Filtros>(SIN_FILTROS);
+  const [filtros, setFiltros] = useState<Filtros>({
+    ...SIN_FILTROS,
+    juegos: juegosIniciales,
+  });
   const [orden, setOrden] = useState<Orden>("proximos");
   const [filtrosAbiertos, setFiltrosAbiertos] = useState(false);
 

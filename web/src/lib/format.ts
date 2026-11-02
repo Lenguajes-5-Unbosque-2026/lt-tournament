@@ -31,9 +31,9 @@ export function formatFechaHora(iso: string, ahora: string) {
   return `${formatDia(iso, ahora)} · ${formatHora(iso)}`;
 }
 
-/** «Sáb 4 Oct», o «Hoy». */
-export function formatDia(iso: string, ahora: string) {
-  if (claveDia(iso) === claveDia(ahora)) return "Hoy";
+/** «Sáb 4 Oct»; con , «Hoy» si es el mismo día. */
+export function formatDia(iso: string, ahora?: string) {
+  if (ahora && claveDia(iso) === claveDia(ahora)) return "Hoy";
   const p = partes(iso);
   return `${DIAS[p.diaSemana]} ${p.dia} ${MESES[p.mes]}`;
 }
@@ -54,4 +54,19 @@ export function formatCuentaAtras(segundos: number) {
 /** 1240 → «1.240» */
 export function formatPuntos(n: number) {
   return new Intl.NumberFormat("es-CO").format(n);
+}
+
+/** «Sáb» */
+export function formatDiaSemana(iso: string) {
+  return DIAS[partes(iso).diaSemana];
+}
+
+/** «Sáb 4» */
+export function formatDiaCorto(iso: string) {
+  return `${formatDiaSemana(iso)} ${partes(iso).dia}`;
+}
+
+/** Fecha y hora en formato iCalendar/Google Calendar: 20261024T190000Z. */
+export function formatFechaUtc(iso: string) {
+  return new Date(iso).toISOString().replace(/[-:]|\.\d{3}/g, "");
 }

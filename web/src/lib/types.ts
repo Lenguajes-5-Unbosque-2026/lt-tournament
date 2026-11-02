@@ -56,3 +56,35 @@ export type ProximoTorneo = {
   faltanSegundos: number;
   checkinAbierto: boolean;
 };
+
+export type Formato =
+  | "eliminacion_directa"
+  | "doble_eliminacion"
+  | "liga"
+  | "rondas_suizas"
+  | "partidas_acumuladas"
+  | "clasificacion_lobbies"
+  | "record_puntos";
+
+/** Un torneo con todo lo que muestra el Detalle (J09 y J12). */
+export type TorneoDetalle = Torneo & {
+  formato: Formato;
+  cierreInscripciones: string;
+  /** Texto del premio del 1.er puesto («Trofeo + 300 pts»); vacío si no hay. */
+  premio: string;
+  puntos: [number, number, number];
+  reglas: string[];
+  /** Torneos que ha organizado el organizador (incluye este). */
+  torneosDelOrganizador: number;
+  /** Jugadores en lista de espera. */
+  enEspera: number;
+};
+
+export type EstadoInscripcion = "confirmada" | "pendiente" | "espera" | "cancelada";
+
+/** Inscripción del jugador actual en un torneo. */
+export type InscripcionPropia = {
+  estado: EstadoInscripcion;
+  seed: number | null;
+  posicionEspera: number | null;
+};

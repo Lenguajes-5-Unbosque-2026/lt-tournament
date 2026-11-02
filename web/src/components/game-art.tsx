@@ -11,6 +11,7 @@ export function GameArt({
   color2,
   abreviatura,
   className,
+  rounded = "rounded-md",
   sizes = "64px",
 }: {
   src?: string;
@@ -18,12 +19,14 @@ export function GameArt({
   color2: string;
   abreviatura: string;
   className?: string;
+  /** Clase de radio; la tarjeta usa md y la portada del detalle lg. */
+  rounded?: string;
   sizes?: string;
 }) {
   return (
     <div
       aria-hidden
-      className={cn("relative shrink-0 overflow-hidden rounded-md", className)}
+      className={cn("relative shrink-0 overflow-hidden", rounded, className)}
       style={{ backgroundImage: `linear-gradient(140deg, ${color1}, ${color2})` }}
     >
       {src ? (

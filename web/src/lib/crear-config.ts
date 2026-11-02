@@ -205,3 +205,35 @@ export const BORRADOR_INICIAL: Borrador = {
     premios: "",
   },
 };
+
+/** Juegos del selector del paso 1 y de la vista previa del paso 4. */
+export const JUEGOS_SELECTOR = ["fc25", "valorant", "cs2", "lol", "fortnite", "rocket"];
+
+const TODOS_LOS_FORMATOS = [
+  ...FORMATOS_UNO_VS_UNO,
+  ...FORMATOS_BATTLE_ROYALE,
+  ...FORMATOS_POR_PUNTOS,
+];
+
+export function nombreFormatoBorrador(formato: string) {
+  return TODOS_LOS_FORMATOS.find((f) => f.value === formato)?.titulo ?? formato;
+}
+
+/** Cupos, jugadores o participantes del torneo, según su tipo. */
+export function cuposDelBorrador(b: Borrador) {
+  if (b.tipo === "battle_royale") return b.battleRoyale.jugadores;
+  if (b.tipo === "por_puntos") return b.porPuntos.participantes;
+  return b.unoVsUno.cupos;
+}
+
+export function minutosDelBorrador(b: Borrador) {
+  if (b.tipo === "battle_royale") return b.battleRoyale.minutos;
+  if (b.tipo === "por_puntos") return b.porPuntos.minutos;
+  return b.unoVsUno.minutos;
+}
+
+/** Instante de inicio (ISO, hora de Bogotá), o `null` si falta fecha u hora. */
+export function inicioDelBorrador(b: Borrador) {
+  const { fecha, hora } = b.fechaReglas;
+  return fecha && hora ? `${fecha}T${hora}:00-05:00` : null;
+}

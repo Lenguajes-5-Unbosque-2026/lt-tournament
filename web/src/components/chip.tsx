@@ -4,7 +4,7 @@ import { Toggle } from "@base-ui/react/toggle";
 import { ToggleGroup } from "@base-ui/react/toggle-group";
 import { cn } from "@/lib/utils";
 
-export type ChipOption = { value: string; label: string };
+export type ChipOption = { value: string; label: string; disabled?: boolean };
 
 /**
  * Chips de filtro (.chip, design/ui kit.md §5.4). Con `multiple` se
@@ -38,7 +38,8 @@ export function ChipGroup({
         <Toggle
           key={o.value}
           value={o.value}
-          className="h-9 rounded-full border border-line bg-surface-2 px-4 text-label text-ink-2 transition-colors duration-(--dur-fast) ease-out outline-none focus-visible:ring-2 focus-visible:ring-ring data-pressed:border-primary data-pressed:bg-primary data-pressed:font-semibold data-pressed:text-on-primary"
+          disabled={o.disabled}
+          className="h-9 rounded-full border border-line bg-surface-2 px-4 text-label text-ink-2 transition-colors duration-(--dur-fast) ease-out outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:text-disabled-text data-pressed:border-primary data-pressed:bg-primary data-pressed:font-semibold data-pressed:text-on-primary"
         >
           {o.label}
         </Toggle>

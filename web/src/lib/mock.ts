@@ -10,6 +10,8 @@ import type {
   InscripcionPropia,
   Jugador,
   Juego,
+  OrganizadorActual,
+  ResumenPanel,
   Organizador,
   ProximoTorneo,
   TorneoDetalle,
@@ -182,4 +184,44 @@ export function getTorneosSimilares(torneo: Torneo): Torneo[] {
   return getTorneosVisibles().filter(
     (t) => t.id !== torneo.id && t.juego.id === torneo.juego.id,
   );
+}
+
+/** Organizador con la sesión iniciada en los datos de prueba: StreamerNova. */
+export const ORGANIZADOR_ACTUAL_ID = "usr_031";
+
+export function getOrganizadorActual(): OrganizadorActual {
+  const r = leer("perfiles_organizador").find((o) => o.id === ORGANIZADOR_ACTUAL_ID)!;
+  return {
+    id: r.id,
+    alias: r.alias,
+    verificado: r.verificado === "true",
+    imagen: r.imagen,
+    nivel: Number(r.nivel),
+    color1: r.color_1,
+    color2: r.color_2,
+  };
+}
+
+/** Torneos del organizador actual, con borradores, del más próximo al más lejano. */
+export function getTorneosDelOrganizador(): Torneo[] {
+  return todosLosTorneos()
+    .filter((t) => t.organizador.id === ORGANIZADOR_ACTUAL_ID)
+    .sort((a, b) => a.fechaInicio.localeCompare(b.fechaInicio));
+}
+
+const EN_CURSO: EstadoTorneo[] = ["en_curso", "checkin"];
+
+export function getResumenPanel(torneos: Torneo[]): ResumenPanel {
+  const activos = torneos.filter((t) => t.estado === "abierto" || EN_CURSO.includes(t.estado));
+  return {
+    enCurso: torneos.filter((t) => EN_CURSO.includes(t.estado)).length,
+    inscritos: activos.reduce((suma, t) => suma + t.inscritos, 0),
+    finalizados: torneos.filter((t) => t.estado === "finalizado").length,
+  };
+}
+
+/** Juegos del selector del paso 1 (O02), en el orden dado. */
+export function getJuegos(ids: string[]): Juego[] {
+  const catalogo = juegos();
+  return ids.flatMap((id) => (catalogo.has(id) ? [catalogo.get(id)!] : []));
 }

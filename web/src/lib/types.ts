@@ -88,3 +88,17 @@ export type InscripcionPropia = {
   seed: number | null;
   posicionEspera: number | null;
 };
+
+/** Organizador con la sesión iniciada (modo Organizador). */
+export type OrganizadorActual = Organizador & {
+  nivel: number;
+  color1: string;
+  color2: string;
+};
+
+/** Cifras de la parte alta del Panel (O01). */
+export type ResumenPanel = {
+  enCurso: number;
+  inscritos: number;
+  finalizados: number;
+};

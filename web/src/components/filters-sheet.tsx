@@ -9,7 +9,7 @@ import {
   DrawerContent,
   DrawerTitle,
 } from "@/components/ui/drawer";
-import { Switch } from "@/components/ui/switch";
+import { SwitchRow } from "@/components/switch-row";
 import {
   SIN_FILTROS,
   type FiltroFecha,
@@ -131,27 +131,5 @@ function Section({ titulo, children }: { titulo: string; children: React.ReactNo
       <h3 className="mb-3 text-overline text-ink-3 uppercase">{titulo}</h3>
       {children}
     </section>
-  );
-}
-
-function SwitchRow({
-  titulo,
-  descripcion,
-  checked,
-  onCheckedChange,
-}: {
-  titulo: string;
-  descripcion: string;
-  checked: boolean;
-  onCheckedChange: (checked: boolean) => void;
-}) {
-  return (
-    <label className="flex items-center justify-between gap-3 rounded-md border border-line bg-surface px-4 py-3.5">
-      <span>
-        <span className="block text-strong text-ink">{titulo}</span>
-        <span className="block text-caption text-ink-3">{descripcion}</span>
-      </span>
-      <Switch checked={checked} onCheckedChange={onCheckedChange} aria-label={titulo} />
-    </label>
   );
 }

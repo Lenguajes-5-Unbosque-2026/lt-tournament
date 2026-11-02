@@ -1,7 +1,7 @@
 import { diasHasta } from "./format";
 import type { Formato, Torneo } from "./types";
 
-export type EtiquetaEstado = "abierto" | "en_curso" | "lleno" | "checkin";
+export type EtiquetaEstado = "abierto" | "en_curso" | "lleno" | "checkin" | "borrador";
 
 /** «Lleno» no es un estado guardado: se muestra cuando inscritos = cupos. */
 export function estaLleno(t: Torneo) {
@@ -12,6 +12,7 @@ export function estaLleno(t: Torneo) {
 export function etiquetaEstado(t: Torneo): EtiquetaEstado {
   if (t.estado === "en_curso") return "en_curso";
   if (t.estado === "checkin") return "checkin";
+  if (t.estado === "borrador") return "borrador";
   return estaLleno(t) ? "lleno" : "abierto";
 }
 

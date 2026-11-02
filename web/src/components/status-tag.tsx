@@ -3,12 +3,13 @@ import type { EtiquetaEstado } from "@/lib/torneo";
 
 const ETIQUETAS: Record<
   EtiquetaEstado,
-  { texto: string; variant: "success" | "accent" | "info" }
+  { texto: string; variant: "success" | "accent" | "info" | "warning" }
 > = {
   abierto: { texto: "Abierto", variant: "success" },
   en_curso: { texto: "En curso", variant: "accent" },
   lleno: { texto: "Lleno", variant: "info" },
   checkin: { texto: "Check-in", variant: "info" },
+  borrador: { texto: "Borrador", variant: "warning" },
 };
 
 /** Etiqueta de estado del torneo (design/ui kit.md §6). */

@@ -225,3 +225,11 @@ export function getJuegos(ids: string[]): Juego[] {
   const catalogo = juegos();
   return ids.flatMap((id) => (catalogo.has(id) ? [catalogo.get(id)!] : []));
 }
+
+/** IDs públicos ya tomados (jugadores y organizadores), en minúsculas: el ID es único. */
+export function getIdsOcupados(): string[] {
+  return [
+    ...leer("perfiles_jugador").map((r) => r.nombre_usuario),
+    ...leer("perfiles_organizador").map((r) => r.alias),
+  ].map((id) => id.toLowerCase());
+}

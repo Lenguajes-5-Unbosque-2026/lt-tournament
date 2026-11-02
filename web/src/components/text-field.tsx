@@ -13,10 +13,20 @@ type Comun = {
   placeholder?: string;
   /** Texto bajo el campo. Si es `null` se muestra el contador «n/60 caracteres». */
   ayuda?: string | null;
+  /** Mensaje de error concreto: pinta el campo y la ayuda en danger. */
+  error?: string;
+  type?: "text" | "email";
+  autoComplete?: string;
 };
 
 const CAJA =
-  "mt-2 flex gap-3 rounded-md border border-line bg-surface px-4 transition-colors duration-(--dur-fast) ease-out focus-within:border-primary focus-within:ring-1 focus-within:ring-primary";
+  "mt-2 flex gap-3 rounded-md border bg-surface px-4 transition-colors duration-(--dur-fast) ease-out focus-within:ring-1";
+
+function colorCaja(error?: string) {
+  return error
+    ? "border-danger ring-danger"
+    : "border-line focus-within:border-primary focus-within:ring-primary";
+}
 
 /** Campo de texto (.field, design/ui kit.md §5.7): label, ícono, ayuda o contador. */
 export function TextField({ icon: Icon, ...props }: Comun) {
@@ -26,11 +36,13 @@ export function TextField({ icon: Icon, ...props }: Comun) {
       <label htmlFor={id} className="text-label text-ink-2">
         {props.label}
       </label>
-      <div className={cn(CAJA, "min-h-13 items-center")}>
+      <div className={cn(CAJA, colorCaja(props.error), "min-h-13 items-center")}>
         <Icon className="size-icon-btn shrink-0 text-ink-3" aria-hidden />
         <input
           id={id}
-          type="text"
+          type={props.type ?? "text"}
+          autoComplete={props.autoComplete}
+          aria-invalid={props.error ? true : undefined}
           value={props.value}
           maxLength={props.maxLength}
           placeholder={props.placeholder}
@@ -51,7 +63,7 @@ export function TextAreaField({ icon: Icon, ...props }: Comun) {
       <label htmlFor={id} className="text-label text-ink-2">
         {props.label}
       </label>
-      <div className={cn(CAJA, "min-h-24 items-start py-3")}>
+      <div className={cn(CAJA, colorCaja(props.error), "min-h-24 items-start py-3")}>
         <Icon className="mt-0.5 size-icon-btn shrink-0 text-ink-3" aria-hidden />
         <textarea
           id={id}
@@ -68,7 +80,12 @@ export function TextAreaField({ icon: Icon, ...props }: Comun) {
   );
 }
 
-function Ayuda({ ayuda, value, maxLength }: Pick<Comun, "ayuda" | "value" | "maxLength">) {
-  const texto = ayuda ?? `${value.length}/${maxLength} caracteres`;
-  return <p className="mt-2 text-caption text-ink-3">{texto}</p>;
+function Ayuda({
+  ayuda,
+  error,
+  value,
+  maxLength,
+}: Pick<Comun, "ayuda" | "error" | "value" | "maxLength">) {
+  const texto = error ?? ayuda ?? `${value.length}/${maxLength} caracteres`;
+  return <p className={cn("mt-2 text-caption", error ? "text-danger" : "text-ink-3")}>{texto}</p>;
 }

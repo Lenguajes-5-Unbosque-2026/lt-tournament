@@ -1,0 +1,140 @@
+import "server-only";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import { AHORA } from "./ahora";
+import { parseCsv } from "./csv";
+import type {
+  EstadoTorneo,
+  Jugador,
+  Juego,
+  Organizador,
+  ProximoTorneo,
+  Torneo,
+} from "./types";
+
+/**
+ * Datos de prueba (data/mock → `npm run sync-mock`). Hasta conectar
+ * Supabase (sesión 5) las pantallas leen de aquí.
+ */
+
+/** Jugador con la sesión iniciada en los datos de prueba: Johitan. */
+export const JUGADOR_ACTUAL_ID = "usr_001";
+
+/** Torneos que se muestran en Inicio y Explorar. */
+const ESTADOS_VISIBLES: EstadoTorneo[] = ["abierto", "checkin", "en_curso"];
+
+function leer(archivo: string) {
+  const ruta = join(process.cwd(), "src", "data", "mock", `${archivo}.csv`);
+  return parseCsv(readFileSync(ruta, "utf8"));
+}
+
+function juegos(): Map<string, Juego> {
+  return new Map(
+    leer("juegos").map((r) => [
+      r.id,
+      {
+        id: r.id,
+        nombre: r.nombre,
+        color1: r.color_1,
+        color2: r.color_2,
+        abreviatura: r.abreviatura,
+        imagen: r.imagen,
+      },
+    ]),
+  );
+}
+
+function organizadores(): Map<string, Organizador> {
+  return new Map(
+    leer("perfiles_organizador").map((r) => [
+      r.id,
+      {
+        id: r.id,
+        alias: r.alias,
+        verificado: r.verificado === "true",
+        imagen: r.imagen,
+      },
+    ]),
+  );
+}
+
+function todosLosTorneos(): Torneo[] {
+  const catalogo = juegos();
+  const orgs = organizadores();
+
+  // «24/32»: confirmadas + pendientes (data/mock/README.md).
+  const inscritos = new Map<string, number>();
+  for (const i of leer("inscripciones")) {
+    if (i.estado !== "confirmada" && i.estado !== "pendiente") continue;
+    inscritos.set(i.torneo_id, (inscritos.get(i.torneo_id) ?? 0) + 1);
+  }
+
+  return leer("torneos").map((r) => ({
+    id: r.id,
+    nombre: r.nombre,
+    juego: catalogo.get(r.juego_id)!,
+    organizador: orgs.get(r.organizador_id)!,
+    imagen: r.imagen,
+    jugadoresPorEquipo: Number(r.jugadores_por_equipo),
+    cupos: Number(r.cupos),
+    inscritos: inscritos.get(r.id) ?? 0,
+    fechaInicio: r.fecha_inicio,
+    estado: r.estado as EstadoTorneo,
+    ciudad: r.ciudad,
+  }));
+}
+
+/** Torneos visibles para el jugador, del más próximo al más lejano. */
+export function getTorneosVisibles(): Torneo[] {
+  return todosLosTorneos()
+    .filter((t) => ESTADOS_VISIBLES.includes(t.estado))
+    .sort((a, b) => a.fechaInicio.localeCompare(b.fechaInicio));
+}
+
+export function getJugadorActual(): Jugador {
+  const perfil = leer("perfiles_jugador").find((r) => r.id === JUGADOR_ACTUAL_ID)!;
+  return {
+    id: perfil.id,
+    nombreUsuario: perfil.nombre_usuario,
+    nivel: Number(perfil.nivel),
+    puntosRanking: Number(perfil.puntos_ranking),
+    color1: perfil.color_1,
+    color2: perfil.color_2,
+    imagen: perfil.imagen,
+  };
+}
+
+/** Torneo destacado de Inicio: el abierto con más inscritos que aún tiene cupos. */
+export function getTorneoDestacado(torneos: Torneo[]): Torneo | undefined {
+  return torneos
+    .filter((t) => t.estado === "abierto" && t.inscritos < t.cupos)
+    .sort((a, b) => b.inscritos / b.cupos - a.inscritos / a.cupos)[0];
+}
+
+/**
+ * «Tu próximo torneo»: la inscripción confirmada del jugador con el
+ * inicio más cercano a `AHORA`.
+ */
+export function getProximoTorneo(torneos: Torneo[]): ProximoTorneo | undefined {
+  const propios = new Set(
+    leer("inscripciones")
+      .filter((i) => i.jugador_id === JUGADOR_ACTUAL_ID && i.estado === "confirmada")
+      .map((i) => i.torneo_id),
+  );
+  const ahora = new Date(AHORA).getTime();
+  const torneo = torneos
+    .filter((t) => propios.has(t.id) && new Date(t.fechaInicio).getTime() > ahora)
+    .sort((a, b) => a.fechaInicio.localeCompare(b.fechaInicio))[0];
+  if (!torneo) return undefined;
+
+  const filaTorneo = leer("torneos").find((r) => r.id === torneo.id)!;
+  const minutosAntes = Number(filaTorneo.checkin_minutos_antes || 0);
+  const faltanSegundos = (new Date(torneo.fechaInicio).getTime() - ahora) / 1000;
+
+  return {
+    torneo,
+    faltanSegundos,
+    checkinAbierto:
+      filaTorneo.checkin_obligatorio === "true" && faltanSegundos <= minutosAntes * 60,
+  };
+}

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Gamepad2, Mail, User } from "lucide-react";
+import { Gamepad2, Lock, Mail, User } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { OptionGroup } from "@/components/option-group";
 import { useRegistro, type PerfilCuenta } from "@/components/registro-provider";
@@ -26,6 +26,8 @@ const PERFILES = [
 ];
 
 const FORMATO_ID = /^[\p{L}\p{N}_.-]{3,20}$/u;
+// Mínimo 8 caracteres, con una letra y un número (J03).
+const FORMATO_CONTRASENA = /^(?=.*\p{L})(?=.*\d).{8,}$/u;
 const FORMATO_CORREO = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function errorDeId(id: string, ocupados: string[]) {
@@ -51,12 +53,18 @@ export function RegistroForm({ idsOcupados }: { idsOcupados: string[] }) {
     datos.correo.trim() !== "" && !FORMATO_CORREO.test(datos.correo.trim())
       ? "Escribe un correo válido, como nombre@gmail.com."
       : undefined;
+  const errorContrasena =
+    datos.contrasena !== "" && !FORMATO_CONTRASENA.test(datos.contrasena)
+      ? "Mínimo 8 caracteres, con una letra y un número."
+      : undefined;
   const completo =
     datos.nombre.trim() !== "" &&
     datos.idPublico.trim() !== "" &&
     !errorId &&
     datos.correo.trim() !== "" &&
     !errorCorreo &&
+    datos.contrasena !== "" &&
+    !errorContrasena &&
     datos.terminos;
 
   function crearCuenta() {
@@ -123,6 +131,17 @@ export function RegistroForm({ idsOcupados }: { idsOcupados: string[] }) {
           autoComplete="email"
           error={errorCorreo}
           ayuda="Con tu Gmail ingresas y recibes avisos de tus torneos."
+        />
+        <TextField
+          label="Contraseña"
+          icon={Lock}
+          type="password"
+          value={datos.contrasena}
+          onValueChange={(contrasena) => actualizar({ contrasena })}
+          maxLength={72}
+          autoComplete="new-password"
+          ayuda="Mínimo 8 caracteres, con una letra y un número."
+          error={errorContrasena}
         />
       </div>
 

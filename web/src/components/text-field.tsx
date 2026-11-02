@@ -1,7 +1,7 @@
 "use client";
 
-import { useId } from "react";
-import type { LucideIcon } from "lucide-react";
+import { useId, useState } from "react";
+import { Eye, EyeOff, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type Comun = {
@@ -15,7 +15,7 @@ type Comun = {
   ayuda?: string | null;
   /** Mensaje de error concreto: pinta el campo y la ayuda en danger. */
   error?: string;
-  type?: "text" | "email";
+  type?: "text" | "email" | "password";
   autoComplete?: string;
 };
 
@@ -31,6 +31,9 @@ function colorCaja(error?: string) {
 /** Campo de texto (.field, design/ui kit.md §5.7): label, ícono, ayuda o contador. */
 export function TextField({ icon: Icon, ...props }: Comun) {
   const id = useId();
+  // Contraseña: el ojo alterna entre texto oculto y visible (ui kit §5.7).
+  const [visible, setVisible] = useState(false);
+  const esContrasena = props.type === "password";
   return (
     <div>
       <label htmlFor={id} className="text-label text-ink-2">
@@ -40,7 +43,7 @@ export function TextField({ icon: Icon, ...props }: Comun) {
         <Icon className="size-icon-btn shrink-0 text-ink-3" aria-hidden />
         <input
           id={id}
-          type={props.type ?? "text"}
+          type={esContrasena && visible ? "text" : (props.type ?? "text")}
           autoComplete={props.autoComplete}
           aria-invalid={props.error ? true : undefined}
           value={props.value}
@@ -49,6 +52,17 @@ export function TextField({ icon: Icon, ...props }: Comun) {
           onChange={(e) => props.onValueChange(e.target.value)}
           className="min-w-0 flex-1 bg-transparent py-3 text-body text-ink outline-none placeholder:text-ink-3"
         />
+        {esContrasena && (
+          <button
+            type="button"
+            aria-label={visible ? "Ocultar contraseña" : "Mostrar contraseña"}
+            aria-pressed={visible}
+            onClick={() => setVisible((v) => !v)}
+            className="-mr-2 flex size-touch shrink-0 items-center justify-center rounded-sm text-ink-3 outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            {visible ? <EyeOff className="size-icon-btn" /> : <Eye className="size-icon-btn" />}
+          </button>
+        )}
       </div>
       <Ayuda {...props} />
     </div>

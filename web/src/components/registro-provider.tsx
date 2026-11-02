@@ -10,6 +10,7 @@ export type DatosRegistro = {
   /** ID público de jugador u organizador. */
   idPublico: string;
   correo: string;
+  contrasena: string;
   terminos: boolean;
   juegos: string[];
 };
@@ -19,6 +20,7 @@ const INICIAL: DatosRegistro = {
   nombre: "",
   idPublico: "",
   correo: "",
+  contrasena: "",
   terminos: false,
   juegos: [],
 };

@@ -13,7 +13,7 @@ export type TipoOpcion = {
 export const TIPOS: TipoOpcion[] = [
   { value: "uno_vs_uno", titulo: "1 vs 1", descripcion: "Duelo individual" },
   { value: "battle_royale", titulo: "Battle royale", descripcion: "Hasta 100 jugadores" },
-  { value: "por_puntos", titulo: "Por puntos", descripcion: "Liga, rondas o récord", pronto: true },
+  { value: "por_puntos", titulo: "Por puntos", descripcion: "Liga, rondas o récord" },
 ];
 
 export type FormatoOpcion = {
@@ -65,6 +65,25 @@ export const FORMATOS_BATTLE_ROYALE: FormatoOpcion[] = [
   },
 ];
 
+export const FORMATOS_POR_PUNTOS: FormatoOpcion[] = [
+  {
+    value: "liga",
+    titulo: "Liga",
+    descripcion: "Todos contra todos, gana quien sume más",
+    recomendado: true,
+  },
+  {
+    value: "rondas_suizas",
+    titulo: "Rondas suizas",
+    descripcion: "Emparejamientos entre puntajes similares",
+  },
+  {
+    value: "record_puntos",
+    titulo: "Récord de puntos",
+    descripcion: "Gana el mejor puntaje en sus intentos",
+  },
+];
+
 /** Atajos de cada campo numérico (chips); «Otro» abre la cantidad personalizada. */
 export const ATAJOS = {
   cupos: [8, 16, 32, 64],
@@ -72,6 +91,9 @@ export const ATAJOS = {
   jugadoresBr: [25, 50, 75, 100],
   partidasBr: [1, 3, 5, 6],
   minutosBr: [15, 20, 25, 30],
+  participantes: [8, 16, 32, 64],
+  rondas: [3, 5, 7, 10],
+  minutosPorPuntos: [10, 15, 20, 30],
 } as const;
 
 /**
@@ -82,6 +104,8 @@ export const ATAJOS = {
 export const RANGOS = {
   cuposUnoVsUno: { min: 2, max: 128 },
   jugadoresBr: { min: 2, max: 100 },
+  participantesPorPuntos: { min: 2, max: 128 },
+  rondas: { min: 1, max: 20 },
   partidasBr: { min: 1, max: 20 },
   minutos: { min: 5, max: 180 },
 } as const;
@@ -100,6 +124,9 @@ export function limitePorNivel(nivel: number) {
 export const MAX_NOMBRE = 60;
 export const MAX_DESCRIPCION = 280;
 
+/** Rango de los puntos por resultado (Victoria, Empate, Derrota); provisional. */
+export const RANGO_PUNTOS_RESULTADO = { min: 0, max: 99 } as const;
+
 export type Borrador = {
   portadaUrl: string | null;
   juegoId: string;
@@ -114,7 +141,35 @@ export type Borrador = {
     minutos: number;
     puntosPorEliminacion: boolean;
   };
+  porPuntos: {
+    formato: string;
+    participantes: number;
+    rondas: number;
+    minutos: number;
+    puntosVictoria: number;
+    puntosEmpate: number;
+    puntosDerrota: number;
+  };
+  /** Paso 3: fecha y reglas. Fecha, hora y cierre vacíos hasta que se eligen. */
+  fechaReglas: {
+    /** AAAA-MM-DD */
+    fecha: string;
+    /** HH:mm */
+    hora: string;
+    /** AAAA-MM-DDTHH:mm */
+    cierre: string;
+    checkinObligatorio: boolean;
+    capturaMarcador: boolean;
+    desconexion: boolean;
+    suplentes: boolean;
+    premios: string;
+  };
 };
+
+export const MAX_PREMIOS = 120;
+
+/** Minutos antes del inicio en que abre el check-in (fijo en el MVP). */
+export const CHECKIN_MINUTOS = 30;
 
 export const BORRADOR_INICIAL: Borrador = {
   portadaUrl: null,
@@ -129,5 +184,24 @@ export const BORRADOR_INICIAL: Borrador = {
     partidas: 3,
     minutos: 25,
     puntosPorEliminacion: true,
+  },
+  porPuntos: {
+    formato: "liga",
+    participantes: 16,
+    rondas: 5,
+    minutos: 20,
+    puntosVictoria: 3,
+    puntosEmpate: 1,
+    puntosDerrota: 0,
+  },
+  fechaReglas: {
+    fecha: "",
+    hora: "",
+    cierre: "",
+    checkinObligatorio: true,
+    capturaMarcador: true,
+    desconexion: true,
+    suplentes: false,
+    premios: "",
   },
 };

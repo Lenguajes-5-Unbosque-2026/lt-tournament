@@ -38,7 +38,7 @@ export function TypeCards({
             <Icon className="size-icon-btn text-ink-2 group-data-checked:text-primary" aria-hidden />
             <span className="text-strong text-ink">{t.titulo}</span>
             <span className="text-caption text-ink-3">
-              {t.pronto ? "Pronto" : t.descripcion}
+              {t.descripcion}
             </span>
           </Radio.Root>
         );

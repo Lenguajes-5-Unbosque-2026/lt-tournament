@@ -233,3 +233,11 @@ export function getIdsOcupados(): string[] {
     ...leer("perfiles_organizador").map((r) => r.alias),
   ].map((id) => id.toLowerCase());
 }
+
+/** Cuenta con ese correo (sin importar mayúsculas), o `undefined` si no existe. */
+export function getUsuarioPorCorreo(correo: string) {
+  const fila = leer("usuarios").find(
+    (u) => u.correo.toLowerCase() === correo.trim().toLowerCase(),
+  );
+  return fila && { id: fila.id, modo: fila.modo_actual as "jugador" | "organizador" };
+}

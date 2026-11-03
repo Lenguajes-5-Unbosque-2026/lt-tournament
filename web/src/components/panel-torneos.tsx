@@ -26,6 +26,18 @@ function pertenece(t: Torneo, pestana: Pestana) {
   return true;
 }
 
+/**
+ * Borrador: retoma el asistente. Battle royale en curso: su bracket (BR · O2).
+ * Lo demás: Resumen para gestionar (O07, todavía sin construir).
+ */
+function destino(t: Torneo) {
+  if (t.estado === "borrador") return "/org/crear";
+  if (t.estado === "en_curso" && t.tipoJuego === "battle_royale") {
+    return `/org/torneos/${t.id}/bracket`;
+  }
+  return `/org/torneos/${t.id}`;
+}
+
 /** «Mis torneos» del Panel (O01): segmento Todos · En curso · Borradores y la lista. */
 export function PanelTorneos({ torneos, ahora }: { torneos: Torneo[]; ahora: string }) {
   const [pestana, setPestana] = useState<Pestana>("todos");
@@ -54,12 +66,7 @@ export function PanelTorneos({ torneos, ahora }: { torneos: Torneo[]; ahora: str
       <ul className="mt-4 flex flex-col gap-3">
         {lista.map((t) => (
           <li key={t.id}>
-            {/* Borrador: retoma el asistente. Publicado: Resumen para gestionar (O07). */}
-            <TournamentCard
-              torneo={t}
-              ahora={ahora}
-              href={t.estado === "borrador" ? "/org/crear" : `/org/torneos/${t.id}`}
-            />
+            <TournamentCard torneo={t} ahora={ahora} href={destino(t)} />
           </li>
         ))}
       </ul>

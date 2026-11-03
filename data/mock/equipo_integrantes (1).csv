@@ -1,0 +1,13 @@
+id,jugador_id,amigo_id,estado,creado_en
+con_001,usr_001,usr_003,aceptado,2026-08-05T12:00:00-05:00
+con_002,usr_001,usr_009,aceptado,2026-08-09T12:00:00-05:00
+con_003,usr_001,usr_010,aceptado,2026-08-13T12:00:00-05:00
+con_004,usr_001,usr_002,aceptado,2026-08-17T12:00:00-05:00
+con_005,usr_004,usr_001,pendiente,2026-08-21T12:00:00-05:00
+con_006,usr_003,usr_005,aceptado,2026-08-25T12:00:00-05:00
+con_007,usr_007,usr_015,aceptado,2026-08-29T12:00:00-05:00
+con_008,usr_024,usr_027,aceptado,2026-09-02T12:00:00-05:00
+con_009,usr_024,usr_030,pendiente,2026-09-06T12:00:00-05:00
+con_010,usr_006,usr_012,aceptado,2026-09-10T12:00:00-05:00
+con_011,usr_016,usr_009,aceptado,2026-09-14T12:00:00-05:00
+con_012,usr_022,usr_013,aceptado,2026-09-18T12:00:00-05:00

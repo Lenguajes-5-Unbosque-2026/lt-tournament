@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Bell } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { buttonVariants } from "@/components/ui/button";
+import { srcImagen } from "@/lib/imagen";
 
 /**
  * Encabezado de saludo (design/ui kit.md §5.17): avatar con anillo que abre
@@ -31,7 +32,7 @@ export function ProfileHeader({
         className="rounded-full ring-2 ring-primary ring-offset-3 ring-offset-bg outline-none transition-transform duration-(--dur-fast) ease-out focus-visible:ring-4 active:scale-94"
       >
         <Avatar className="size-12">
-          <AvatarImage src={`/mock/${imagen}`} alt="" />
+          <AvatarImage src={srcImagen(imagen)} alt="" />
           <AvatarFallback
             style={{ backgroundImage: `linear-gradient(140deg, ${color1}, ${color2})` }}
           />

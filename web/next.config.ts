@@ -9,6 +9,16 @@ const nextConfig: NextConfig = {
     ];
   },
   partialPrefetching: true,
+  // Fotos del bucket público «imagenes» de Supabase Storage.
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "smwqhyjohxtbhiueyegk.supabase.co",
+        pathname: "/storage/v1/object/public/imagenes/**",
+      },
+    ],
+  },
   turbopack: {
     rules: {
       "*.css": {

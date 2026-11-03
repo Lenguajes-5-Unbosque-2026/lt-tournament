@@ -5,6 +5,7 @@ import { BadgeCheck } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import type { Organizador } from "@/lib/types";
+import { srcImagen } from "@/lib/imagen";
 
 /**
  * Tarjeta del creador del torneo: avatar, alias, verificado y «Seguir».
@@ -23,7 +24,7 @@ export function OrganizerCard({
   return (
     <div className="flex items-center gap-3 rounded-lg border border-line bg-surface p-3.5">
       <Avatar className="size-12 ring-2 ring-primary ring-offset-2 ring-offset-surface">
-        <AvatarImage src={`/mock/${organizador.imagen}`} alt="" />
+        <AvatarImage src={srcImagen(organizador.imagen)} alt="" />
         <AvatarFallback className="bg-surface-3" />
       </Avatar>
       <div className="min-w-0 flex-1">

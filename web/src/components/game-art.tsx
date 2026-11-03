@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { srcImagen } from "@/lib/imagen";
 
 /**
  * Arte de juego / portada (.art, design/ui kit.md §5.18): imagen si hay,
@@ -30,7 +31,7 @@ export function GameArt({
       style={{ backgroundImage: `linear-gradient(140deg, ${color1}, ${color2})` }}
     >
       {src ? (
-        <Image src={`/mock/${src}`} alt="" fill sizes={sizes} className="object-cover" />
+        <Image src={srcImagen(src)} alt="" fill sizes={sizes} className="object-cover" />
       ) : (
         <span className="absolute inset-0 flex items-center justify-center font-display text-display-m text-ink/92 italic">
           {abreviatura}

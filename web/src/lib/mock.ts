@@ -2,6 +2,7 @@ import "server-only";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { AHORA } from "./ahora";
+import type { EstadoPartida, ResultadoBR, TorneoBR } from "./battle-royale";
 import { parseCsv } from "./csv";
 import type {
   EstadoInscripcion,
@@ -12,6 +13,7 @@ import type {
   Juego,
   OrganizadorActual,
   ResumenPanel,
+  TipoJuego,
   Organizador,
   ProximoTorneo,
   TorneoDetalle,
@@ -81,6 +83,7 @@ function todosLosTorneos(): Torneo[] {
     juego: catalogo.get(r.juego_id)!,
     organizador: orgs.get(r.organizador_id)!,
     imagen: r.imagen,
+    tipoJuego: r.tipo_juego as TipoJuego,
     jugadoresPorEquipo: Number(r.jugadores_por_equipo),
     cupos: Number(r.cupos),
     inscritos: inscritos.get(r.id) ?? 0,
@@ -240,4 +243,70 @@ export function getUsuarioPorCorreo(correo: string) {
     (u) => u.correo.toLowerCase() === correo.trim().toLowerCase(),
   );
   return fila && { id: fila.id, modo: fila.modo_actual as "jugador" | "organizador" };
+}
+
+/**
+ * Torneo battle royale con sus jugadores, partidas y resultados (BR · J1 a
+ * BR · O4), o `undefined` si no existe o es de otro tipo de juego. Las
+ * partidas que aún no tienen fila en el CSV salen como «pendiente».
+ */
+export function getTorneoBR(id: string): TorneoBR | undefined {
+  const fila = leer("torneos").find((r) => r.id === id);
+  if (!fila || fila.tipo_juego !== "battle_royale") return undefined;
+
+  const perfiles = new Map(leer("perfiles_jugador").map((r) => [r.id, r]));
+  const jugadores = leer("inscripciones")
+    .filter((i) => i.torneo_id === id && i.estado === "confirmada")
+    .map((i) => {
+      const p = perfiles.get(i.jugador_id)!;
+      return {
+        id: p.id,
+        nombre: p.nombre_usuario,
+        imagen: p.imagen,
+        color1: p.color_1,
+        color2: p.color_2,
+      };
+    });
+
+  const guardadas = leer("partidas_battle_royale").filter((p) => p.torneo_id === id);
+  const total = Math.max(Number(fila.partidas_o_rondas) || 0, guardadas.length);
+  const partidas = Array.from({ length: total }, (_, i) => {
+    const p = guardadas.find((g) => Number(g.numero) === i + 1);
+    return {
+      id: p?.id ?? `${id}_partida_${i + 1}`,
+      numero: i + 1,
+      estado: (p?.estado ?? "pendiente") as EstadoPartida,
+      inicio: p?.inicio ?? "",
+      vivos: p?.jugadores_vivos ? Number(p.jugadores_vivos) : null,
+      ganadorId: p?.ganador_id || null,
+      prueba: p?.prueba_imagen || null,
+    };
+  });
+
+  const ids = new Set(partidas.map((p) => p.id));
+  const resultados = leer("resultados_battle_royale")
+    .filter((r) => ids.has(r.partida_br_id))
+    .map((r) => ({
+      partidaId: r.partida_br_id,
+      jugadorId: r.jugador_id,
+      puesto: Number(r.puesto),
+      kills: Number(r.kills),
+      puntos: Number(r.puntos),
+      estado: r.estado as ResultadoBR["estado"],
+      captura: r.captura_imagen || null,
+    }));
+
+  return {
+    id,
+    nombre: fila.nombre,
+    enlace: fila.enlace,
+    formato: fila.formato,
+    minutosPorPartida: Number(fila.minutos_por_partida),
+    // En battle royale la columna es un sí/no: 1 punto por kill.
+    puntosPorKill: fila.puntos_por_kill === "true" ? 1 : 0,
+    premios: [Number(fila.puntos_1), Number(fila.puntos_2), Number(fila.puntos_3)],
+    jugadores,
+    partidas,
+    resultados,
+  };
 }

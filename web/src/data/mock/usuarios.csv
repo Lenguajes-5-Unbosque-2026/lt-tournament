@@ -1,0 +1,37 @@
+id,nombre,correo,ciudad,modo_actual,creado_en
+usr_001,Johan Torres,johitan@ejemplo.co,Bogotá,jugador,2025-03-14T10:00:00-05:00
+usr_002,Nicolás Vargas,novak@ejemplo.co,Bogotá,jugador,2025-04-02T10:00:00-05:00
+usr_003,Sebastián Hoyos,sh4dow@ejemplo.co,Bogotá,jugador,2025-02-20T10:00:00-05:00
+usr_004,María Fernanda Ríos,mafe@ejemplo.co,Medellín,jugador,2025-05-11T10:00:00-05:00
+usr_005,Camilo Zerda,zerox@ejemplo.co,Bogotá,jugador,2025-01-30T10:00:00-05:00
+usr_006,Kevin Rodríguez,kairo@ejemplo.co,Cali,jugador,2025-06-08T10:00:00-05:00
+usr_007,Guadalupe Martínez,lupe@ejemplo.co,Bogotá,jugador,2025-03-27T10:00:00-05:00
+usr_008,Andrés Gómez,tito@ejemplo.co,Bogotá,jugador,2025-07-19T10:00:00-05:00
+usr_009,Valentina Cárdenas,vale@ejemplo.co,Bogotá,jugador,2025-08-03T10:00:00-05:00
+usr_010,Ricardo Ruiz,rex@ejemplo.co,Bucaramanga,jugador,2026-10-18T10:00:00-05:00
+usr_011,Felipe Arango,pipe09@ejemplo.co,Medellín,jugador,2025-09-12T10:00:00-05:00
+usr_012,Laura Montoya,lamonagg@ejemplo.co,Pereira,jugador,2025-10-01T10:00:00-05:00
+usr_013,Jorge Cuéllar,cucho@ejemplo.co,Neiva,jugador,2025-11-23T10:00:00-05:00
+usr_014,Daniel Restrepo,elparcero@ejemplo.co,Medellín,jugador,2025-02-14T10:00:00-05:00
+usr_015,Juan Esteban Mejía,juanes10@ejemplo.co,Bogotá,jugador,2025-05-30T10:00:00-05:00
+usr_016,Danna Lozano,dannaexe@ejemplo.co,Cali,jugador,2025-12-05T10:00:00-05:00
+usr_017,Mateo Peña,chiguiro@ejemplo.co,Villavicencio,jugador,2026-01-17T10:00:00-05:00
+usr_018,Santiago Pardo,santifc@ejemplo.co,Bogotá,jugador,2025-04-22T10:00:00-05:00
+usr_019,Brayan Guarín,xxguachexx@ejemplo.co,Soacha,jugador,2025-08-29T10:00:00-05:00
+usr_020,Natalia Ospina,tatan@ejemplo.co,Manizales,jugador,2026-02-09T10:00:00-05:00
+usr_021,Esteban Sierra,frailejon@ejemplo.co,Tunja,jugador,2026-03-15T10:00:00-05:00
+usr_022,Andrés Neira,neobog@ejemplo.co,Bogotá,jugador,2025-10-28T10:00:00-05:00
+usr_023,Samuel Pérez,arepakid@ejemplo.co,Barranquilla,jugador,2026-04-01T10:00:00-05:00
+usr_024,Carolina Bernal,carogg@ejemplo.co,Bogotá,jugador,2025-06-16T10:00:00-05:00
+usr_025,Luis Manrique,manito@ejemplo.co,Cartagena,jugador,2026-05-20T10:00:00-05:00
+usr_026,Brayan Castillo,brayangoat@ejemplo.co,Bogotá,jugador,2025-09-02T10:00:00-05:00
+usr_027,Lucas Herrera,lukitas@ejemplo.co,Chía,jugador,2025-11-11T10:00:00-05:00
+usr_028,Isabella Nieto,nubecita@ejemplo.co,Ibagué,jugador,2026-06-30T10:00:00-05:00
+usr_029,Mariana del Pilar Rodríguez Castañeda,marianadelpilarrodriguezcastaneda@ejemplo.co,Santa Marta,jugador,2026-07-07T10:00:00-05:00
+usr_030,Kamila Durán,kami@ejemplo.co,Cúcuta,jugador,2026-02-27T10:00:00-05:00
+usr_031,Andrés Felipe Nova,streamernova@ejemplo.co,Bogotá,organizador,2024-11-02T10:00:00-05:00
+usr_032,Laura Quintero,parchegamerbog@ejemplo.co,Bogotá,organizador,2025-01-15T10:00:00-05:00
+usr_033,Comité de deportes electrónicos,ligauniversitariaandinadeesports@ejemplo.co,Bogotá,organizador,2024-08-20T10:00:00-05:00
+usr_034,Diana Caicedo,caligamersclub@ejemplo.co,Cali,organizador,2025-06-01T10:00:00-05:00
+usr_035,Julián Ochoa,paisaesports@ejemplo.co,Medellín,organizador,2026-09-30T10:00:00-05:00
+usr_036,Sara Lemus,nuevaorgcol@ejemplo.co,Pasto,organizador,2026-10-20T10:00:00-05:00

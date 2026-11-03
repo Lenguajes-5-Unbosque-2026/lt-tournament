@@ -1,4 +1,5 @@
 import { Navbar, type Mode } from "@/components/navbar";
+import { cn } from "@/lib/utils";
 
 /**
  * Contenedor raíz de la app. En celular ocupa toda la pantalla; en
@@ -7,9 +8,12 @@ import { Navbar, type Mode } from "@/components/navbar";
  */
 export function AppShell({
   mode,
+  navbar = true,
   children,
 }: {
   mode: Mode;
+  /** false en pantallas de detalle y flujos que llevan topbar y no navbar. */
+  navbar?: boolean;
   children: React.ReactNode;
 }) {
   return (
@@ -18,8 +22,10 @@ export function AppShell({
       className="relative mx-auto min-h-dvh w-full max-w-phone bg-bg sm:border-x sm:border-line"
     >
       <div aria-hidden className="glow pointer-events-none absolute inset-x-0 top-0 h-glow" />
-      <main className="relative px-screen pt-6 pb-scroll-nav">{children}</main>
-      <Navbar mode={mode} />
+      <main className={cn("relative px-screen pt-6", navbar ? "pb-scroll-nav" : "pb-8")}>
+        {children}
+      </main>
+      {navbar && <Navbar mode={mode} />}
     </div>
   );
 }

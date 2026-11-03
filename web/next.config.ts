@@ -2,10 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
-  // Entrada de cada modo: el jugador arranca en Inicio y el organizador en Panel.
+  // La app abre en el Splash (/); el organizador entra al Panel por /org.
   redirects() {
     return [
-      { source: "/", destination: "/inicio", permanent: false },
       { source: "/org", destination: "/org/panel", permanent: false },
     ];
   },

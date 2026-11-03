@@ -1,0 +1,25 @@
+id,nombre,abreviatura,color_1,color_2,puntos_1,puntos_2,puntos_3,popular,etiquetas,imagen
+fc25,EA FC 25,FC25,#2fb35a,#0b3a19,300,150,80,true,fútbol|deportes|consola,portada-fc25.jpg
+valorant,Valorant,VAL,#e8473f,#4a0d0e,400,200,100,true,shooter|táctico|pc,portada-valorant.jpg
+cs2,CS2,CS2,#f2a33a,#4f2a07,400,200,100,true,shooter|táctico|pc,portada-cs2.jpg
+lol,League of Legends,LOL,#5d55e0,#171447,350,175,90,true,moba|estrategia|pc,portada-lol.jpg
+fortnite,Fortnite,FN,#f07a2c,#4a1a05,250,125,60,true,battle royale|shooter,portada-fortnite.jpg
+rocket,Rocket League,RL,#3f78e8,#0c1d4b,300,150,80,false,fútbol|autos|deportes,portada-rocket.jpg
+freefire,Free Fire,FF,#ff9f1c,#5a2600,250,120,60,true,battle royale|móvil,
+codm,CoD Mobile,CODM,#7a8a6a,#1d2416,250,120,60,false,shooter|móvil,
+clash,Clash Royale,CR,#3b82f6,#172554,200,100,50,false,estrategia|móvil|cartas,
+brawl,Brawl Stars,BS,#facc15,#713f12,200,100,50,false,acción|móvil,
+apex,Apex Legends,APEX,#dc2626,#3f0a0a,300,150,75,false,battle royale|shooter,
+ow2,Overwatch 2,OW2,#f97316,#3b1606,300,150,75,false,shooter|héroes,
+dota2,Dota 2,DOTA,#b91c1c,#1c0606,350,175,90,false,moba|estrategia|pc,
+r6,Rainbow Six Siege,R6,#64748b,#0f172a,300,150,75,false,shooter|táctico,
+sf6,Street Fighter 6,SF6,#e11d48,#3f0616,250,125,60,false,pelea|consola,
+tekken,Tekken 8,TK8,#a855f7,#2e1065,250,125,60,false,pelea|consola,
+smash,Smash Bros. Ultimate,SSBU,#ef4444,#450a0a,250,125,60,false,pelea|nintendo,
+mlbb,Mobile Legends,MLBB,#0ea5e9,#082f49,250,125,60,false,moba|móvil,
+pubg,PUBG,PUBG,#d4a017,#3d2e05,250,125,60,false,battle royale|shooter,
+efootball,eFootball,EFB,#16a34a,#052e16,250,125,60,false,fútbol|deportes,
+nba2k,NBA 2K25,2K25,#2563eb,#1e1b4b,250,125,60,false,baloncesto|deportes,
+mk1,Mortal Kombat 1,MK1,#ca8a04,#1c1402,200,100,50,false,pelea|consola,
+halo,Halo Infinite,HALO,#22c55e,#052e1a,250,125,60,false,shooter|consola,
+minecraft,Minecraft,MC,#65a30d,#1a2e05,150,75,40,false,construcción|creativo,

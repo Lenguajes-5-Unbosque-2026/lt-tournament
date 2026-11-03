@@ -1,0 +1,17 @@
+id,torneo_id,jugador_id,equipo_id,posicion,puntos_ranking,partidos_jugados,victorias
+pos_001,tor_008,usr_001,,1,300,3,3
+pos_002,tor_008,usr_002,,2,150,3,2
+pos_003,tor_008,usr_007,,3,80,3,2
+pos_004,tor_008,usr_005,,4,10,3,1
+pos_005,tor_008,usr_026,,5,10,1,0
+pos_006,tor_008,usr_015,,6,10,1,0
+pos_007,tor_008,usr_018,,7,10,1,0
+pos_008,tor_008,usr_003,,8,10,1,0
+pos_009,tor_009,usr_015,,1,300,2,2
+pos_010,tor_009,usr_018,,2,150,2,1
+pos_011,tor_009,usr_001,,3,80,2,1
+pos_012,tor_009,usr_026,,4,10,2,0
+pos_013,tor_011,usr_027,,1,250,2,2
+pos_014,tor_011,usr_030,,2,125,2,1
+pos_015,tor_011,usr_024,,3,60,2,0
+pos_016,tor_011,usr_023,,4,10,2,0

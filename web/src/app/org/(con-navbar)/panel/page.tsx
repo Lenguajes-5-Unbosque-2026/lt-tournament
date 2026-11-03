@@ -5,7 +5,12 @@ import { ProfileHeader } from "@/components/profile-header";
 import { Stat } from "@/components/stat";
 import { Badge } from "@/components/ui/badge";
 import { AHORA } from "@/lib/ahora";
-import { getOrganizadorActual, getResumenPanel, getTorneosDelOrganizador } from "@/lib/mock";
+import {
+  getOrganizadorActual,
+  getResumenPanel,
+  getTorneosDelOrganizador,
+  tipoDeBracket,
+} from "@/lib/mock";
 
 /** Panel del organizador (O01): cifras, acceso a crear y «Mis torneos». */
 export default function PanelPage() {
@@ -44,7 +49,11 @@ export default function PanelPage() {
         <CreateTournamentCard />
       </div>
 
-      <PanelTorneos torneos={lista} ahora={AHORA} />
+      <PanelTorneos
+        torneos={lista}
+        ahora={AHORA}
+        conBracket={lista.filter((t) => tipoDeBracket(t.id)).map((t) => t.id)}
+      />
     </>
   );
 }

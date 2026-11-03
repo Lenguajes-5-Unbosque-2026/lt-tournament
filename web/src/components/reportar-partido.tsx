@@ -15,28 +15,29 @@ import type { Participante } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 /**
- * Reportar resultado (PTS · J2): marcador con un contador por jugador,
- * ganador y la captura opcional que solo ve el organizador. Los empates no
- * se reportan aquí: los registra el organizador (spec, paso 11). Si el
- * jugador ya había reportado, el formulario arranca con su reporte.
+ * Reportar resultado de un partido de dos jugadores (J17 y PTS · J2):
+ * marcador con un contador por jugador, ganador y la captura opcional que
+ * solo ve el organizador. No se reportan empates (`avisoEmpate` explica
+ * por qué). Si el jugador ya había reportado, arranca con su reporte.
  */
-export function LigaReportar({
+export function ReportarPartido({
   torneoId,
-  ronda,
-  formato,
+  subtitulo,
   a,
   b,
-  puntosVictoria,
   inicial,
+  detalleGanador,
+  avisoEmpate,
 }: {
   torneoId: string;
-  ronda: number;
-  /** «Liga» o «Rondas suizas» */
-  formato: string;
+  /** «Ronda 3 · Liga» o «Cuartos · Partido 1» */
+  subtitulo: string;
   a: Participante;
   b: Participante;
-  puntosVictoria: number;
   inicial: { a: number; b: number } | null;
+  /** Se agrega a «Gana 2 – 1»: « · +3 pts». */
+  detalleGanador?: string;
+  avisoEmpate: string;
 }) {
   const router = useRouter();
   const bracketHref = `/torneo/${torneoId}/bracket`;
@@ -61,7 +62,7 @@ export function LigaReportar({
     setEnviando(true);
     // Sin backend todavía: el reporte llega al organizador al conectar Supabase.
     toast.success("Resultado enviado", {
-      description: `Ronda ${ronda}: ${a.nombre} ${marcadorA} – ${marcadorB} ${b.nombre}. El organizador lo valida.`,
+      description: `${a.nombre} ${marcadorA} – ${marcadorB} ${b.nombre}. El organizador lo valida.`,
     });
     router.push(bracketHref);
   }
@@ -73,7 +74,7 @@ export function LigaReportar({
     <>
       <Topbar
         title="Reportar resultado"
-        subtitle={`Ronda ${ronda} · ${formato}`}
+        subtitle={subtitulo}
         leading="close"
         fallbackHref={bracketHref}
         onLeadingClick={() => router.push(bracketHref)}
@@ -107,7 +108,8 @@ export function LigaReportar({
                     <span className="block text-strong text-ink">{j.nombre}</span>
                     {elegido && coherente && (
                       <span className="block text-caption text-ink-3">
-                        Gana {alto} – {bajo} · +{puntosVictoria} pts
+                        Gana {alto} – {bajo}
+                        {detalleGanador}
                       </span>
                     )}
                   </span>
@@ -116,14 +118,10 @@ export function LigaReportar({
             })}
           </RadioGroup>
           {empate ? (
-            <p className="mt-2 text-caption text-warning">
-              Los empates no se reportan aquí: los registra el organizador.
-            </p>
+            <p className="mt-2 text-caption text-warning">{avisoEmpate}</p>
           ) : (
             !coherente && (
-              <p className="mt-2 text-caption text-warning">
-                El ganador no coincide con el marcador.
-              </p>
+              <p className="mt-2 text-caption text-warning">El ganador no coincide con el marcador.</p>
             )
           )}
         </section>

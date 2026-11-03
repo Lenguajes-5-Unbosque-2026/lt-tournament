@@ -19,7 +19,12 @@ import {
   formatDiaSemana,
   formatHora,
 } from "@/lib/format";
-import { getInscripcionPropia, getJugadorActual, getTorneoDetalle } from "@/lib/mock";
+import {
+  getInscripcionPropia,
+  getJugadorActual,
+  getTorneoDetalle,
+  tipoDeBracket,
+} from "@/lib/mock";
 import { etiquetaEstado, modalidad, nombreFormato } from "@/lib/torneo";
 
 const PUESTOS = ["1er puesto", "2do puesto", "3er puesto"];
@@ -144,16 +149,9 @@ async function DetalleTorneo({
               gamertag={jugador.nombreUsuario}
               situacion={yaInscrito ? "inscrito" : cerrada ? "cerrada" : "abierta"}
               cierre={`Cierra ${formatDiaSemana(torneo.cierreInscripciones)} ${formatHora(torneo.cierreInscripciones)}`}
-              // Hay bracket battle royale (BR · J1) y por puntos (PTS · J1); el
-              // récord de puntos y la eliminación directa aún no tienen pantalla.
-              bracketHref={
-                torneo.estado === "en_curso" &&
-                (torneo.tipoJuego === "battle_royale" ||
-                  torneo.formato === "liga" ||
-                  torneo.formato === "rondas_suizas")
-                  ? `/torneo/${torneo.id}/bracket`
-                  : undefined
-              }
+              // Bracket BR · J1, PTS · J1 o J16; el récord de puntos y los
+              // torneos por equipos aún no tienen pantalla.
+              bracketHref={tipoDeBracket(torneo.id) ? `/torneo/${torneo.id}/bracket` : undefined}
             />
           </div>
         </>

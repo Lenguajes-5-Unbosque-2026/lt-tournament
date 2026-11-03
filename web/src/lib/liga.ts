@@ -3,7 +3,10 @@
  * (specs/bracket-por-puntos). Tipos y cálculos puros: los usan el servidor
  * y los componentes cliente.
  */
+import { marcador, type ReportePartido } from "./partido";
 import type { Participante } from "./types";
+
+export { marcador };
 
 export type EstadoPartido = "pendiente" | "reportado" | "en_disputa" | "finalizado" | "wo";
 
@@ -23,15 +26,7 @@ export type PartidoLiga = {
   prueba: string | null;
 };
 
-/** Marcador que reporta un jugador, siempre en el orden A – B del partido. */
-export type ReporteLiga = {
-  partidoId: string;
-  jugadorId: string;
-  marcadorA: number;
-  marcadorB: number;
-  captura: string | null;
-  creadoEn: string;
-};
+export type ReporteLiga = ReportePartido;
 
 export type PuntosLiga = { victoria: number; empate: number; derrota: number };
 
@@ -125,11 +120,6 @@ export function partidosDeRonda(t: TorneoLiga, ronda: number) {
 
 export function jugadorPorId(t: TorneoLiga, id: string | null) {
   return t.jugadores.find((j) => j.id === id);
-}
-
-/** «2 – 1» */
-export function marcador(a: number | null, b: number | null) {
-  return `${a ?? 0} – ${b ?? 0}`;
 }
 
 /**

@@ -10,36 +10,26 @@ import { LiveMatchCard } from "@/components/live-match-card";
 import { Topbar } from "@/components/topbar";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { AHORA } from "@/lib/ahora";
-import { formatFechaHora } from "@/lib/format";
 import {
   cerrado,
   jugadorPorId,
-  marcador,
   partidosDeRonda,
   rondaActual,
   type PartidoLiga,
   type TorneoLiga,
 } from "@/lib/liga";
+import { resumenReportes } from "@/lib/partido";
 import { nombreFormato } from "@/lib/torneo";
 
-/** Qué falta en un partido sin registrar, según sus reportes. */
 function situacion(t: TorneoLiga, p: PartidoLiga) {
-  const reportes = t.reportes.filter((r) => r.partidoId === p.id);
-  const nombre = (id: string) => jugadorPorId(t, id)?.nombre ?? "—";
-  if (reportes.length === 2) {
-    const [x, y] = reportes;
-    if (x.marcadorA === y.marcadorA && x.marcadorB === y.marcadorB) {
-      return `Ambos reportaron ${marcador(x.marcadorA, x.marcadorB)}. Confirma para sumar los puntos a la tabla.`;
-    }
-    return `Los reportes no coinciden (${marcador(x.marcadorA, x.marcadorB)} y ${marcador(y.marcadorA, y.marcadorB)}). Revisa la prueba y decide el resultado.`;
-  }
-  if (reportes.length === 1) {
-    const r = reportes[0];
-    const falta = r.jugadorId === p.aId ? p.bId : p.aId;
-    return `${nombre(r.jugadorId)} reportó ${marcador(r.marcadorA, r.marcadorB)}. Falta el reporte de ${nombre(falta)}.`;
-  }
-  return `Programado ${formatFechaHora(p.fechaHora, AHORA)}. Aún no hay reportes.`;
+  return resumenReportes({
+    reportes: t.reportes.filter((r) => r.partidoId === p.id),
+    aId: p.aId,
+    bId: p.bId,
+    nombre: (id) => jugadorPorId(t, id)?.nombre ?? "—",
+    fechaHora: p.fechaHora,
+    siCoinciden: "Confirma para sumar los puntos a la tabla.",
+  });
 }
 
 /** «Ver jugadores» (botón de intercambio) no tiene pantalla todavía (spec, pregunta 19). */

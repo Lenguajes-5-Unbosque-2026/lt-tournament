@@ -2,11 +2,18 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { AppShell } from "@/components/app-shell";
 import { BracketBRProvider } from "@/components/bracket-br-provider";
-import { getTorneoBR, getTorneoDetalle, ORGANIZADOR_ACTUAL_ID } from "@/lib/mock";
+import { LigaProvider } from "@/components/liga-provider";
+import {
+  getTorneoBR,
+  getTorneoDetalle,
+  getTorneoLiga,
+  ORGANIZADOR_ACTUAL_ID,
+} from "@/lib/mock";
 
 /**
- * Bracket battle royale del organizador (BR · O2, O3 y O4): llevan topbar y
- * no navbar, y comparten el estado del torneo mientras se navega entre ellas.
+ * Bracket del organizador: battle royale (BR · O2 a O4) o por puntos
+ * (PTS · O2 a O4). Llevan topbar y no navbar, y comparten el estado del
+ * torneo mientras se navega entre ellas.
  */
 async function ConTorneo({
   params,
@@ -16,10 +23,14 @@ async function ConTorneo({
   children: React.ReactNode;
 }) {
   const { id } = await params;
-  const torneo = getTorneoBR(id);
   // Solo el organizador dueño gestiona el bracket.
-  if (!torneo || getTorneoDetalle(id)?.organizador.id !== ORGANIZADOR_ACTUAL_ID) notFound();
-  return <BracketBRProvider inicial={torneo}>{children}</BracketBRProvider>;
+  if (getTorneoDetalle(id)?.organizador.id !== ORGANIZADOR_ACTUAL_ID) notFound();
+
+  const br = getTorneoBR(id);
+  if (br) return <BracketBRProvider inicial={br}>{children}</BracketBRProvider>;
+  const liga = getTorneoLiga(id);
+  if (liga) return <LigaProvider inicial={liga}>{children}</LigaProvider>;
+  notFound();
 }
 
 export default function BracketOrgLayout({

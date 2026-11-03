@@ -7,7 +7,16 @@ export type EstadoTorneo =
   | "finalizado"
   | "cancelado";
 
-export type TipoJuego = "equipo_vs_equipo" | "battle_royale" | "por_puntos";
+/** Jugador tal como aparece en tablas, partidos y podios de un torneo. */
+export type Participante = {
+  id: string;
+  nombre: string;
+  imagen: string;
+  color1: string;
+  color2: string;
+};
+
+export type TipoJuego ="equipo_vs_equipo" | "battle_royale" | "por_puntos";
 
 export type Juego = {
   id: string;

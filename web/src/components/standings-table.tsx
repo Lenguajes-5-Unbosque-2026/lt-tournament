@@ -31,6 +31,7 @@ export function StandingsTable({
   onFilaClick,
   vacio,
   etiqueta,
+  anchoColumna = "2.75rem",
 }: {
   columnas: string[];
   filas: FilaPosiciones[];
@@ -40,12 +41,14 @@ export function StandingsTable({
   /** Texto cuando no hay filas. */
   vacio?: string;
   etiqueta: string;
+  /** Ancho de cada columna del medio; la liga (PJ · G · E · P) usa columnas angostas. */
+  anchoColumna?: string;
 }) {
   const [completa, setCompleta] = useState(false);
   const mostradas = visibles && !completa ? filas.slice(0, visibles) : filas;
   // # · jugador · columnas del medio · pts
   const plantilla = {
-    gridTemplateColumns: `1.5rem minmax(0,1fr) repeat(${columnas.length}, 2.75rem) 2.25rem`,
+    gridTemplateColumns: `1.5rem minmax(0,1fr) repeat(${columnas.length}, ${anchoColumna}) 2.25rem`,
   };
 
   return (

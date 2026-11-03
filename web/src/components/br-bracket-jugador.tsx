@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Flag, Image as ImageIcon } from "lucide-react";
+import { Flag } from "lucide-react";
 import { BRStandings } from "@/components/br-standings";
 import { ShareButton } from "@/components/detail-actions";
 import { LiveMatchCard } from "@/components/live-match-card";
 import { ProofSheet, type Prueba } from "@/components/proof-sheet";
+import { ResultRow } from "@/components/result-row";
 import { Topbar } from "@/components/topbar";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import {
   confirmados,
   jugadorPorId,
@@ -49,7 +50,8 @@ export function BRBracketJugador({
       imagen: p.prueba,
       overline: `Victoria · Partida ${p.numero}`,
       marcador: `${ganador.nombre} · 1° · ${kills} ${kills === 1 ? "kill" : "kills"}`,
-      ganador,
+      jugador: ganador,
+      titulo: `Ganador: ${ganador.nombre}`,
       detalle: "Subida por el organizador",
     });
   }
@@ -100,36 +102,16 @@ export function BRBracketJugador({
         </h2>
         <ul className="mt-3 flex flex-col gap-2.5">
           {torneo.partidas.map((p) => (
-            <li
+            <ResultRow
               key={p.id}
-              className="flex min-h-15 items-center gap-3 rounded-md border border-line bg-surface px-4 py-3"
-            >
-              <div className="min-w-0 flex-1">
-                <p className="text-h3 text-ink">
-                  Partida {p.numero}
-                  {p.estado === "finalizada" && " · Finalizada"}
-                </p>
-                <p className="truncate text-caption text-ink-3">
-                  {resumenPartida(torneo, p, propioId)}
-                </p>
-              </div>
-              {p.estado === "finalizada" && p.prueba ? (
-                <Button
-                  variant="ghost"
-                  size="xs"
-                  className="bg-primary-soft"
-                  onClick={() => abrirPrueba(p)}
-                  aria-label={`Ver prueba de la partida ${p.numero}`}
-                >
-                  <ImageIcon />
-                  Ver prueba
-                </Button>
-              ) : (
-                <span className="shrink-0 text-caption text-ink-3">
-                  {p.estado === "en_curso" ? "En curso" : p.estado === "pendiente" ? "Por jugar" : "Sin prueba"}
-                </span>
-              )}
-            </li>
+              titulo={`Partida ${p.numero}${p.estado === "finalizada" ? " · Finalizada" : ""}`}
+              detalle={resumenPartida(torneo, p, propioId)}
+              estado={
+                p.estado === "en_curso" ? "En curso" : p.estado === "pendiente" ? "Por jugar" : "Sin prueba"
+              }
+              onVerPrueba={p.estado === "finalizada" && p.prueba ? () => abrirPrueba(p) : undefined}
+              etiquetaPrueba={`Ver prueba de la partida ${p.numero}`}
+            />
           ))}
         </ul>
       </section>

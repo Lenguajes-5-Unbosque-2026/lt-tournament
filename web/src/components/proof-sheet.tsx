@@ -5,7 +5,8 @@ import { PlayerAvatar } from "@/components/player-avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Drawer, DrawerClose, DrawerContent, DrawerTitle } from "@/components/ui/drawer";
-import { rutaImagen, type JugadorBR } from "@/lib/battle-royale";
+import { rutaImagen } from "@/lib/battle-royale";
+import type { Participante } from "@/lib/types";
 
 export type Prueba = {
   /** «Partida 2 · Victory Royale Cup» */
@@ -13,9 +14,12 @@ export type Prueba = {
   imagen: string;
   /** «Victoria · Partida 2» */
   overline: string;
-  /** «Sh4dow · 1° · 8 kills» */
+  /** «Sh4dow · 1° · 8 kills» o «Johitan 3 – 1 Lupe» */
   marcador: string;
-  ganador: JugadorBR;
+  /** Avatar que acompaña la línea del resultado (el ganador, o el jugador propio si fue empate). */
+  jugador: Participante;
+  /** «Ganador: Johitan · +3 pts» o «Empate · +1 pt cada uno» */
+  titulo: string;
   /** «Subida por el organizador» */
   detalle: string;
 };
@@ -60,13 +64,13 @@ export function ProofSheet({
 
             <div className="mt-4 flex items-center gap-3">
               <PlayerAvatar
-                imagen={prueba.ganador.imagen}
-                color1={prueba.ganador.color1}
-                color2={prueba.ganador.color2}
+                imagen={prueba.jugador.imagen}
+                color1={prueba.jugador.color1}
+                color2={prueba.jugador.color2}
                 className="size-9"
               />
               <div className="min-w-0 flex-1">
-                <p className="truncate text-strong text-ink">Ganador: {prueba.ganador.nombre}</p>
+                <p className="truncate text-strong text-ink">{prueba.titulo}</p>
                 <p className="text-caption text-ink-3">{prueba.detalle}</p>
               </div>
               <Badge variant="success">Confirmado</Badge>

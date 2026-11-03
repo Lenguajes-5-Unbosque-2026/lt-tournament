@@ -14,6 +14,7 @@ export function Stepper({
   max,
   step = 1,
   label,
+  compact = false,
 }: {
   value: number;
   onChange: (value: number) => void;
@@ -22,9 +23,11 @@ export function Stepper({
   step?: number;
   /** Nombre de lo que se cuenta, para los lectores de pantalla. */
   label: string;
+  /** Menos aire: dos steppers lado a lado en un marcador (PTS · J2 y O3). */
+  compact?: boolean;
 }) {
   return (
-    <div className="flex items-center gap-3">
+    <div className={compact ? "flex items-center gap-1.5" : "flex items-center gap-3"}>
       <Button
         variant="secondary"
         size="icon"
@@ -36,7 +39,7 @@ export function Stepper({
       </Button>
       <output
         aria-label={label}
-        className="min-w-14 text-center font-display text-numeric-xl text-ink italic"
+        className={`${compact ? "min-w-12" : "min-w-14"} text-center font-display text-numeric-xl text-ink italic`}
       >
         {value}
       </output>

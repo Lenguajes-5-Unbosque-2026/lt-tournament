@@ -26,8 +26,27 @@ function pertenece(t: Torneo, pestana: Pestana) {
   return true;
 }
 
+/**
+ * Borrador: retoma el asistente. Con bracket (BR · O2, PTS · O2 u O12): el
+ * bracket. Lo demás: Resumen para gestionar (O07, todavía sin construir).
+ */
+function destino(t: Torneo, conBracket: string[]) {
+  if (t.estado === "borrador") return "/org/crear";
+  if (conBracket.includes(t.id)) return `/org/torneos/${t.id}/bracket`;
+  return `/org/torneos/${t.id}`;
+}
+
 /** «Mis torneos» del Panel (O01): segmento Todos · En curso · Borradores y la lista. */
-export function PanelTorneos({ torneos, ahora }: { torneos: Torneo[]; ahora: string }) {
+export function PanelTorneos({
+  torneos,
+  ahora,
+  conBracket,
+}: {
+  torneos: Torneo[];
+  ahora: string;
+  /** Ids de los torneos que tienen pantalla de bracket. */
+  conBracket: string[];
+}) {
   const [pestana, setPestana] = useState<Pestana>("todos");
   const lista = torneos.filter((t) => pertenece(t, pestana));
 
@@ -54,12 +73,7 @@ export function PanelTorneos({ torneos, ahora }: { torneos: Torneo[]; ahora: str
       <ul className="mt-4 flex flex-col gap-3">
         {lista.map((t) => (
           <li key={t.id}>
-            {/* Borrador: retoma el asistente. Publicado: Resumen para gestionar (O07). */}
-            <TournamentCard
-              torneo={t}
-              ahora={ahora}
-              href={t.estado === "borrador" ? "/org/crear" : `/org/torneos/${t.id}`}
-            />
+            <TournamentCard torneo={t} ahora={ahora} href={destino(t, conBracket)} />
           </li>
         ))}
       </ul>

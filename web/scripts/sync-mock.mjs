@@ -12,11 +12,10 @@ rmSync(imgDestino, { recursive: true, force: true });
 mkdirSync(csvDestino, { recursive: true });
 mkdirSync(imgDestino, { recursive: true });
 
-for (const f of readdirSync(origen).filter((f) => f.endsWith(".csv"))) {
+// Se saltan las copias de descarga («torneos (1).csv»).
+for (const f of readdirSync(origen).filter((f) => f.endsWith(".csv") && !f.includes(" ("))) {
   cpSync(join(origen, f), join(csvDestino, f));
 }
-// Las pruebas y capturas de resultado no se usan en estas pantallas.
 for (const f of readdirSync(join(origen, "imagenes"))) {
-  if (/^(prueba|captura)-/.test(f)) continue;
   cpSync(join(origen, "imagenes", f), join(imgDestino, f));
 }

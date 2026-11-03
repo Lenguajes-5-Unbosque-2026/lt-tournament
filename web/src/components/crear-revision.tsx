@@ -80,6 +80,7 @@ export function CrearRevision({
     juego,
     organizador,
     imagen: juego.imagen,
+    tipoJuego: b.tipo === "uno_vs_uno" ? "equipo_vs_equipo" : b.tipo,
     jugadoresPorEquipo: 1,
     cupos,
     inscritos: 0,

@@ -70,3 +70,14 @@ export function formatDiaCorto(iso: string) {
 export function formatFechaUtc(iso: string) {
   return new Date(iso).toISOString().replace(/[-:]|\.\d{3}/g, "");
 }
+
+/** «Hace 3 min», «Hace 2 h», «Hace 2 días» entre `iso` y `ahora`. */
+export function formatHace(iso: string, ahora: string) {
+  const min = Math.max(0, Math.round((new Date(ahora).getTime() - new Date(iso).getTime()) / 60_000));
+  if (min < 1) return "Hace un momento";
+  if (min < 60) return `Hace ${min} min`;
+  const h = Math.round(min / 60);
+  if (h < 24) return `Hace ${h} h`;
+  const d = Math.round(h / 24);
+  return `Hace ${d} ${d === 1 ? "día" : "días"}`;
+}

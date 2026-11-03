@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Clock, Ticket, TriangleAlert } from "lucide-react";
+import { Clock, GitFork, Ticket, TriangleAlert } from "lucide-react";
 import { toast } from "sonner";
 import { EnrollmentSheet, type ResumenTorneo } from "@/components/enrollment-sheet";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -17,12 +17,15 @@ export function EnrollmentCard({
   gamertag,
   situacion,
   cierre,
+  bracketHref,
 }: {
   torneo: ResumenTorneo;
   gamertag: string;
   situacion: "abierta" | "cerrada" | "inscrito";
   /** «Cierra Sáb 6:00 pm» */
   cierre: string;
+  /** Si el torneo ya empezó y tiene bracket, el inscrito ve «Ver bracket». */
+  bracketHref?: string;
 }) {
   const [abierta, setAbierta] = useState(false);
 
@@ -40,6 +43,12 @@ export function EnrollmentCard({
         </p>
       </div>
 
+      {situacion === "inscrito" && bracketHref && (
+        <Link href={bracketHref} className={`${buttonVariants()} mt-3 w-full`}>
+          <GitFork />
+          Ver bracket
+        </Link>
+      )}
       {situacion === "inscrito" ? (
         <Link
           href={`/torneo/${torneo.id}/inscripcion`}

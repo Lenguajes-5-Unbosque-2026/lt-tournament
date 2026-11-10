@@ -18,12 +18,15 @@ export function SearchField({
   onValueChange,
   onOpenFilters,
   activos = false,
+  sinFiltros = false,
   placeholder,
 }: {
   value: string;
   onValueChange: (value: string) => void;
   onOpenFilters: () => void;
   activos?: boolean;
+  /** Sin el botón de filtros (buscar en una lista corta, O08). */
+  sinFiltros?: boolean;
   placeholder: string;
 }) {
   return (
@@ -39,22 +42,24 @@ export function SearchField({
         onChange={(e) => onValueChange(e.target.value)}
         className="h-11 text-body text-ink placeholder:text-ink-3"
       />
-      <InputGroupAddon align="inline-end">
-        <Button
-          size="icon"
-          aria-label={activos ? "Filtros (hay filtros aplicados)" : "Filtros"}
-          onClick={onOpenFilters}
-          className="relative size-10 rounded-sm"
-        >
-          <SlidersHorizontal />
-          {activos && (
-            <span
-              aria-hidden
-              className="absolute -top-1 -right-1 size-2 rounded-full bg-ink ring-2 ring-surface"
-            />
-          )}
-        </Button>
-      </InputGroupAddon>
+      {!sinFiltros && (
+        <InputGroupAddon align="inline-end">
+          <Button
+            size="icon"
+            aria-label={activos ? "Filtros (hay filtros aplicados)" : "Filtros"}
+            onClick={onOpenFilters}
+            className="relative size-10 rounded-sm"
+          >
+            <SlidersHorizontal />
+            {activos && (
+              <span
+                aria-hidden
+                className="absolute -top-1 -right-1 size-2 rounded-full bg-ink ring-2 ring-surface"
+              />
+            )}
+          </Button>
+        </InputGroupAddon>
+      )}
     </InputGroup>
   );
 }

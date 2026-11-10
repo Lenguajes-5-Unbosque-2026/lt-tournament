@@ -20,12 +20,15 @@ export function ScoreVersus({
   marcadorA,
   marcadorB,
   onChange,
+  disabled = false,
 }: {
   a: Participante;
   b: Participante;
   marcadorA: number;
   marcadorB: number;
   onChange: (marcadorA: number, marcadorB: number) => void;
+  /** Solo lectura: los reportes ya no se editan (D1). */
+  disabled?: boolean;
 }) {
   const lados = [
     { jugador: a, valor: marcadorA, gana: marcadorA > marcadorB, set: (v: number) => onChange(v, marcadorB) },
@@ -52,6 +55,7 @@ export function ScoreVersus({
           <div className="mt-3">
             <Stepper
               compact
+              disabled={disabled}
               value={valor}
               onChange={set}
               min={0}

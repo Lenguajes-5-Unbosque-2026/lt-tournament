@@ -15,6 +15,7 @@ export function Stepper({
   step = 1,
   label,
   compact = false,
+  disabled = false,
 }: {
   value: number;
   onChange: (value: number) => void;
@@ -25,6 +26,8 @@ export function Stepper({
   label: string;
   /** Menos aire: dos steppers lado a lado en un marcador (PTS · J2 y O3). */
   compact?: boolean;
+  /** Solo lectura: muestra el valor con los botones apagados (D1). */
+  disabled?: boolean;
 }) {
   return (
     <div className={compact ? "flex items-center gap-1.5" : "flex items-center gap-3"}>
@@ -32,7 +35,7 @@ export function Stepper({
         variant="secondary"
         size="icon"
         aria-label={`Disminuir ${label}`}
-        disabled={value <= min}
+        disabled={disabled || value <= min}
         onClick={() => onChange(Math.max(min, value - step))}
       >
         <Minus />
@@ -46,7 +49,7 @@ export function Stepper({
       <Button
         size="icon"
         aria-label={`Aumentar ${label}`}
-        disabled={value >= max}
+        disabled={disabled || value >= max}
         onClick={() => onChange(Math.min(max, value + step))}
       >
         <Plus />

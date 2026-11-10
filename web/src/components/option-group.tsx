@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 export type OptionItem = {
   value: string;
   titulo: string;
-  descripcion: string;
+  descripcion?: string;
   recomendado?: boolean;
   /** Se ve pero no se puede elegir (formatos fuera del MVP). */
   deshabilitado?: boolean;
@@ -42,7 +42,9 @@ export function OptionGroup({
           <RadioGroupItem value={o.value} disabled={o.deshabilitado} />
           <span className="min-w-0 flex-1">
             <span className="block text-strong text-ink">{o.titulo}</span>
-            <span className="block text-caption text-ink-3">{o.descripcion}</span>
+            {o.descripcion && (
+              <span className="block text-caption text-ink-3">{o.descripcion}</span>
+            )}
           </span>
           {o.recomendado && (
             <Badge variant="success" dot={false} className="rounded-sm">

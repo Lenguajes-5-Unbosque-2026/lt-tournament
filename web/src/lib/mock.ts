@@ -36,7 +36,7 @@ export const JUGADOR_ACTUAL_ID = "usr_001";
 /** Torneos que se muestran en Inicio y Explorar. */
 const ESTADOS_VISIBLES: EstadoTorneo[] = ["abierto", "checkin", "en_curso"];
 
-function leer(archivo: string) {
+export function leer(archivo: string) {
   const ruta = join(process.cwd(), "src", "data", "mock", `${archivo}.csv`);
   return parseCsv(readFileSync(ruta, "utf8"));
 }

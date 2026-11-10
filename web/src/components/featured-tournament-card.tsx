@@ -6,6 +6,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { formatDia } from "@/lib/format";
 import { etiquetaEstado } from "@/lib/torneo";
 import type { Torneo } from "@/lib/types";
+import { srcImagen } from "@/lib/imagen";
 
 /**
  * Tarjeta de torneo destacada (design/ui kit.md §5.13): arte a ancho
@@ -43,7 +44,7 @@ export function FeaturedTournamentCard({
       ) : (
         torneo.imagen && (
           <Image
-            src={`/mock/${torneo.imagen}`}
+            src={srcImagen(torneo.imagen)}
             alt=""
             fill
             sizes="(max-width: 390px) 100vw, 390px"

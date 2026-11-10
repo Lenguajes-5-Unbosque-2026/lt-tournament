@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { AHORA } from "./ahora";
 import type { EstadoPartida, ResultadoBR, TorneoBR } from "./battle-royale";
 import { parseCsv } from "./csv";
+import type { EstadoPartido, TorneoLiga } from "./liga";
 import type {
   EstadoInscripcion,
   EstadoTorneo,
@@ -309,4 +310,83 @@ export function getTorneoBR(id: string): TorneoBR | undefined {
     partidas,
     resultados,
   };
+}
+
+/**
+ * Torneo por puntos de partidos 1 vs 1 (Liga o Rondas suizas, PTS · J1 a
+ * PTS · O4) con sus jugadores, partidos y reportes, o `undefined` si no
+ * existe o es de otro tipo. «Récord de puntos» no se juega en partidos y no
+ * tiene pantallas todavía.
+ */
+export function getTorneoLiga(id: string): TorneoLiga | undefined {
+  const fila = leer("torneos").find((r) => r.id === id);
+  if (
+    !fila ||
+    fila.tipo_juego !== "por_puntos" ||
+    (fila.formato !== "liga" && fila.formato !== "rondas_suizas")
+  ) {
+    return undefined;
+  }
+
+  const perfiles = new Map(leer("perfiles_jugador").map((r) => [r.id, r]));
+  const jugadores = leer("inscripciones")
+    .filter((i) => i.torneo_id === id && i.estado === "confirmada")
+    .map((i) => {
+      const p = perfiles.get(i.jugador_id)!;
+      return { id: p.id, nombre: p.nombre_usuario, imagen: p.imagen, color1: p.color_1, color2: p.color_2 };
+    });
+
+  const numero = (v: string) => (v === "" ? null : Number(v));
+  const partidos = leer("partidos")
+    .filter((p) => p.torneo_id === id)
+    .map((p) => ({
+      id: p.id,
+      ronda: Number(p.ronda),
+      orden: Number(p.orden),
+      aId: p.jugador_a_id,
+      bId: p.jugador_b_id,
+      marcadorA: numero(p.marcador_a),
+      marcadorB: numero(p.marcador_b),
+      ganadorId: p.ganador_id || null,
+      estado: p.estado as EstadoPartido,
+      fechaHora: p.fecha_hora,
+      prueba: p.prueba_imagen || null,
+    }));
+
+  const ids = new Set(partidos.map((p) => p.id));
+  const reportes = leer("reportes_resultado")
+    .filter((r) => ids.has(r.partido_id))
+    .map((r) => ({
+      partidoId: r.partido_id,
+      jugadorId: r.jugador_id,
+      marcadorA: Number(r.marcador_a),
+      marcadorB: Number(r.marcador_b),
+      captura: r.captura_imagen || null,
+      creadoEn: r.creado_en,
+    }));
+
+  return {
+    id,
+    nombre: fila.nombre,
+    enlace: fila.enlace,
+    formato: fila.formato,
+    minutosPorPartido: Number(fila.minutos_por_partida),
+    totalRondas: Number(fila.partidas_o_rondas),
+    puntos: {
+      victoria: Number(fila.puntos_victoria),
+      empate: Number(fila.puntos_empate),
+      derrota: Number(fila.puntos_derrota),
+    },
+    premios: [Number(fila.puntos_1), Number(fila.puntos_2), Number(fila.puntos_3)],
+    jugadores,
+    partidos,
+    reportes,
+  };
+}
+
+/** Qué bracket tiene el torneo: battle royale, por puntos (liga o suizas) o ninguno con pantallas. */
+export function tipoDeBracket(id: string): "battle_royale" | "liga" | undefined {
+  if (getTorneoBR(id)) return "battle_royale";
+  if (getTorneoLiga(id)) return "liga";
+  return undefined;
 }

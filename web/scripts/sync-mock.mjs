@@ -16,9 +16,6 @@ mkdirSync(imgDestino, { recursive: true });
 for (const f of readdirSync(origen).filter((f) => f.endsWith(".csv") && !f.includes(" ("))) {
   cpSync(join(origen, f), join(csvDestino, f));
 }
-// Las pruebas y capturas de partidos 1 vs 1 todavía no se usan; las de
-// battle royale sí (BR · J3 y BR · O3).
 for (const f of readdirSync(join(origen, "imagenes"))) {
-  if (/^(prueba|captura)-(par|rep)_/.test(f)) continue;
   cpSync(join(origen, "imagenes", f), join(imgDestino, f));
 }

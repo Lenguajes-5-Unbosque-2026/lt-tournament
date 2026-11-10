@@ -27,12 +27,13 @@ function pertenece(t: Torneo, pestana: Pestana) {
 }
 
 /**
- * Borrador: retoma el asistente. Battle royale en curso: su bracket (BR · O2).
- * Lo demás: Resumen para gestionar (O07, todavía sin construir).
+ * Borrador: retoma el asistente. Battle royale o por puntos en curso: su
+ * bracket (BR · O2, PTS · O2). Lo demás: Resumen para gestionar (O07,
+ * todavía sin construir).
  */
 function destino(t: Torneo) {
   if (t.estado === "borrador") return "/org/crear";
-  if (t.estado === "en_curso" && t.tipoJuego === "battle_royale") {
+  if (t.estado === "en_curso" && t.tipoJuego !== "equipo_vs_equipo") {
     return `/org/torneos/${t.id}/bracket`;
   }
   return `/org/torneos/${t.id}`;

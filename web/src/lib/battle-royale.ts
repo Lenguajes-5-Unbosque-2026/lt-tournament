@@ -3,13 +3,9 @@
  * Tipos y cálculos puros: los usan el servidor y los componentes cliente.
  */
 
-export type JugadorBR = {
-  id: string;
-  nombre: string;
-  imagen: string;
-  color1: string;
-  color2: string;
-};
+import type { Participante } from "./types";
+
+export type JugadorBR = Participante;
 
 export type EstadoPartida = "pendiente" | "en_curso" | "finalizada";
 

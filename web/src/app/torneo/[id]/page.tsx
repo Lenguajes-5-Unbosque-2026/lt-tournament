@@ -144,9 +144,13 @@ async function DetalleTorneo({
               gamertag={jugador.nombreUsuario}
               situacion={yaInscrito ? "inscrito" : cerrada ? "cerrada" : "abierta"}
               cierre={`Cierra ${formatDiaSemana(torneo.cierreInscripciones)} ${formatHora(torneo.cierreInscripciones)}`}
-              // Solo el bracket battle royale (BR · J1) existe por ahora.
+              // Hay bracket battle royale (BR · J1) y por puntos (PTS · J1); el
+              // récord de puntos y la eliminación directa aún no tienen pantalla.
               bracketHref={
-                torneo.estado === "en_curso" && torneo.tipoJuego === "battle_royale"
+                torneo.estado === "en_curso" &&
+                (torneo.tipoJuego === "battle_royale" ||
+                  torneo.formato === "liga" ||
+                  torneo.formato === "rondas_suizas")
                   ? `/torneo/${torneo.id}/bracket`
                   : undefined
               }

@@ -2,6 +2,7 @@ import "server-only";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { AHORA } from "./ahora";
+import { ventanaCheckin } from "./checkin";
 import type { EstadoPartida, ResultadoBR, TorneoBR } from "./battle-royale";
 import { parseCsv } from "./csv";
 import type { EstadoLlave, TorneoEliminacion } from "./eliminacion";
@@ -152,7 +153,8 @@ export function getProximoTorneo(
     torneo,
     faltanSegundos,
     checkinAbierto:
-      filaTorneo.checkin_obligatorio === "true" && faltanSegundos <= minutosAntes * 60,
+      filaTorneo.checkin_obligatorio === "true" &&
+      ventanaCheckin(torneo.fechaInicio, minutosAntes, AHORA).estado === "abierto",
   };
 }
 
@@ -490,17 +492,17 @@ export function existePerfilOrganizador(id: string) {
  * canceladas o en lista de espera no cuentan.
  */
 export function getMisTorneos(jugadorId: string): MisTorneos {
-  const propios = new Set(
-    leer("inscripciones")
-      .filter(
-        (i) => i.jugador_id === jugadorId && (i.estado === "confirmada" || i.estado === "pendiente"),
-      )
-      .map((i) => i.torneo_id),
-  );
-  const torneos = todosLosTorneos()
-    .filter((t) => propios.has(t.id))
-    .sort((a, b) => a.fechaInicio.localeCompare(b.fechaInicio));
+  const mias = leer("inscripciones").filter((i) => i.jugador_id === jugadorId);
+  const estados: MisTorneos["estados"] = {};
+  for (const i of mias) {
+    if (i.estado === "confirmada" || i.estado === "pendiente") estados[i.torneo_id] = i.estado;
+  }
+  const enEspera = new Set(mias.filter((i) => i.estado === "espera").map((i) => i.torneo_id));
+  const todos = todosLosTorneos().sort((a, b) => a.fechaInicio.localeCompare(b.fechaInicio));
+  const torneos = todos.filter((t) => t.id in estados);
   return {
+    estados,
+    espera: todos.filter((t) => enEspera.has(t.id)),
     proximos: torneos.filter((t) => t.estado === "abierto" || t.estado === "checkin"),
     enCurso: torneos.filter((t) => t.estado === "en_curso"),
     finalizados: torneos.filter((t) => t.estado === "finalizado").reverse(),
@@ -518,9 +520,11 @@ export function getAmigosIds(jugadorId: string): string[] {
  * Ranking de un juego: suma de los puntos de ranking que cada jugador ganó
  * en torneos finalizados de ese juego (posiciones_finales), de mayor a menor.
  */
-export function getRankingDeJuego(juegoId: string): FilaRanking[] {
+export function getRankingDeJuego(juegoId: string, excluirTorneoId?: string): FilaRanking[] {
   const torneosDelJuego = new Set(
-    leer("torneos").filter((t) => t.juego_id === juegoId).map((t) => t.id),
+    leer("torneos")
+      .filter((t) => t.juego_id === juegoId && t.id !== excluirTorneoId)
+      .map((t) => t.id),
   );
   const perfiles = new Map(leer("perfiles_jugador").map((p) => [p.id, p]));
   const acumulado = new Map<string, { puntos: number; torneos: number }>();

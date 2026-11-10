@@ -9,6 +9,8 @@ export type PuestoPodio = {
   color2: string;
   /** «+250 pts» */
   detalle: string;
+  /** Es el jugador que mira: lleva el anillo y el nombre en acento. */
+  esYo?: boolean;
 };
 
 // Índice 0 = 1.°, 1 = 2.°, 2 = 3.°. Se pintan en el orden 2° · 1° · 3°.
@@ -34,9 +36,11 @@ export function Podium({ puestos }: { puestos: PuestoPodio[] }) {
               imagen={p.imagen}
               color1={p.color1}
               color2={p.color2}
-              className={cn(e.avatar, "ring-2 ring-offset-2 ring-offset-bg", e.anillo)}
+              className={cn(e.avatar, "ring-2 ring-offset-2 ring-offset-bg", p.esYo ? "ring-primary" : e.anillo)}
             />
-            <p className="mt-2 max-w-full truncate text-h3 text-ink">{p.nombre}</p>
+            <p className={cn("mt-2 max-w-full truncate text-h3", p.esYo ? "text-primary" : "text-ink")}>
+              {p.nombre}
+            </p>
             <p className="text-caption text-ink-3">{p.detalle}</p>
             <div
               className={cn(

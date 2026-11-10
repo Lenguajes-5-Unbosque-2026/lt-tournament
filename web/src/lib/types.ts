@@ -120,6 +120,10 @@ export type MisTorneos = {
   proximos: Torneo[];
   enCurso: Torneo[];
   finalizados: Torneo[];
+  /** Torneos llenos donde el jugador espera un cupo («Lista de espera»). */
+  espera: Torneo[];
+  /** Estado de la inscripción en cada torneo propio: confirmada o pendiente. */
+  estados: Record<string, "confirmada" | "pendiente">;
 };
 
 /** Una fila del ranking de un juego (V3). */

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { GameArt } from "@/components/game-art";
-import { StatusTag } from "@/components/status-tag";
+import { StatusTag, type EtiquetaTarjeta } from "@/components/status-tag";
 import { TournamentMeta } from "@/components/tournament-meta";
 import { etiquetaEstado } from "@/lib/torneo";
 import type { Torneo } from "@/lib/types";
@@ -14,11 +14,14 @@ export function TournamentCard({
   torneo,
   ahora,
   href = `/torneo/${torneo.id}`,
+  etiqueta,
 }: {
   torneo: Torneo;
   ahora: string;
   /** Destino de la tarjeta; por defecto el Detalle del jugador (J09). */
   href?: string;
+  /** Etiqueta a mostrar; por defecto, el estado del torneo. */
+  etiqueta?: EtiquetaTarjeta;
 }) {
   return (
     <Link
@@ -37,7 +40,7 @@ export function TournamentCard({
           <span className="truncate text-overline text-primary uppercase">
             {torneo.juego.nombre}
           </span>
-          <StatusTag estado={etiquetaEstado(torneo)} />
+          <StatusTag estado={etiqueta ?? etiquetaEstado(torneo)} />
         </div>
         <h3 className="mt-1 truncate text-h3 text-ink">{torneo.nombre}</h3>
         <TournamentMeta torneo={torneo} ahora={ahora} className="mt-1.5" />

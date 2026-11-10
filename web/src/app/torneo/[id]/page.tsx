@@ -144,6 +144,12 @@ async function DetalleTorneo({
               gamertag={jugador.nombreUsuario}
               situacion={yaInscrito ? "inscrito" : cerrada ? "cerrada" : "abierta"}
               cierre={`Cierra ${formatDiaSemana(torneo.cierreInscripciones)} ${formatHora(torneo.cierreInscripciones)}`}
+              // Solo el bracket battle royale (BR · J1) existe por ahora.
+              bracketHref={
+                torneo.estado === "en_curso" && torneo.tipoJuego === "battle_royale"
+                  ? `/torneo/${torneo.id}/bracket`
+                  : undefined
+              }
             />
           </div>
         </>

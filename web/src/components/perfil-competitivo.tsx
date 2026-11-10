@@ -1,25 +1,45 @@
 import Link from "next/link";
 import { Crown, Settings, Trophy, Zap } from "lucide-react";
+import { AchievementCard } from "@/components/achievement-card";
 import { EmptyState } from "@/components/empty-state";
 import { ShareButton } from "@/components/detail-actions";
-import { GameArt } from "@/components/game-art";
+import { HistoryRow } from "@/components/history-row";
 import { ModeSwitch } from "@/components/mode-switch";
 import { PlayerAvatar } from "@/components/player-avatar";
 import { Stat } from "@/components/stat";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
+import type { ItemHistorial, Logro } from "@/lib/progreso";
 import type { PerfilCompetitivo } from "@/lib/types";
 
 /**
  * Perfil competitivo (J18) y su estado vacío (V4): avatar, nombre, etiquetas,
- * segmento de modo, tres cifras y «Últimos torneos». Sin historial, solo esa
- * sección se reemplaza por el aviso «Tu historial está vacío».
+ * segmento de modo, tres cifras, «Logros» y «Últimos torneos». Sin historial,
+ * solo esa sección se reemplaza por el aviso «Tu historial está vacío».
  */
-export function PerfilCompetitivoView({ perfil }: { perfil: PerfilCompetitivo }) {
+export function PerfilCompetitivoView({
+  perfil,
+  logros,
+  ultimos,
+}: {
+  perfil: PerfilCompetitivo;
+  logros: Logro[];
+  /** Los torneos terminados más recientes. */
+  ultimos: ItemHistorial[];
+}) {
   const { jugador } = perfil;
-  const datos = [`@${jugador.nombreUsuario.toLowerCase()}`, perfil.ciudad, perfil.desde && `desde ${perfil.desde}`]
+  const datos = [
+    `@${jugador.nombreUsuario.toLowerCase()}`,
+    perfil.ciudad,
+    perfil.desde && `desde ${perfil.desde}`,
+  ]
     .filter(Boolean)
     .join(" · ");
+  const etiquetaJuego = perfil.juegoPrincipal
+    ? perfil.posicionJuego && perfil.posicionJuego <= 10
+      ? `Top ${perfil.posicionJuego} · ${perfil.juegoPrincipal}`
+      : perfil.juegoPrincipal
+    : "Sin juego principal";
 
   return (
     <>
@@ -46,8 +66,12 @@ export function PerfilCompetitivoView({ perfil }: { perfil: PerfilCompetitivo })
         </h1>
         <p className="mt-1 text-caption text-ink-3">{datos}</p>
         <div className="mt-3 flex items-center gap-2">
-          <Badge variant={perfil.juegoPrincipal ? "accent" : "warning"} dot={false} className="rounded-sm">
-            {perfil.juegoPrincipal ?? "Sin juego principal"}
+          <Badge
+            variant="warning"
+            dot={false}
+            className="rounded-sm"
+          >
+            {etiquetaJuego}
           </Badge>
           <Badge variant="accent" dot={false} className="rounded-sm">
             Nivel {jugador.nivel}
@@ -70,6 +94,19 @@ export function PerfilCompetitivoView({ perfil }: { perfil: PerfilCompetitivo })
         />
       </div>
 
+      {logros.length > 0 && (
+        <section aria-labelledby="logros-titulo" className="mt-6">
+          <h2 id="logros-titulo" className="text-h1 text-ink">
+            Logros
+          </h2>
+          <ul className="mt-4 grid grid-cols-3 gap-2.5">
+            {logros.slice(0, 3).map((l) => (
+              <AchievementCard key={l.id} logro={l} />
+            ))}
+          </ul>
+        </section>
+      )}
+
       <section aria-labelledby="ultimos-titulo" className="mt-6">
         <div className="flex items-center justify-between">
           <h2 id="ultimos-titulo" className="text-h1 text-ink">
@@ -80,7 +117,7 @@ export function PerfilCompetitivoView({ perfil }: { perfil: PerfilCompetitivo })
           </Link>
         </div>
 
-        {perfil.historial.length === 0 ? (
+        {ultimos.length === 0 ? (
           <EmptyState
             icon={Trophy}
             titulo="Tu historial está vacío"
@@ -90,28 +127,8 @@ export function PerfilCompetitivoView({ perfil }: { perfil: PerfilCompetitivo })
           />
         ) : (
           <ul className="mt-4 flex flex-col gap-3">
-            {perfil.historial.slice(0, 3).map(({ torneo, puesto, puntos }) => (
-              <li
-                key={torneo.id}
-                className="flex items-center gap-3 rounded-lg border border-line bg-surface p-3"
-              >
-                <GameArt
-                  src={torneo.imagen}
-                  color1={torneo.juego.color1}
-                  color2={torneo.juego.color2}
-                  abreviatura={torneo.juego.abreviatura}
-                  className="size-12"
-                  sizes="48px"
-                />
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-strong text-ink">{torneo.nombre}</p>
-                  <p className="text-caption text-ink-3">{torneo.juego.nombre}</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-strong text-ink">{puesto}° puesto</p>
-                  <p className="text-caption text-primary">+{puntos} pts</p>
-                </div>
-              </li>
+            {ultimos.slice(0, 3).map((item) => (
+              <HistoryRow key={item.torneoId} item={item} />
             ))}
           </ul>
         )}

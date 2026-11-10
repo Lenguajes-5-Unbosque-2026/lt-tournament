@@ -564,6 +564,9 @@ export function getPerfilCompetitivo(jugadorId: string): PerfilCompetitivo {
   const usuario = leer("usuarios").find((u) => u.id === jugadorId);
   const juego = perfil.juego_principal_id ? juegos().get(perfil.juego_principal_id) : undefined;
   const torneos = new Map(todosLosTorneos().map((t) => [t.id, t]));
+  const posicionJuego = perfil.juego_principal_id
+    ? getRankingDeJuego(perfil.juego_principal_id).findIndex((r) => r.id === jugadorId)
+    : -1;
 
   const historial = leer("posiciones_finales")
     .filter((f) => f.jugador_id === jugadorId && torneos.has(f.torneo_id))
@@ -580,6 +583,7 @@ export function getPerfilCompetitivo(jugadorId: string): PerfilCompetitivo {
     ciudad: usuario?.ciudad ?? "",
     desde: usuario ? Number(usuario.creado_en.slice(0, 4)) : undefined,
     juegoPrincipal: juego?.nombre,
+    posicionJuego: posicionJuego >= 0 ? posicionJuego + 1 : undefined,
     torneosJugados: historial.length,
     victorias: historial.reduce((suma, h) => suma + h.victorias, 0),
     mejorPuesto: historial.length ? Math.min(...historial.map((h) => h.puesto)) : undefined,

@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 const TONOS = {
   accent: "bg-primary-soft text-primary",
   info: "bg-info-soft text-info",
+  neutral: "bg-surface-3 text-ink-2",
 } as const;
 
 /**

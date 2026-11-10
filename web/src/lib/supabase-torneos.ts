@@ -1,5 +1,5 @@
 import "server-only";
-import { supabase } from "./supabase";
+import { getSupabase } from "./supabase";
 import type { EstadoTorneo, Torneo } from "./types";
 
 /** Torneos que se muestran en Explorar (igual que en lib/mock.ts). */
@@ -39,7 +39,7 @@ type FilaTorneo = {
  * consulta falla lanza un error para que lo atrape el error.tsx de la ruta.
  */
 export async function getTorneosVisibles(): Promise<Torneo[]> {
-  const { data, error } = await supabase
+  const { data, error } = await getSupabase()
     .from("torneos")
     .select(
       `id, nombre, imagen, jugadores_por_equipo, cupos, fecha_inicio, estado, ciudad,

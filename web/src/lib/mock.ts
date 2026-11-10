@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { AHORA } from "./ahora";
 import type { EstadoPartida, ResultadoBR, TorneoBR } from "./battle-royale";
 import { parseCsv } from "./csv";
+import type { EstadoLlave, TorneoEliminacion } from "./eliminacion";
 import type { EstadoPartido, TorneoLiga } from "./liga";
 import type {
   EstadoInscripcion,
@@ -385,8 +386,85 @@ export function getTorneoLiga(id: string): TorneoLiga | undefined {
 }
 
 /** Qué bracket tiene el torneo: battle royale, por puntos (liga o suizas) o ninguno con pantallas. */
-export function tipoDeBracket(id: string): "battle_royale" | "liga" | undefined {
+export function tipoDeBracket(id: string): "battle_royale" | "liga" | "eliminacion" | undefined {
   if (getTorneoBR(id)) return "battle_royale";
   if (getTorneoLiga(id)) return "liga";
+  if (getTorneoEliminacion(id)) return "eliminacion";
   return undefined;
+}
+
+/**
+ * Torneo de eliminación directa 1 vs 1 (J16 a O15) con sus jugadores por
+ * seed, partidos guardados y reportes, o `undefined` si no existe o es de
+ * otro formato. Los torneos por equipos quedan fuera del MVP.
+ */
+export function getTorneoEliminacion(id: string): TorneoEliminacion | undefined {
+  const fila = leer("torneos").find((r) => r.id === id);
+  if (
+    !fila ||
+    fila.formato !== "eliminacion_directa" ||
+    Number(fila.jugadores_por_equipo) !== 1
+  ) {
+    return undefined;
+  }
+
+  const perfiles = new Map(leer("perfiles_jugador").map((r) => [r.id, r]));
+  // El cuadro se arma con las inscripciones confirmadas, en orden de seed.
+  const jugadores = leer("inscripciones")
+    .filter((i) => i.torneo_id === id && i.estado === "confirmada")
+    .sort((x, y) => Number(x.seed || 999) - Number(y.seed || 999))
+    .map((i, n) => {
+      const p = perfiles.get(i.jugador_id)!;
+      return {
+        id: p.id,
+        nombre: p.nombre_usuario,
+        imagen: p.imagen,
+        color1: p.color_1,
+        color2: p.color_2,
+        seed: n + 1,
+      };
+    });
+
+  const numero = (v: string) => (v === "" ? null : Number(v));
+  const partidos = leer("partidos")
+    .filter((p) => p.torneo_id === id)
+    .map((p) => ({
+      id: p.id,
+      ronda: Number(p.ronda),
+      orden: Number(p.orden),
+      tercerPuesto: p.nombre_ronda === "Tercer puesto",
+      aId: p.jugador_a_id,
+      bId: p.jugador_b_id,
+      marcadorA: numero(p.marcador_a),
+      marcadorB: numero(p.marcador_b),
+      ganadorId: p.ganador_id || null,
+      estado: p.estado as EstadoLlave,
+      fechaHora: p.fecha_hora,
+      prueba: p.prueba_imagen || null,
+    }));
+
+  const ids = new Set(partidos.map((p) => p.id));
+  const reportes = leer("reportes_resultado")
+    .filter((r) => ids.has(r.partido_id))
+    .map((r) => ({
+      partidoId: r.partido_id,
+      jugadorId: r.jugador_id,
+      marcadorA: Number(r.marcador_a),
+      marcadorB: Number(r.marcador_b),
+      captura: r.captura_imagen || null,
+      creadoEn: r.creado_en,
+    }));
+
+  return {
+    id,
+    nombre: fila.nombre,
+    enlace: fila.enlace,
+    fechaInicio: fila.fecha_inicio,
+    estado: fila.estado,
+    premios: [Number(fila.puntos_1), Number(fila.puntos_2), Number(fila.puntos_3)],
+    jugadores,
+    partidos,
+    reportes,
+    rondaActiva: Math.max(1, ...partidos.map((p) => p.ronda)),
+  };
 }

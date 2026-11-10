@@ -7,8 +7,9 @@ import { cn } from "cn"
 function Progress({
   className,
   value,
+  tone = "accent",
   ...props
-}: ProgressPrimitive.Root.Props) {
+}: ProgressPrimitive.Root.Props & { tone?: "accent" | "success" }) {
   return (
     <ProgressPrimitive.Root
       value={value}
@@ -22,7 +23,10 @@ function Progress({
       >
         <ProgressPrimitive.Indicator
           data-slot="progress-indicator"
-          className="h-full rounded-full bg-primary transition-[width] duration-(--dur-bar) ease-out"
+          className={cn(
+            "h-full rounded-full transition-[width] duration-(--dur-bar) ease-out",
+            tone === "success" ? "bg-success" : "bg-primary"
+          )}
         />
       </ProgressPrimitive.Track>
     </ProgressPrimitive.Root>

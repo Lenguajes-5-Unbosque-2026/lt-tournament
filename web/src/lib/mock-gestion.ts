@@ -50,6 +50,7 @@ export function getInscritosGestion(torneoId: string): ListaInscritos | undefine
               estado: i.estado as EstadoInscrito,
               inscritoEn: i.creado_en,
               checkin: !!i.check_in_en,
+              checkinEn: i.check_in_en || null,
             },
           ]
         : [];

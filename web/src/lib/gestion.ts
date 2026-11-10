@@ -49,6 +49,8 @@ export type Inscrito = Participante & {
   inscritoEn: string;
   /** Hizo check-in. */
   checkin: boolean;
+  /** Hora del check-in (ISO), si lo hizo. */
+  checkinEn: string | null;
 };
 
 export type ListaInscritos = {

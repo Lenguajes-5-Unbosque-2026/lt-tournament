@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { TriangleAlert } from "lucide-react";
+import { Trash2, TriangleAlert } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -68,6 +68,7 @@ export function ExpelDialog({
               setMotivo("");
             }}
           >
+            <Trash2 />
             Sí, expulsar
           </Button>
           <Button variant="secondary" onClick={onCancel}>

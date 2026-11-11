@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { crearCuenta } from "@/app/actions/escritura";
 import { Gamepad2, Lock, Mail, User } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { OptionGroup } from "@/components/option-group";
 import { useRegistro, type PerfilCuenta } from "@/components/registro-provider";
-import { StepProgress } from "@/components/step-progress";
 import { TextField } from "@/components/text-field";
 import { Topbar } from "@/components/topbar";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -45,8 +47,8 @@ function errorDeId(id: string, ocupados: string[]) {
 export function RegistroForm({ idsOcupados }: { idsOcupados: string[] }) {
   const router = useRouter();
   const { datos, actualizar } = useRegistro();
+  const [creando, setCreando] = useState(false);
   const esOrganizador = datos.perfil === "organizador";
-  const pasos = esOrganizador ? 1 : 2;
 
   const errorId = errorDeId(datos.idPublico.trim(), idsOcupados);
   const errorCorreo =
@@ -67,20 +69,25 @@ export function RegistroForm({ idsOcupados }: { idsOcupados: string[] }) {
     !errorContrasena &&
     datos.terminos;
 
-  function crearCuenta() {
+  async function enviarCuenta() {
+    setCreando(true);
+    const r = await crearCuenta({
+      perfil: datos.perfil,
+      nombre: datos.nombre.trim(),
+      idPublico: datos.idPublico.trim(),
+      correo: datos.correo.trim(),
+    });
+    if (!r.ok) {
+      setCreando(false);
+      toast.error("No se pudo crear la cuenta", { description: r.error });
+      return;
+    }
     router.push(esOrganizador ? "/org/panel" : "/registro/juegos");
   }
 
   return (
     <AppShell mode={esOrganizador ? "org" : "player"} navbar={false}>
-      <Topbar
-        title="Crear cuenta"
-        subtitle={`Paso 1 de ${pasos}`}
-        fallbackHref="/bienvenida"
-      />
-      <div className="mt-3">
-        <StepProgress total={pasos} current={1} />
-      </div>
+      <Topbar title="Crear cuenta" fallbackHref="/bienvenida" />
 
       <h2 className="mt-4 font-display text-display-l text-ink uppercase italic">
         Crea tu cuenta
@@ -157,7 +164,7 @@ export function RegistroForm({ idsOcupados }: { idsOcupados: string[] }) {
       </label>
 
       <div className="mt-5 flex flex-col gap-1">
-        <Button className="w-full" disabled={!completo} onClick={crearCuenta}>
+        <Button className="w-full" disabled={!completo || creando} onClick={enviarCuenta}>
           Crear cuenta
         </Button>
         <Link

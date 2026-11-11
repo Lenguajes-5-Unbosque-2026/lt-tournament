@@ -7,11 +7,11 @@ import { NextTournamentCard } from "@/components/next-tournament-card";
 import { ParaTi } from "@/components/para-ti";
 import { AHORA } from "@/lib/ahora";
 import {
-  getJugadorActual,
   getProximoTorneo,
   getTorneoDestacado,
   getTorneosVisibles,
 } from "@/lib/mock";
+import { jugadorPorId } from "@/lib/perfiles";
 import { jugadorActualId } from "@/lib/sesion";
 
 // Chips de juego de J06 (design/flujos/jugador-descubrir-e-inscribirse).
@@ -20,7 +20,7 @@ const JUEGOS_INICIO = ["fc25", "valorant", "fortnite"];
 async function Inicio() {
   // La sesión viene de una cookie: dato de la petición, por eso va en Suspense.
   const jugadorId = await jugadorActualId();
-  const jugador = getJugadorActual(jugadorId);
+  const jugador = await jugadorPorId(jugadorId);
   const torneos = getTorneosVisibles();
   const proximo = getProximoTorneo(torneos, jugadorId);
   const destacado = getTorneoDestacado(torneos.filter((t) => t.id !== proximo?.torneo.id));

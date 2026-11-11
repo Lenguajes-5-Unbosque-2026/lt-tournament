@@ -1,0 +1,32 @@
+name: Portadas de juegos a Supabase
+
+# Cuando se fusiona a main un cambio en las portadas, las sube al bucket «imagenes» de
+# Supabase Storage y actualiza el link en public.juegos. Requiere dos secretos en
+# GitHub (Settings → Secrets and variables → Actions):
+#   SUPABASE_URL                  https://<proyecto>.supabase.co
+#   SUPABASE_SERVICE_ROLE_KEY     la llave «service_role» (Project Settings → API). Es secreta.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "data/mock/imagenes/portada-*.jpg"
+      - ".github/scripts/subir-portadas.mjs"
+      - ".github/workflows/portadas-supabase.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  subir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Subir portadas y actualizar los links
+        run: node .github/scripts/subir-portadas.mjs
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}

@@ -1,13 +1,15 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
+import { jugadorActualId } from "@/lib/sesion";
+import { BracketPendiente } from "@/components/bracket-pendiente";
 import { BRBracketJugador } from "@/components/br-bracket-jugador";
 import { EliminacionBracketJugador } from "@/components/eliminacion-bracket-jugador";
 import { LigaBracketJugador } from "@/components/liga-bracket-jugador";
 import {
   getTorneoBR,
+  getTorneoDetalle,
   getTorneoEliminacion,
   getTorneoLiga,
-  JUGADOR_ACTUAL_ID,
 } from "@/lib/mock";
 
 /**
@@ -16,8 +18,9 @@ import {
  */
 async function Bracket({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  const yo = await jugadorActualId();
   const propio = (jugadores: { id: string }[]) =>
-    jugadores.some((j) => j.id === JUGADOR_ACTUAL_ID) ? JUGADOR_ACTUAL_ID : undefined;
+    jugadores.some((j) => j.id === yo) ? yo : undefined;
 
   const br = getTorneoBR(id);
   if (br) return <BRBracketJugador torneo={br} propioId={propio(br.jugadores)} />;
@@ -29,7 +32,11 @@ async function Bracket({ params }: { params: Promise<{ id: string }> }) {
       <EliminacionBracketJugador torneo={eliminacion} propioId={propio(eliminacion.jugadores)} />
     );
   }
-  notFound();
+  // Torneo sin pantalla de bracket (por equipos, doble eliminación, récord de
+  // puntos…) o sin publicar: se explica en lugar de mostrar un 404.
+  const detalle = getTorneoDetalle(id);
+  if (!detalle) notFound();
+  return <BracketPendiente torneoId={id} nombre={detalle.nombre} />;
 }
 
 export default function BracketPage({ params }: { params: Promise<{ id: string }> }) {

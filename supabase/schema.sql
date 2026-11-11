@@ -1,7 +1,7 @@
 -- LT Tournament · Esquema y datos de prueba
 -- Generado a partir de data/mock/*.csv (no editar a mano los INSERT; regenerar si cambian los CSV).
 -- Los id son texto legible (tor_001, usr_001) para revisar relaciones a mano.
--- Row Level Security activado en todas las tablas: por ahora solo lectura pública, nada de escritura.
+-- Row Level Security activado en todas las tablas: lectura pública; la escritura se habilita con supabase/escritura.sql.
 
 begin;
 
@@ -15,8 +15,6 @@ drop table if exists public.partidas_battle_royale cascade;
 drop table if exists public.reportes_resultado cascade;
 drop table if exists public.partidos cascade;
 drop table if exists public.inscripciones cascade;
-drop table if exists public.equipo_integrantes cascade;
-drop table if exists public.equipos cascade;
 drop table if exists public.torneos cascade;
 drop table if exists public.jugador_juegos cascade;
 drop table if exists public.perfiles_organizador cascade;
@@ -124,32 +122,11 @@ create table public.torneos (
   creado_en timestamptz not null
 );
 
--- Equipos inscritos en torneos por equipos (fuera del MVP)
-create table public.equipos (
-  id text primary key,
-  torneo_id text not null references public.torneos(id),
-  nombre text not null,
-  tag text not null,
-  capitan_id text not null references public.perfiles_jugador(id),
-  codigo_invitacion text,
-  creado_en timestamptz not null
-);
-
--- Integrantes de cada equipo (fuera del MVP)
-create table public.equipo_integrantes (
-  equipo_id text not null references public.equipos(id),
-  jugador_id text not null references public.perfiles_jugador(id),
-  rol text not null check (rol in ('capitan', 'integrante')),
-  estado text not null check (estado in ('aceptado', 'pendiente')),
-  primary key (equipo_id, jugador_id)
-);
-
 -- Inscripción de un jugador a un torneo
 create table public.inscripciones (
   id text primary key,
   torneo_id text not null references public.torneos(id),
   jugador_id text not null references public.perfiles_jugador(id),
-  equipo_id text references public.equipos(id),
   estado text not null check (estado in ('confirmada', 'pendiente', 'espera', 'cancelada')),
   seed integer,
   posicion_espera integer,
@@ -221,7 +198,6 @@ create table public.posiciones_finales (
   id text primary key,
   torneo_id text not null references public.torneos(id),
   jugador_id text not null references public.perfiles_jugador(id),
-  equipo_id text references public.equipos(id),
   posicion integer not null,
   puntos_ranking integer not null,
   partidos_jugados integer not null,
@@ -267,30 +243,30 @@ create table public.notificaciones (
 
 -- juegos (24 filas)
 insert into public.juegos (id, nombre, abreviatura, color_1, color_2, puntos_1, puntos_2, puntos_3, popular, etiquetas, imagen) values
-  ('fc25', 'EA FC 25', 'FC25', '#2fb35a', '#0b3a19', 300, 150, 80, true, array['fútbol', 'deportes', 'consola'], 'portada-fc25.jpg'),
-  ('valorant', 'Valorant', 'VAL', '#e8473f', '#4a0d0e', 400, 200, 100, true, array['shooter', 'táctico', 'pc'], 'portada-valorant.jpg'),
-  ('cs2', 'CS2', 'CS2', '#f2a33a', '#4f2a07', 400, 200, 100, true, array['shooter', 'táctico', 'pc'], 'portada-cs2.jpg'),
-  ('lol', 'League of Legends', 'LOL', '#5d55e0', '#171447', 350, 175, 90, true, array['moba', 'estrategia', 'pc'], 'portada-lol.jpg'),
-  ('fortnite', 'Fortnite', 'FN', '#f07a2c', '#4a1a05', 250, 125, 60, true, array['battle royale', 'shooter'], 'portada-fortnite.jpg'),
-  ('rocket', 'Rocket League', 'RL', '#3f78e8', '#0c1d4b', 300, 150, 80, false, array['fútbol', 'autos', 'deportes'], 'portada-rocket.jpg'),
-  ('freefire', 'Free Fire', 'FF', '#ff9f1c', '#5a2600', 250, 120, 60, true, array['battle royale', 'móvil'], null),
-  ('codm', 'CoD Mobile', 'CODM', '#7a8a6a', '#1d2416', 250, 120, 60, false, array['shooter', 'móvil'], null),
-  ('clash', 'Clash Royale', 'CR', '#3b82f6', '#172554', 200, 100, 50, false, array['estrategia', 'móvil', 'cartas'], null),
-  ('brawl', 'Brawl Stars', 'BS', '#facc15', '#713f12', 200, 100, 50, false, array['acción', 'móvil'], null),
-  ('apex', 'Apex Legends', 'APEX', '#dc2626', '#3f0a0a', 300, 150, 75, false, array['battle royale', 'shooter'], null),
-  ('ow2', 'Overwatch 2', 'OW2', '#f97316', '#3b1606', 300, 150, 75, false, array['shooter', 'héroes'], null),
-  ('dota2', 'Dota 2', 'DOTA', '#b91c1c', '#1c0606', 350, 175, 90, false, array['moba', 'estrategia', 'pc'], null),
-  ('r6', 'Rainbow Six Siege', 'R6', '#64748b', '#0f172a', 300, 150, 75, false, array['shooter', 'táctico'], null),
-  ('sf6', 'Street Fighter 6', 'SF6', '#e11d48', '#3f0616', 250, 125, 60, false, array['pelea', 'consola'], null),
-  ('tekken', 'Tekken 8', 'TK8', '#a855f7', '#2e1065', 250, 125, 60, false, array['pelea', 'consola'], null),
-  ('smash', 'Smash Bros. Ultimate', 'SSBU', '#ef4444', '#450a0a', 250, 125, 60, false, array['pelea', 'nintendo'], null),
-  ('mlbb', 'Mobile Legends', 'MLBB', '#0ea5e9', '#082f49', 250, 125, 60, false, array['moba', 'móvil'], null),
-  ('pubg', 'PUBG', 'PUBG', '#d4a017', '#3d2e05', 250, 125, 60, false, array['battle royale', 'shooter'], null),
-  ('efootball', 'eFootball', 'EFB', '#16a34a', '#052e16', 250, 125, 60, false, array['fútbol', 'deportes'], null),
-  ('nba2k', 'NBA 2K25', '2K25', '#2563eb', '#1e1b4b', 250, 125, 60, false, array['baloncesto', 'deportes'], null),
-  ('mk1', 'Mortal Kombat 1', 'MK1', '#ca8a04', '#1c1402', 200, 100, 50, false, array['pelea', 'consola'], null),
-  ('halo', 'Halo Infinite', 'HALO', '#22c55e', '#052e1a', 250, 125, 60, false, array['shooter', 'consola'], null),
-  ('minecraft', 'Minecraft', 'MC', '#65a30d', '#1a2e05', 150, 75, 40, false, array['construcción', 'creativo'], null);
+  ('fc25', 'EA FC 25', 'FC25', '#2fb35a', '#0b3a19', 100, 97, 94, true, array['fútbol', 'deportes', 'consola'], 'portada-fc25.jpg'),
+  ('valorant', 'Valorant', 'VAL', '#e8473f', '#4a0d0e', 100, 97, 94, true, array['shooter', 'táctico', 'pc'], 'portada-valorant.jpg'),
+  ('cs2', 'CS2', 'CS2', '#f2a33a', '#4f2a07', 100, 97, 94, true, array['shooter', 'táctico', 'pc'], 'portada-cs2.jpg'),
+  ('lol', 'League of Legends', 'LOL', '#5d55e0', '#171447', 100, 97, 94, true, array['moba', 'estrategia', 'pc'], 'portada-lol.jpg'),
+  ('fortnite', 'Fortnite', 'FN', '#f07a2c', '#4a1a05', 100, 97, 94, true, array['battle royale', 'shooter'], 'portada-fortnite.jpg'),
+  ('rocket', 'Rocket League', 'RL', '#3f78e8', '#0c1d4b', 100, 97, 94, false, array['fútbol', 'autos', 'deportes'], 'portada-rocket.jpg'),
+  ('freefire', 'Free Fire', 'FF', '#ff9f1c', '#5a2600', 100, 97, 94, true, array['battle royale', 'móvil'], 'portada-freefire.jpg'),
+  ('codm', 'CoD Mobile', 'CODM', '#7a8a6a', '#1d2416', 100, 97, 94, false, array['shooter', 'móvil'], null),
+  ('clash', 'Clash Royale', 'CR', '#3b82f6', '#172554', 100, 97, 94, false, array['estrategia', 'móvil', 'cartas'], 'portada-clash.jpg'),
+  ('brawl', 'Brawl Stars', 'BS', '#facc15', '#713f12', 100, 97, 94, false, array['acción', 'móvil'], null),
+  ('apex', 'Apex Legends', 'APEX', '#dc2626', '#3f0a0a', 100, 97, 94, false, array['battle royale', 'shooter'], null),
+  ('ow2', 'Overwatch 2', 'OW2', '#f97316', '#3b1606', 100, 97, 94, false, array['shooter', 'héroes'], null),
+  ('dota2', 'Dota 2', 'DOTA', '#b91c1c', '#1c0606', 100, 97, 94, false, array['moba', 'estrategia', 'pc'], null),
+  ('r6', 'Rainbow Six Siege', 'R6', '#64748b', '#0f172a', 100, 97, 94, false, array['shooter', 'táctico'], null),
+  ('sf6', 'Street Fighter 6', 'SF6', '#e11d48', '#3f0616', 100, 97, 94, false, array['pelea', 'consola'], null),
+  ('tekken', 'Tekken 8', 'TK8', '#a855f7', '#2e1065', 100, 97, 94, false, array['pelea', 'consola'], null),
+  ('smash', 'Smash Bros. Ultimate', 'SSBU', '#ef4444', '#450a0a', 100, 97, 94, false, array['pelea', 'nintendo'], 'portada-smash.jpg'),
+  ('mlbb', 'Mobile Legends', 'MLBB', '#0ea5e9', '#082f49', 100, 97, 94, false, array['moba', 'móvil'], null),
+  ('pubg', 'PUBG', 'PUBG', '#d4a017', '#3d2e05', 100, 97, 94, false, array['battle royale', 'shooter'], null),
+  ('efootball', 'eFootball', 'EFB', '#16a34a', '#052e16', 100, 97, 94, false, array['fútbol', 'deportes'], null),
+  ('nba2k', 'NBA 2K25', '2K25', '#2563eb', '#1e1b4b', 100, 97, 94, false, array['baloncesto', 'deportes'], null),
+  ('mk1', 'Mortal Kombat 1', 'MK1', '#ca8a04', '#1c1402', 100, 97, 94, false, array['pelea', 'consola'], null),
+  ('halo', 'Halo Infinite', 'HALO', '#22c55e', '#052e1a', 100, 97, 94, false, array['shooter', 'consola'], null),
+  ('minecraft', 'Minecraft', 'MC', '#65a30d', '#1a2e05', 100, 97, 94, false, array['construcción', 'creativo'], 'portada-minecraft.jpg');
 
 -- usuarios (36 filas)
 insert into public.usuarios (id, nombre, correo, ciudad, modo_actual, creado_en) values
@@ -333,13 +309,13 @@ insert into public.usuarios (id, nombre, correo, ciudad, modo_actual, creado_en)
 
 -- perfiles_jugador (30 filas)
 insert into public.perfiles_jugador (id, nombre_usuario, juego_principal_id, nivel, puntos_ranking, color_1, color_2, imagen, creado_en) values
-  ('usr_001', 'Johitan', 'fc25', 4, 380, '#ff7a29', '#7a2e05', 'avatar-johitan.png', '2025-03-14T10:00:00-05:00'),
-  ('usr_002', 'NovaK', 'fc25', 2, 150, '#e6e6ea', '#5e5e69', 'avatar-novak.png', '2025-04-02T10:00:00-05:00'),
-  ('usr_003', 'Sh4dow', 'valorant', 1, 10, '#2fd07a', '#0b3a19', 'avatar-sh4dow.png', '2025-02-20T10:00:00-05:00'),
+  ('usr_001', 'Johitan', 'fc25', 2, 150, '#ff7a29', '#7a2e05', 'avatar-johitan.png', '2025-03-14T10:00:00-05:00'),
+  ('usr_002', 'NovaK', 'fc25', 1, 88, '#e6e6ea', '#5e5e69', 'avatar-novak.png', '2025-04-02T10:00:00-05:00'),
+  ('usr_003', 'Sh4dow', 'valorant', 1, 13, '#2fd07a', '#0b3a19', 'avatar-sh4dow.png', '2025-02-20T10:00:00-05:00'),
   ('usr_004', 'Mafe', 'valorant', 1, 0, '#a855f7', '#2e1065', 'avatar-mafe.png', '2025-05-11T10:00:00-05:00'),
-  ('usr_005', 'ZeroX', 'fc25', 1, 10, '#ff5a5f', '#4a0d0e', 'avatar-zerox.png', '2025-01-30T10:00:00-05:00'),
+  ('usr_005', 'ZeroX', 'fc25', 1, 63, '#ff5a5f', '#4a0d0e', 'avatar-zerox.png', '2025-01-30T10:00:00-05:00'),
   ('usr_006', 'Kairo', 'lol', 1, 0, '#5aa9ff', '#0c1d4b', 'avatar-kairo.png', '2025-06-08T10:00:00-05:00'),
-  ('usr_007', 'Lupe', 'fc25', 1, 80, '#ffc857', '#5a3d05', 'avatar-lupe.png', '2025-03-27T10:00:00-05:00'),
+  ('usr_007', 'Lupe', 'fc25', 1, 75, '#ffc857', '#5a3d05', 'avatar-lupe.png', '2025-03-27T10:00:00-05:00'),
   ('usr_008', 'Tito', 'fortnite', 1, 0, '#7c7c88', '#1c1c22', 'avatar-tito.png', '2025-07-19T10:00:00-05:00'),
   ('usr_009', 'Vale', 'valorant', 1, 0, '#ff6fa8', '#4a0d2a', 'avatar-vale.png', '2025-08-03T10:00:00-05:00'),
   ('usr_010', 'Rex', null, 1, 0, '#5ec8c8', '#0d3b3b', null, '2026-10-18T10:00:00-05:00'),
@@ -347,22 +323,22 @@ insert into public.perfiles_jugador (id, nombre_usuario, juego_principal_id, niv
   ('usr_012', 'LaMonaGG', 'lol', 1, 0, '#f472b6', '#500724', 'avatar-lamonagg.png', '2025-10-01T10:00:00-05:00'),
   ('usr_013', 'Cucho', 'rocket', 1, 0, '#3f78e8', '#0c1d4b', 'avatar-cucho.png', '2025-11-23T10:00:00-05:00'),
   ('usr_014', 'ElParcero', 'cs2', 1, 0, '#f2a33a', '#4f2a07', 'avatar-elparcero.png', '2025-02-14T10:00:00-05:00'),
-  ('usr_015', 'Juanes10', 'fc25', 4, 310, '#2fb35a', '#0b3a19', 'avatar-juanes10.png', '2025-05-30T10:00:00-05:00'),
+  ('usr_015', 'Juanes10', 'fc25', 2, 138, '#2fb35a', '#0b3a19', 'avatar-juanes10.png', '2025-05-30T10:00:00-05:00'),
   ('usr_016', 'Danna.exe', 'valorant', 1, 0, '#e8473f', '#4a0d0e', 'avatar-danna-exe.png', '2025-12-05T10:00:00-05:00'),
   ('usr_017', 'Chigüiro', 'fortnite', 1, 0, '#a3a35a', '#2a2a0b', 'avatar-chiguiro.png', '2026-01-17T10:00:00-05:00'),
-  ('usr_018', 'Santi_FC', 'fc25', 2, 160, '#16a34a', '#052e16', 'avatar-santi-fc.png', '2025-04-22T10:00:00-05:00'),
+  ('usr_018', 'Santi_FC', 'fc25', 2, 100, '#16a34a', '#052e16', 'avatar-santi-fc.png', '2025-04-22T10:00:00-05:00'),
   ('usr_019', 'xXGuacheXx', 'cs2', 1, 0, '#94a3b8', '#1e293b', 'avatar-xxguachexx.png', '2025-08-29T10:00:00-05:00'),
   ('usr_020', 'Tatán', 'clash', 1, 0, '#3b82f6', '#172554', 'avatar-tatan.png', '2026-02-09T10:00:00-05:00'),
   ('usr_021', 'Frailejón', 'lol', 1, 0, '#84cc16', '#1a2e05', 'avatar-frailejon.png', '2026-03-15T10:00:00-05:00'),
   ('usr_022', 'NeoBog', 'rocket', 1, 0, '#06b6d4', '#083344', 'avatar-neobog.png', '2025-10-28T10:00:00-05:00'),
-  ('usr_023', 'Arepa_Kid', 'fortnite', 1, 10, '#fbbf24', '#451a03', 'avatar-arepa-kid.png', '2026-04-01T10:00:00-05:00'),
-  ('usr_024', 'CaroGG', 'smash', 1, 60, '#ef4444', '#450a0a', 'avatar-carogg.png', '2025-06-16T10:00:00-05:00'),
+  ('usr_023', 'Arepa_Kid', 'fortnite', 1, 25, '#fbbf24', '#451a03', 'avatar-arepa-kid.png', '2026-04-01T10:00:00-05:00'),
+  ('usr_024', 'CaroGG', 'smash', 1, 50, '#ef4444', '#450a0a', 'avatar-carogg.png', '2025-06-16T10:00:00-05:00'),
   ('usr_025', 'Manito', 'freefire', 1, 0, '#fb923c', '#431407', 'avatar-manito.png', '2026-05-20T10:00:00-05:00'),
-  ('usr_026', 'Brayan_GOAT', 'fc25', 1, 20, '#d4a017', '#3d2e05', 'avatar-brayan-goat.png', '2025-09-02T10:00:00-05:00'),
-  ('usr_027', 'Lukitas', 'tekken', 3, 250, '#c084fc', '#3b0764', 'avatar-lukitas.png', '2025-11-11T10:00:00-05:00'),
+  ('usr_026', 'Brayan_GOAT', 'fc25', 1, 75, '#d4a017', '#3d2e05', 'avatar-brayan-goat.png', '2025-09-02T10:00:00-05:00'),
+  ('usr_027', 'Lukitas', 'tekken', 2, 100, '#c084fc', '#3b0764', 'avatar-lukitas.png', '2025-11-11T10:00:00-05:00'),
   ('usr_028', 'Nubecita', 'brawl', 1, 0, '#facc15', '#713f12', 'avatar-nubecita.png', '2026-06-30T10:00:00-05:00'),
   ('usr_029', 'MarianaDelPilarRodriguezCastaneda', 'smash', 1, 0, '#fda4af', '#4c0519', null, '2026-07-07T10:00:00-05:00'),
-  ('usr_030', 'Kami', 'tekken', 2, 125, '#a855f7', '#2e1065', 'avatar-kami.png', '2026-02-27T10:00:00-05:00');
+  ('usr_030', 'Kami', 'tekken', 1, 75, '#a855f7', '#2e1065', 'avatar-kami.png', '2026-02-27T10:00:00-05:00');
 
 -- perfiles_organizador (7 filas)
 insert into public.perfiles_organizador (id, alias, nivel, verificado, valoracion, seguidores, color_1, color_2, imagen, creado_en) values
@@ -436,138 +412,109 @@ insert into public.jugador_juegos (jugador_id, juego_id) values
 
 -- torneos (20 filas)
 insert into public.torneos (id, organizador_id, juego_id, nombre, descripcion, imagen, tipo_juego, formato, jugadores_por_equipo, cupos, partidas_o_rondas, minutos_por_partida, fecha_inicio, cierre_inscripciones, checkin_obligatorio, checkin_minutos_antes, puntos_victoria, puntos_empate, puntos_derrota, puntos_por_kill, puntos_1, puntos_2, puntos_3, puntos_participacion, premio, reglas, estado, precio_cop, ciudad, enlace, creado_en) values
-  ('tor_001', 'usr_031', 'fc25', 'Copa Relámpago Bogotá', 'Torneo 1v1 de FC 25 para la comunidad de Bogotá. Premios al top 3.', 'torneo-copa-relampago-bogota.jpg', 'equipo_vs_equipo', 'eliminacion_directa', 1, 16, null, 30, '2026-10-24T19:00:00-05:00', '2026-10-24T18:00:00-05:00', true, 30, null, null, null, null, 300, 150, 80, 10, 'Trofeo + 300 pts de ranking', array['Check-in 30 min antes en la app', 'Partidos al mejor de 3 · 6 min por tiempo', 'Reporta tu marcador con captura'], 'abierto', 0, 'Bogotá', 'lt.gg/copa-relampago-bogota', '2026-10-03T19:00:00-05:00'),
-  ('tor_002', 'usr_031', 'valorant', 'Liga Nocturna 5v5', 'Valorant 5 vs 5 por equipos, de noche y sin filas eternas. Inscribe a tu equipo completo o complétalo antes del check-in.', 'torneo-liga-nocturna-5v5.jpg', 'equipo_vs_equipo', 'eliminacion_directa', 5, 8, null, 45, '2026-10-30T20:00:00-05:00', '2026-10-30T18:00:00-05:00', true, 30, null, null, null, null, 400, 200, 100, 10, 'Trofeo + 400 pts para cada integrante', array['Check-in 30 min antes en la app', 'Mapas por veto entre capitanes', 'Desconexión: se repite el partido una vez', 'Reporta el marcador con captura'], 'abierto', 0, 'Bogotá', 'lt.gg/liga-nocturna-5v5', '2026-10-05T20:00:00-05:00'),
-  ('tor_003', 'usr_031', 'fortnite', 'Victory Royale Cup', 'Battle royale en solitario: tres partidas, los puntos se acumulan.', 'torneo-victory-royale-cup.jpg', 'battle_royale', 'partidas_acumuladas', 1, 50, 3, 25, '2026-10-22T18:00:00-05:00', '2026-10-22T17:00:00-05:00', true, 30, null, null, null, true, 250, 125, 60, 10, 'Trofeo + 250 pts', array['Check-in 30 min antes en la app', 'Puntos: posición + 1 pt por kill', 'Sube la captura de la tabla final'], 'en_curso', 0, 'Bogotá', 'lt.gg/victory-royale-cup', '2026-10-05T18:00:00-05:00'),
-  ('tor_004', 'usr_032', 'cs2', 'Clutch Masters Bogotá', 'Duelos 1v1 de puntería en CS2. Cupos limitados, hay lista de espera.', 'torneo-clutch-masters-bogota.jpg', 'equipo_vs_equipo', 'eliminacion_directa', 1, 8, null, 20, '2026-11-01T16:00:00-05:00', '2026-11-01T14:00:00-05:00', true, 30, null, null, null, null, 400, 200, 100, 10, 'Medalla + 400 pts', array['Check-in 30 min antes en la app', 'Partidos al mejor de 3 · 6 min por tiempo', 'Reporta tu marcador con captura'], 'abierto', 0, 'Bogotá', 'lt.gg/clutch-masters-bogota', '2026-10-11T16:00:00-05:00'),
-  ('tor_005', 'usr_033', 'lol', 'Grieta Andina', 'Torneo universitario de League of Legends 5v5. Abierto a todas las universidades de la región andina.', 'torneo-grieta-andina.jpg', 'equipo_vs_equipo', 'eliminacion_directa', 5, 8, null, 45, '2026-11-07T15:00:00-05:00', '2026-11-06T15:00:00-05:00', true, 30, null, null, null, null, 350, 175, 90, 10, 'Trofeo + 350 pts', array['Check-in 30 min antes en la app', 'Mapas por veto entre capitanes', 'Desconexión: se repite el partido una vez', 'Reporta el marcador con captura'], 'abierto', 0, 'Bogotá', 'lt.gg/grieta-andina', '2026-10-23T15:00:00-05:00'),
-  ('tor_006', 'usr_001', 'rocket', 'Aerial Masters', '2v2 de Rocket League para los que viven en el aire.', 'torneo-aerial-masters.jpg', 'equipo_vs_equipo', 'eliminacion_directa', 2, 8, null, 15, '2026-10-31T17:00:00-05:00', '2026-10-31T16:00:00-05:00', true, 30, null, null, null, null, 300, 150, 80, 10, 'Trofeo + 300 pts', array['Check-in 30 min antes en la app', 'Partidos al mejor de 3 · 6 min por tiempo', 'Reporta tu marcador con captura'], 'abierto', 0, 'Bogotá', 'lt.gg/aerial-masters', '2026-10-08T17:00:00-05:00'),
-  ('tor_007', 'usr_031', 'fc25', 'Liga Relámpago', 'Liga 1v1 de FC 25: todos contra todos, gana quien sume más.', 'torneo-liga-relampago.jpg', 'por_puntos', 'liga', 1, 8, 5, 20, '2026-10-15T19:00:00-05:00', '2026-10-15T18:00:00-05:00', true, 30, 3, 1, 0, null, 300, 150, 80, 10, 'Trofeo + 300 pts', array['Victoria 3 pts · Empate 1 · Derrota 0', 'Un partido por ronda', 'Reporta el marcador con captura'], 'en_curso', 0, 'Bogotá', 'lt.gg/liga-relampago', '2026-10-02T19:00:00-05:00'),
-  ('tor_008', 'usr_031', 'fc25', 'Liga Nocturna FC', 'Eliminación directa de FC 25 a las 9 pm.', 'torneo-liga-nocturna-fc.jpg', 'equipo_vs_equipo', 'eliminacion_directa', 1, 8, null, 30, '2026-09-19T21:00:00-05:00', '2026-09-19T20:00:00-05:00', true, 30, null, null, null, null, 300, 150, 80, 10, 'Trofeo + 300 pts', array['Check-in 30 min antes en la app', 'Partidos al mejor de 3 · 6 min por tiempo', 'Reporta tu marcador con captura'], 'finalizado', 0, 'Bogotá', 'lt.gg/liga-nocturna-fc', '2026-09-07T21:00:00-05:00'),
-  ('tor_009', 'usr_032', 'fc25', 'Copa Chapinero', 'Torneo exprés de cuatro jugadores en un local de Chapinero.', 'torneo-copa-chapinero.jpg', 'equipo_vs_equipo', 'eliminacion_directa', 1, 4, null, 30, '2026-09-05T16:00:00-05:00', '2026-09-05T15:00:00-05:00', true, 30, null, null, null, null, 300, 150, 80, 10, 'Camiseta + 300 pts', array['Check-in 30 min antes en la app', 'Partidos al mejor de 3 · 6 min por tiempo', 'Reporta tu marcador con captura'], 'finalizado', 0, 'Bogotá', 'lt.gg/copa-chapinero', '2026-08-14T16:00:00-05:00'),
-  ('tor_010', 'usr_001', 'smash', 'Smash Bros Parche', 'Liga relámpago de Smash entre amigos. Todos juegan contra todos.', 'torneo-smash-bros-parche.jpg', 'por_puntos', 'liga', 1, 6, 5, 10, '2026-10-22T20:00:00-05:00', '2026-10-22T19:00:00-05:00', true, 30, 3, 1, 0, null, 250, 125, 60, 10, 'Trofeo + 250 pts', array['Victoria 3 pts · Empate 1 · Derrota 0', '3 stocks · 7 min', 'Sin objetos'], 'checkin', 0, 'Bogotá', 'lt.gg/smash-bros-parche', '2026-10-07T20:00:00-05:00'),
-  ('tor_011', 'usr_032', 'tekken', 'Tekken Fight Club Bogotá', 'Rondas suizas de Tekken 8: te emparejamos con rivales de tu mismo puntaje.', 'torneo-tekken-fight-club-bogota.jpg', 'por_puntos', 'rondas_suizas', 1, 4, 2, 15, '2026-10-10T18:00:00-05:00', '2026-10-10T17:00:00-05:00', true, 30, 3, 1, 0, null, 250, 125, 60, 10, 'Trofeo + 250 pts', array['Victoria 3 pts · Empate 1 · Derrota 0', 'Al mejor de 3 rounds', 'Reporta con captura'], 'finalizado', 0, 'Bogotá', 'lt.gg/tekken-fight-club-bogota', '2026-09-16T18:00:00-05:00'),
-  ('tor_012', 'usr_034', 'clash', 'Copa Pacífico Clash', 'Clash Royale 1v1 desde Cali para todo el país.', 'torneo-copa-pacifico-clash.jpg', 'equipo_vs_equipo', 'eliminacion_directa', 1, 8, null, 10, '2026-11-08T18:00:00-05:00', '2026-11-08T17:00:00-05:00', true, 30, null, null, null, null, 200, 100, 50, 10, 'Trofeo + 200 pts', array['Check-in 30 min antes en la app', 'Partidos al mejor de 3 · 6 min por tiempo', 'Reporta tu marcador con captura'], 'abierto', 0, 'Cali', 'lt.gg/copa-pacifico-clash', '2026-10-23T18:00:00-05:00'),
-  ('tor_013', 'usr_035', 'mk1', 'Kombat Night Barranquilla', 'Noche de Mortal Kombat 1 en Barranquilla.', 'torneo-kombat-night-barranquilla.jpg', 'equipo_vs_equipo', 'eliminacion_directa', 1, 8, null, 15, '2026-10-17T20:00:00-05:00', '2026-10-17T19:00:00-05:00', true, 30, null, null, null, null, 200, 100, 50, 10, 'Trofeo + 200 pts', array['Check-in 30 min antes en la app', 'Partidos al mejor de 3 · 6 min por tiempo', 'Reporta tu marcador con captura'], 'cancelado', 0, 'Medellín', 'lt.gg/kombat-night-barranquilla', '2026-10-04T20:00:00-05:00'),
-  ('tor_014', 'usr_033', 'freefire', 'Torneo Relámpago de Free Fire por Escuadras Universidad Nacional Sede Bogotá Edición Halloween 2026', null, null, 'battle_royale', 'clasificacion_lobbies', 4, 25, 3, 20, '2026-10-31T15:00:00-05:00', '2026-10-31T13:00:00-05:00', true, 30, null, null, null, true, 250, 120, 60, 10, null, array['Check-in 30 min antes en la app', 'Puntos: posición + 1 pt por kill', 'Sube la captura de la tabla final'], 'abierto', 0, 'Bogotá', 'lt.gg/torneo-relampago-de-free-fire', '2026-10-06T15:00:00-05:00'),
-  ('tor_015', 'usr_035', 'brawl', 'Reto Brawl Medellín', 'Borrador: falta definir premios y reglas.', null, 'equipo_vs_equipo', 'eliminacion_directa', 3, 8, null, 10, '2026-11-21T16:00:00-05:00', '2026-11-21T15:00:00-05:00', true, 30, null, null, null, null, 200, 100, 50, 10, null, null, 'borrador', 0, 'Medellín', 'lt.gg/reto-brawl-medellin', '2026-11-06T16:00:00-05:00'),
-  ('tor_016', 'usr_034', 'rocket', 'Récord Rocket Freestyle', 'Gana el mejor puntaje de freestyle en tus intentos.', 'torneo-record-rocket-freestyle.jpg', 'por_puntos', 'record_puntos', 1, 32, 3, 10, '2026-11-14T17:00:00-05:00', '2026-11-14T16:00:00-05:00', true, 30, 3, 1, 0, null, 300, 150, 80, 10, 'Medalla + 300 pts', array['Tres intentos por jugador', 'Cuenta el mejor puntaje', 'Sube la captura de cada intento'], 'abierto', 0, 'Cali', 'lt.gg/record-rocket-freestyle', '2026-10-20T17:00:00-05:00'),
-  ('tor_017', 'usr_033', 'valorant', 'Copa Valorant Universitaria', 'Doble eliminación: nadie se va a la casa con una sola derrota.', 'torneo-copa-valorant-universitaria.jpg', 'equipo_vs_equipo', 'doble_eliminacion', 5, 16, null, 45, '2026-11-28T14:00:00-05:00', '2026-11-27T14:00:00-05:00', true, 30, null, null, null, null, 400, 200, 100, 10, 'Trofeo + 400 pts', array['Check-in 30 min antes en la app', 'Mapas por veto entre capitanes', 'Desconexión: se repite el partido una vez', 'Reporta el marcador con captura'], 'abierto', 0, 'Bogotá', 'lt.gg/copa-valorant-universitaria', '2026-11-15T14:00:00-05:00'),
-  ('tor_018', 'usr_032', 'efootball', 'Copa Pro Chapinero', 'Prueba de torneo con entrada paga. Queda en borrador: el pago no entra en el MVP.', 'torneo-copa-pro-chapinero.jpg', 'equipo_vs_equipo', 'eliminacion_directa', 1, 16, null, 30, '2026-12-05T16:00:00-05:00', '2026-12-05T15:00:00-05:00', true, 30, null, null, null, null, 250, 125, 60, 10, 'Trofeo + 250 pts', array['Check-in 30 min antes en la app', 'Partidos al mejor de 3 · 6 min por tiempo', 'Reporta tu marcador con captura'], 'borrador', 10000, 'Bogotá', 'lt.gg/copa-pro-chapinero', '2026-11-17T16:00:00-05:00'),
-  ('tor_019', 'usr_034', 'minecraft', 'Build Battle Amistoso', 'Torneo amistoso de construcción: no suma puntos de ranking.', 'torneo-build-battle-amistoso.jpg', 'por_puntos', 'record_puntos', 1, 20, 2, 30, '2026-11-15T15:00:00-05:00', '2026-11-15T14:00:00-05:00', true, 30, 3, 1, 0, null, 0, 0, 0, 0, 'Solo por diversión', array['Tema sorpresa por ronda', 'Vota la comunidad'], 'abierto', 0, 'Cali', 'lt.gg/build-battle-amistoso', '2026-10-30T15:00:00-05:00'),
-  ('tor_020', 'usr_033', 'fc25', 'Open Bogotá FC', 'El open más grande de FC 25 en Bogotá. 64 cupos, ronda previa si no se llena el cuadro.', 'torneo-open-bogota-fc.jpg', 'equipo_vs_equipo', 'eliminacion_directa', 1, 64, null, 30, '2026-11-21T10:00:00-05:00', '2026-11-20T10:00:00-05:00', true, 30, null, null, null, null, 300, 150, 80, 10, 'Trofeo + 300 pts', array['Check-in 30 min antes en la app', 'Partidos al mejor de 3 · 6 min por tiempo', 'Reporta tu marcador con captura'], 'abierto', 0, 'Bogotá', 'lt.gg/open-bogota-fc', '2026-11-02T10:00:00-05:00');
-
--- equipos (5 filas)
-insert into public.equipos (id, torneo_id, nombre, tag, capitan_id, codigo_invitacion, creado_en) values
-  ('eq_001', 'tor_002', 'Los Cóndores', 'CND', 'usr_001', 'CND-7K2Q', '2026-10-24T20:00:00-05:00'),
-  ('eq_002', 'tor_002', 'Parche Sur', 'PSR', 'usr_016', 'PSR-4M8T', '2026-10-24T20:00:00-05:00'),
-  ('eq_003', 'tor_005', 'Barón Andino', 'BRN', 'usr_006', 'BRN-2X9P', '2026-11-01T15:00:00-05:00'),
-  ('eq_004', 'tor_006', 'Turbo Chía', 'TRB', 'usr_022', 'TRB-8Q1L', '2026-10-25T17:00:00-05:00'),
-  ('eq_005', 'tor_006', 'Los Que Vuelan Sin Frenos y Sin Saber Aterrizar', 'LQV', 'usr_027', 'LQV-5H3D', '2026-10-25T17:00:00-05:00');
-
--- equipo_integrantes (18 filas)
-insert into public.equipo_integrantes (equipo_id, jugador_id, rol, estado) values
-  ('eq_001', 'usr_001', 'capitan', 'aceptado'),
-  ('eq_001', 'usr_004', 'integrante', 'aceptado'),
-  ('eq_001', 'usr_003', 'integrante', 'aceptado'),
-  ('eq_001', 'usr_006', 'integrante', 'pendiente'),
-  ('eq_002', 'usr_016', 'capitan', 'aceptado'),
-  ('eq_002', 'usr_009', 'integrante', 'aceptado'),
-  ('eq_002', 'usr_019', 'integrante', 'aceptado'),
-  ('eq_002', 'usr_014', 'integrante', 'aceptado'),
-  ('eq_002', 'usr_011', 'integrante', 'aceptado'),
-  ('eq_003', 'usr_006', 'capitan', 'aceptado'),
-  ('eq_003', 'usr_012', 'integrante', 'aceptado'),
-  ('eq_003', 'usr_021', 'integrante', 'aceptado'),
-  ('eq_003', 'usr_013', 'integrante', 'aceptado'),
-  ('eq_003', 'usr_016', 'integrante', 'aceptado'),
-  ('eq_004', 'usr_022', 'capitan', 'aceptado'),
-  ('eq_004', 'usr_013', 'integrante', 'aceptado'),
-  ('eq_005', 'usr_027', 'capitan', 'aceptado'),
-  ('eq_005', 'usr_002', 'integrante', 'aceptado');
+  ('tor_001', 'usr_031', 'fc25', 'Copa Relámpago Bogotá', 'Torneo 1v1 de FC 25 para la comunidad de Bogotá. Premios al top 3.', 'torneo-copa-relampago-bogota.jpg', 'equipo_vs_equipo', 'eliminacion_directa', 1, 16, null, 30, '2026-10-24T19:00:00-05:00', '2026-10-24T18:00:00-05:00', true, 30, null, null, null, null, 100, 94, 88, 10, 'Trofeo + 100 pts de ranking', array['Check-in 30 min antes en la app', 'Partidos al mejor de 3 · 6 min por tiempo', 'Reporta tu marcador con captura'], 'abierto', 0, 'Bogotá', 'lt.gg/copa-relampago-bogota', '2026-10-03T19:00:00-05:00'),
+  ('tor_002', 'usr_031', 'valorant', 'Liga Nocturna 5v5', 'Valorant 5 vs 5 por equipos, de noche y sin filas eternas. Inscribe a tu equipo completo o complétalo antes del check-in.', 'torneo-liga-nocturna-5v5.jpg', 'equipo_vs_equipo', 'eliminacion_directa', 5, 8, null, 45, '2026-10-30T20:00:00-05:00', '2026-10-30T18:00:00-05:00', true, 30, null, null, null, null, 100, 88, 75, 10, 'Trofeo + 100 pts para cada integrante', array['Check-in 30 min antes en la app', 'Mapas por veto entre capitanes', 'Desconexión: se repite el partido una vez', 'Reporta el marcador con captura'], 'abierto', 0, 'Bogotá', 'lt.gg/liga-nocturna-5v5', '2026-10-05T20:00:00-05:00'),
+  ('tor_003', 'usr_031', 'fortnite', 'Victory Royale Cup', 'Battle royale en solitario: tres partidas, los puntos se acumulan.', 'torneo-victory-royale-cup.jpg', 'battle_royale', 'partidas_acumuladas', 1, 50, 3, 25, '2026-10-22T18:00:00-05:00', '2026-10-22T17:00:00-05:00', true, 30, null, null, null, true, 100, 98, 96, 10, 'Trofeo + 100 pts', array['Check-in 30 min antes en la app', 'Puntos: posición + 1 pt por kill', 'Sube la captura de la tabla final'], 'en_curso', 0, 'Bogotá', 'lt.gg/victory-royale-cup', '2026-10-05T18:00:00-05:00'),
+  ('tor_004', 'usr_032', 'cs2', 'Clutch Masters Bogotá', 'Duelos 1v1 de puntería en CS2. Cupos limitados, hay lista de espera.', 'torneo-clutch-masters-bogota.jpg', 'equipo_vs_equipo', 'eliminacion_directa', 1, 8, null, 20, '2026-11-01T16:00:00-05:00', '2026-11-01T14:00:00-05:00', true, 30, null, null, null, null, 100, 88, 75, 10, 'Medalla + 100 pts', array['Check-in 30 min antes en la app', 'Partidos al mejor de 3 · 6 min por tiempo', 'Reporta tu marcador con captura'], 'abierto', 0, 'Bogotá', 'lt.gg/clutch-masters-bogota', '2026-10-11T16:00:00-05:00'),
+  ('tor_005', 'usr_033', 'lol', 'Grieta Andina', 'Torneo universitario de League of Legends 5v5. Abierto a todas las universidades de la región andina.', 'torneo-grieta-andina.jpg', 'equipo_vs_equipo', 'eliminacion_directa', 5, 8, null, 45, '2026-11-07T15:00:00-05:00', '2026-11-06T15:00:00-05:00', true, 30, null, null, null, null, 100, 88, 75, 10, 'Trofeo + 100 pts', array['Check-in 30 min antes en la app', 'Mapas por veto entre capitanes', 'Desconexión: se repite el partido una vez', 'Reporta el marcador con captura'], 'abierto', 0, 'Bogotá', 'lt.gg/grieta-andina', '2026-10-23T15:00:00-05:00'),
+  ('tor_006', 'usr_001', 'rocket', 'Aerial Masters', '2v2 de Rocket League para los que viven en el aire.', 'torneo-aerial-masters.jpg', 'equipo_vs_equipo', 'eliminacion_directa', 2, 8, null, 15, '2026-10-31T17:00:00-05:00', '2026-10-31T16:00:00-05:00', true, 30, null, null, null, null, 100, 88, 75, 10, 'Trofeo + 100 pts', array['Check-in 30 min antes en la app', 'Partidos al mejor de 3 · 6 min por tiempo', 'Reporta tu marcador con captura'], 'abierto', 0, 'Bogotá', 'lt.gg/aerial-masters', '2026-10-08T17:00:00-05:00'),
+  ('tor_007', 'usr_031', 'fc25', 'Liga Relámpago', 'Liga 1v1 de FC 25: todos contra todos, gana quien sume más.', 'torneo-liga-relampago.jpg', 'por_puntos', 'liga', 1, 8, 5, 20, '2026-10-15T19:00:00-05:00', '2026-10-15T18:00:00-05:00', true, 30, 3, 1, 0, null, 100, 88, 75, 10, 'Trofeo + 100 pts', array['Victoria 3 pts · Empate 1 · Derrota 0', 'Un partido por ronda', 'Reporta el marcador con captura'], 'en_curso', 0, 'Bogotá', 'lt.gg/liga-relampago', '2026-10-02T19:00:00-05:00'),
+  ('tor_008', 'usr_031', 'fc25', 'Liga Nocturna FC', 'Eliminación directa de FC 25 a las 9 pm.', 'torneo-liga-nocturna-fc.jpg', 'equipo_vs_equipo', 'eliminacion_directa', 1, 8, null, 30, '2026-09-19T21:00:00-05:00', '2026-09-19T20:00:00-05:00', true, 30, null, null, null, null, 100, 88, 75, 10, 'Trofeo + 100 pts', array['Check-in 30 min antes en la app', 'Partidos al mejor de 3 · 6 min por tiempo', 'Reporta tu marcador con captura'], 'finalizado', 0, 'Bogotá', 'lt.gg/liga-nocturna-fc', '2026-09-07T21:00:00-05:00'),
+  ('tor_009', 'usr_032', 'fc25', 'Copa Chapinero', 'Torneo exprés de cuatro jugadores en un local de Chapinero.', 'torneo-copa-chapinero.jpg', 'equipo_vs_equipo', 'eliminacion_directa', 1, 4, null, 30, '2026-09-05T16:00:00-05:00', '2026-09-05T15:00:00-05:00', true, 30, null, null, null, null, 100, 75, 50, 10, 'Camiseta + 100 pts', array['Check-in 30 min antes en la app', 'Partidos al mejor de 3 · 6 min por tiempo', 'Reporta tu marcador con captura'], 'finalizado', 0, 'Bogotá', 'lt.gg/copa-chapinero', '2026-08-14T16:00:00-05:00'),
+  ('tor_010', 'usr_001', 'smash', 'Smash Bros Parche', 'Liga relámpago de Smash entre amigos. Todos juegan contra todos.', 'torneo-smash-bros-parche.jpg', 'por_puntos', 'liga', 1, 6, 5, 10, '2026-10-22T20:00:00-05:00', '2026-10-22T19:00:00-05:00', true, 30, 3, 1, 0, null, 100, 83, 67, 10, 'Trofeo + 100 pts', array['Victoria 3 pts · Empate 1 · Derrota 0', '3 stocks · 7 min', 'Sin objetos'], 'checkin', 0, 'Bogotá', 'lt.gg/smash-bros-parche', '2026-10-07T20:00:00-05:00'),
+  ('tor_011', 'usr_032', 'tekken', 'Tekken Fight Club Bogotá', 'Rondas suizas de Tekken 8: te emparejamos con rivales de tu mismo puntaje.', 'torneo-tekken-fight-club-bogota.jpg', 'por_puntos', 'rondas_suizas', 1, 4, 2, 15, '2026-10-10T18:00:00-05:00', '2026-10-10T17:00:00-05:00', true, 30, 3, 1, 0, null, 100, 75, 50, 10, 'Trofeo + 100 pts', array['Victoria 3 pts · Empate 1 · Derrota 0', 'Al mejor de 3 rounds', 'Reporta con captura'], 'finalizado', 0, 'Bogotá', 'lt.gg/tekken-fight-club-bogota', '2026-09-16T18:00:00-05:00'),
+  ('tor_012', 'usr_034', 'clash', 'Copa Pacífico Clash', 'Clash Royale 1v1 desde Cali para todo el país.', 'torneo-copa-pacifico-clash.jpg', 'equipo_vs_equipo', 'eliminacion_directa', 1, 8, null, 10, '2026-11-08T18:00:00-05:00', '2026-11-08T17:00:00-05:00', true, 30, null, null, null, null, 100, 88, 75, 10, 'Trofeo + 100 pts', array['Check-in 30 min antes en la app', 'Partidos al mejor de 3 · 6 min por tiempo', 'Reporta tu marcador con captura'], 'abierto', 0, 'Cali', 'lt.gg/copa-pacifico-clash', '2026-10-23T18:00:00-05:00'),
+  ('tor_013', 'usr_035', 'mk1', 'Kombat Night Barranquilla', 'Noche de Mortal Kombat 1 en Barranquilla.', 'torneo-kombat-night-barranquilla.jpg', 'equipo_vs_equipo', 'eliminacion_directa', 1, 8, null, 15, '2026-10-17T20:00:00-05:00', '2026-10-17T19:00:00-05:00', true, 30, null, null, null, null, 100, 88, 75, 10, 'Trofeo + 100 pts', array['Check-in 30 min antes en la app', 'Partidos al mejor de 3 · 6 min por tiempo', 'Reporta tu marcador con captura'], 'cancelado', 0, 'Medellín', 'lt.gg/kombat-night-barranquilla', '2026-10-04T20:00:00-05:00'),
+  ('tor_014', 'usr_033', 'freefire', 'Torneo Relámpago de Free Fire por Escuadras Universidad Nacional Sede Bogotá Edición Halloween 2026', null, null, 'battle_royale', 'clasificacion_lobbies', 4, 25, 3, 20, '2026-10-31T15:00:00-05:00', '2026-10-31T13:00:00-05:00', true, 30, null, null, null, true, 100, 96, 92, 10, null, array['Check-in 30 min antes en la app', 'Puntos: posición + 1 pt por kill', 'Sube la captura de la tabla final'], 'abierto', 0, 'Bogotá', 'lt.gg/torneo-relampago-de-free-fire', '2026-10-06T15:00:00-05:00'),
+  ('tor_015', 'usr_035', 'brawl', 'Reto Brawl Medellín', 'Borrador: falta definir premios y reglas.', null, 'equipo_vs_equipo', 'eliminacion_directa', 3, 8, null, 10, '2026-11-21T16:00:00-05:00', '2026-11-21T15:00:00-05:00', true, 30, null, null, null, null, 100, 88, 75, 10, null, null, 'borrador', 0, 'Medellín', 'lt.gg/reto-brawl-medellin', '2026-11-06T16:00:00-05:00'),
+  ('tor_016', 'usr_034', 'rocket', 'Récord Rocket Freestyle', 'Gana el mejor puntaje de freestyle en tus intentos.', 'torneo-record-rocket-freestyle.jpg', 'por_puntos', 'record_puntos', 1, 32, 3, 10, '2026-11-14T17:00:00-05:00', '2026-11-14T16:00:00-05:00', true, 30, 3, 1, 0, null, 100, 97, 94, 10, 'Medalla + 100 pts', array['Tres intentos por jugador', 'Cuenta el mejor puntaje', 'Sube la captura de cada intento'], 'abierto', 0, 'Cali', 'lt.gg/record-rocket-freestyle', '2026-10-20T17:00:00-05:00'),
+  ('tor_017', 'usr_033', 'valorant', 'Copa Valorant Universitaria', 'Doble eliminación: nadie se va a la casa con una sola derrota.', 'torneo-copa-valorant-universitaria.jpg', 'equipo_vs_equipo', 'doble_eliminacion', 5, 16, null, 45, '2026-11-28T14:00:00-05:00', '2026-11-27T14:00:00-05:00', true, 30, null, null, null, null, 100, 94, 88, 10, 'Trofeo + 100 pts', array['Check-in 30 min antes en la app', 'Mapas por veto entre capitanes', 'Desconexión: se repite el partido una vez', 'Reporta el marcador con captura'], 'abierto', 0, 'Bogotá', 'lt.gg/copa-valorant-universitaria', '2026-11-15T14:00:00-05:00'),
+  ('tor_018', 'usr_032', 'efootball', 'Copa Pro Chapinero', 'Prueba de torneo con entrada paga. Queda en borrador: el pago no entra en el MVP.', 'torneo-copa-pro-chapinero.jpg', 'equipo_vs_equipo', 'eliminacion_directa', 1, 16, null, 30, '2026-12-05T16:00:00-05:00', '2026-12-05T15:00:00-05:00', true, 30, null, null, null, null, 100, 94, 88, 10, 'Trofeo + 100 pts', array['Check-in 30 min antes en la app', 'Partidos al mejor de 3 · 6 min por tiempo', 'Reporta tu marcador con captura'], 'borrador', 10000, 'Bogotá', 'lt.gg/copa-pro-chapinero', '2026-11-17T16:00:00-05:00'),
+  ('tor_019', 'usr_034', 'minecraft', 'Build Battle Amistoso', 'Torneo amistoso de construcción: no suma puntos de ranking.', 'torneo-build-battle-amistoso.jpg', 'por_puntos', 'record_puntos', 1, 20, 2, 30, '2026-11-15T15:00:00-05:00', '2026-11-15T14:00:00-05:00', true, 30, 3, 1, 0, null, 100, 95, 90, 0, 'Solo por diversión', array['Tema sorpresa por ronda', 'Vota la comunidad'], 'abierto', 0, 'Cali', 'lt.gg/build-battle-amistoso', '2026-10-30T15:00:00-05:00'),
+  ('tor_020', 'usr_033', 'fc25', 'Open Bogotá FC', 'El open más grande de FC 25 en Bogotá. 64 cupos, ronda previa si no se llena el cuadro.', 'torneo-open-bogota-fc.jpg', 'equipo_vs_equipo', 'eliminacion_directa', 1, 64, null, 30, '2026-11-21T10:00:00-05:00', '2026-11-20T10:00:00-05:00', true, 30, null, null, null, null, 100, 98, 97, 10, 'Trofeo + 100 pts', array['Check-in 30 min antes en la app', 'Partidos al mejor de 3 · 6 min por tiempo', 'Reporta tu marcador con captura'], 'abierto', 0, 'Bogotá', 'lt.gg/open-bogota-fc', '2026-11-02T10:00:00-05:00');
 
 -- inscripciones (80 filas)
-insert into public.inscripciones (id, torneo_id, jugador_id, equipo_id, estado, seed, posicion_espera, check_in_en, creado_en) values
-  ('ins_001', 'tor_001', 'usr_001', null, 'confirmada', 1, null, null, '2026-10-18T17:00:00-05:00'),
-  ('ins_002', 'tor_001', 'usr_002', null, 'confirmada', 2, null, null, '2026-10-18T14:00:00-05:00'),
-  ('ins_003', 'tor_001', 'usr_003', null, 'confirmada', 3, null, null, '2026-10-20T09:00:00-05:00'),
-  ('ins_004', 'tor_001', 'usr_004', null, 'confirmada', 4, null, null, '2026-10-19T08:00:00-05:00'),
-  ('ins_005', 'tor_001', 'usr_005', null, 'confirmada', 5, null, null, '2026-10-22T10:00:00-05:00'),
-  ('ins_006', 'tor_001', 'usr_006', null, 'confirmada', 6, null, null, '2026-10-21T11:00:00-05:00'),
-  ('ins_007', 'tor_001', 'usr_007', null, 'confirmada', 7, null, null, '2026-10-20T17:00:00-05:00'),
-  ('ins_008', 'tor_001', 'usr_015', null, 'confirmada', 8, null, null, '2026-10-16T13:00:00-05:00'),
-  ('ins_009', 'tor_001', 'usr_008', null, 'pendiente', 9, null, null, '2026-10-19T09:00:00-05:00'),
-  ('ins_010', 'tor_001', 'usr_026', null, 'pendiente', 10, null, null, '2026-10-15T16:00:00-05:00'),
-  ('ins_011', 'tor_002', 'usr_001', 'eq_001', 'confirmada', null, null, null, '2026-10-24T08:00:00-05:00'),
-  ('ins_012', 'tor_002', 'usr_004', 'eq_001', 'confirmada', null, null, null, '2026-10-29T17:00:00-05:00'),
-  ('ins_013', 'tor_002', 'usr_003', 'eq_001', 'confirmada', null, null, null, '2026-10-29T08:00:00-05:00'),
-  ('ins_014', 'tor_002', 'usr_006', 'eq_001', 'pendiente', null, null, null, '2026-10-24T14:00:00-05:00'),
-  ('ins_015', 'tor_002', 'usr_016', 'eq_002', 'confirmada', null, null, null, '2026-10-25T19:00:00-05:00'),
-  ('ins_016', 'tor_002', 'usr_009', 'eq_002', 'confirmada', null, null, null, '2026-10-26T11:00:00-05:00'),
-  ('ins_017', 'tor_002', 'usr_019', 'eq_002', 'confirmada', null, null, null, '2026-10-24T17:00:00-05:00'),
-  ('ins_018', 'tor_002', 'usr_014', 'eq_002', 'confirmada', null, null, null, '2026-10-22T14:00:00-05:00'),
-  ('ins_019', 'tor_002', 'usr_011', 'eq_002', 'confirmada', null, null, null, '2026-10-22T18:00:00-05:00'),
-  ('ins_020', 'tor_003', 'usr_008', null, 'confirmada', 1, null, '2026-10-22T17:47:00-05:00', '2026-10-19T15:00:00-05:00'),
-  ('ins_021', 'tor_003', 'usr_017', null, 'confirmada', 2, null, '2026-10-22T17:32:00-05:00', '2026-10-13T10:00:00-05:00'),
-  ('ins_022', 'tor_003', 'usr_023', null, 'confirmada', 3, null, '2026-10-22T17:47:00-05:00', '2026-10-15T09:00:00-05:00'),
-  ('ins_023', 'tor_003', 'usr_005', null, 'confirmada', 4, null, '2026-10-22T17:43:00-05:00', '2026-10-16T15:00:00-05:00'),
-  ('ins_024', 'tor_003', 'usr_003', null, 'confirmada', 5, null, '2026-10-22T17:51:00-05:00', '2026-10-13T11:00:00-05:00'),
-  ('ins_025', 'tor_003', 'usr_001', null, 'confirmada', 6, null, '2026-10-22T17:53:00-05:00', '2026-10-21T17:00:00-05:00'),
-  ('ins_026', 'tor_003', 'usr_007', null, 'confirmada', 7, null, '2026-10-22T17:51:00-05:00', '2026-10-19T06:00:00-05:00'),
-  ('ins_027', 'tor_003', 'usr_002', null, 'confirmada', 8, null, '2026-10-22T17:34:00-05:00', '2026-10-15T09:00:00-05:00'),
-  ('ins_028', 'tor_003', 'usr_004', null, 'confirmada', 9, null, '2026-10-22T17:53:00-05:00', '2026-10-15T12:00:00-05:00'),
-  ('ins_029', 'tor_003', 'usr_006', null, 'confirmada', 10, null, '2026-10-22T17:36:00-05:00', '2026-10-14T10:00:00-05:00'),
-  ('ins_030', 'tor_004', 'usr_014', null, 'confirmada', 1, null, null, '2026-10-27T08:00:00-05:00'),
-  ('ins_031', 'tor_004', 'usr_019', null, 'confirmada', 2, null, null, '2026-10-31T06:00:00-05:00'),
-  ('ins_032', 'tor_004', 'usr_005', null, 'confirmada', 3, null, null, '2026-10-30T06:00:00-05:00'),
-  ('ins_033', 'tor_004', 'usr_003', null, 'confirmada', 4, null, null, '2026-10-23T04:00:00-05:00'),
-  ('ins_034', 'tor_004', 'usr_022', null, 'confirmada', 5, null, null, '2026-10-27T04:00:00-05:00'),
-  ('ins_035', 'tor_004', 'usr_026', null, 'confirmada', 6, null, null, '2026-10-26T15:00:00-05:00'),
-  ('ins_036', 'tor_004', 'usr_015', null, 'confirmada', 7, null, null, '2026-10-27T10:00:00-05:00'),
-  ('ins_037', 'tor_004', 'usr_018', null, 'confirmada', 8, null, null, '2026-10-29T09:00:00-05:00'),
-  ('ins_038', 'tor_004', 'usr_001', null, 'espera', null, 1, null, '2026-10-31T05:00:00-05:00'),
-  ('ins_039', 'tor_004', 'usr_013', null, 'espera', null, 2, null, '2026-10-27T08:00:00-05:00'),
-  ('ins_040', 'tor_005', 'usr_006', 'eq_003', 'confirmada', null, null, null, '2026-11-04T07:00:00-05:00'),
-  ('ins_041', 'tor_005', 'usr_012', 'eq_003', 'confirmada', null, null, null, '2026-11-05T05:00:00-05:00'),
-  ('ins_042', 'tor_005', 'usr_021', 'eq_003', 'confirmada', null, null, null, '2026-11-02T05:00:00-05:00'),
-  ('ins_043', 'tor_005', 'usr_013', 'eq_003', 'confirmada', null, null, null, '2026-10-29T06:00:00-05:00'),
-  ('ins_044', 'tor_005', 'usr_016', 'eq_003', 'confirmada', null, null, null, '2026-11-03T13:00:00-05:00'),
-  ('ins_045', 'tor_006', 'usr_022', 'eq_004', 'confirmada', null, null, null, '2026-10-25T05:00:00-05:00'),
-  ('ins_046', 'tor_006', 'usr_013', 'eq_004', 'confirmada', null, null, null, '2026-10-28T09:00:00-05:00'),
-  ('ins_047', 'tor_006', 'usr_027', 'eq_005', 'confirmada', null, null, null, '2026-10-22T17:00:00-05:00'),
-  ('ins_048', 'tor_006', 'usr_002', 'eq_005', 'confirmada', null, null, null, '2026-10-25T10:00:00-05:00'),
-  ('ins_049', 'tor_007', 'usr_003', null, 'confirmada', 1, null, '2026-10-15T18:55:00-05:00', '2026-10-13T14:00:00-05:00'),
-  ('ins_050', 'tor_007', 'usr_001', null, 'confirmada', 2, null, '2026-10-15T18:46:00-05:00', '2026-10-11T19:00:00-05:00'),
-  ('ins_051', 'tor_007', 'usr_007', null, 'confirmada', 3, null, '2026-10-15T18:48:00-05:00', '2026-10-13T18:00:00-05:00'),
-  ('ins_052', 'tor_007', 'usr_005', null, 'confirmada', 4, null, '2026-10-15T18:32:00-05:00', '2026-10-07T18:00:00-05:00'),
-  ('ins_053', 'tor_007', 'usr_004', null, 'confirmada', 5, null, '2026-10-15T18:31:00-05:00', '2026-10-06T07:00:00-05:00'),
-  ('ins_054', 'tor_007', 'usr_002', null, 'confirmada', 6, null, '2026-10-15T18:51:00-05:00', '2026-10-12T09:00:00-05:00'),
-  ('ins_055', 'tor_007', 'usr_006', null, 'confirmada', 7, null, '2026-10-15T18:40:00-05:00', '2026-10-06T17:00:00-05:00'),
-  ('ins_056', 'tor_007', 'usr_008', null, 'confirmada', 8, null, '2026-10-15T18:47:00-05:00', '2026-10-06T10:00:00-05:00'),
-  ('ins_057', 'tor_008', 'usr_001', null, 'confirmada', 1, null, '2026-09-19T20:42:00-05:00', '2026-09-15T13:00:00-05:00'),
-  ('ins_058', 'tor_008', 'usr_002', null, 'confirmada', 2, null, '2026-09-19T20:31:00-05:00', '2026-09-15T10:00:00-05:00'),
-  ('ins_059', 'tor_008', 'usr_005', null, 'confirmada', 3, null, '2026-09-19T20:46:00-05:00', '2026-09-12T11:00:00-05:00'),
-  ('ins_060', 'tor_008', 'usr_007', null, 'confirmada', 4, null, '2026-09-19T20:35:00-05:00', '2026-09-13T14:00:00-05:00'),
-  ('ins_061', 'tor_008', 'usr_015', null, 'confirmada', 5, null, '2026-09-19T20:39:00-05:00', '2026-09-11T20:00:00-05:00'),
-  ('ins_062', 'tor_008', 'usr_018', null, 'confirmada', 6, null, '2026-09-19T20:48:00-05:00', '2026-09-15T20:00:00-05:00'),
-  ('ins_063', 'tor_008', 'usr_026', null, 'confirmada', 7, null, '2026-09-19T20:45:00-05:00', '2026-09-18T12:00:00-05:00'),
-  ('ins_064', 'tor_008', 'usr_003', null, 'confirmada', 8, null, '2026-09-19T20:38:00-05:00', '2026-09-15T12:00:00-05:00'),
-  ('ins_065', 'tor_009', 'usr_015', null, 'confirmada', 1, null, '2026-09-05T15:48:00-05:00', '2026-09-04T15:00:00-05:00'),
-  ('ins_066', 'tor_009', 'usr_001', null, 'confirmada', 2, null, '2026-09-05T15:33:00-05:00', '2026-09-04T13:00:00-05:00'),
-  ('ins_067', 'tor_009', 'usr_018', null, 'confirmada', 3, null, '2026-09-05T15:53:00-05:00', '2026-09-04T11:00:00-05:00'),
-  ('ins_068', 'tor_009', 'usr_026', null, 'confirmada', 4, null, '2026-09-05T15:53:00-05:00', '2026-08-27T13:00:00-05:00'),
-  ('ins_069', 'tor_010', 'usr_024', null, 'confirmada', 1, null, '2026-10-22T19:47:00-05:00', '2026-10-14T17:00:00-05:00'),
-  ('ins_070', 'tor_010', 'usr_029', null, 'confirmada', 2, null, null, '2026-10-13T18:00:00-05:00'),
-  ('ins_071', 'tor_010', 'usr_027', null, 'confirmada', 3, null, '2026-10-22T19:40:00-05:00', '2026-10-18T08:00:00-05:00'),
-  ('ins_072', 'tor_010', 'usr_030', null, 'confirmada', 4, null, '2026-10-22T19:40:00-05:00', '2026-10-15T17:00:00-05:00'),
-  ('ins_073', 'tor_010', 'usr_028', null, 'pendiente', 5, null, null, '2026-10-20T19:00:00-05:00'),
-  ('ins_074', 'tor_010', 'usr_020', null, 'confirmada', 6, null, '2026-10-22T19:42:00-05:00', '2026-10-16T14:00:00-05:00'),
-  ('ins_075', 'tor_011', 'usr_027', null, 'confirmada', 1, null, '2026-10-10T17:42:00-05:00', '2026-10-02T07:00:00-05:00'),
-  ('ins_076', 'tor_011', 'usr_030', null, 'confirmada', 2, null, '2026-10-10T17:54:00-05:00', '2026-10-08T18:00:00-05:00'),
-  ('ins_077', 'tor_011', 'usr_024', null, 'confirmada', 3, null, '2026-10-10T17:43:00-05:00', '2026-10-04T06:00:00-05:00'),
-  ('ins_078', 'tor_011', 'usr_023', null, 'confirmada', 4, null, '2026-10-10T17:52:00-05:00', '2026-10-06T15:00:00-05:00'),
-  ('ins_079', 'tor_012', 'usr_020', null, 'confirmada', 1, null, null, '2026-11-04T10:00:00-05:00'),
-  ('ins_080', 'tor_013', 'usr_023', null, 'cancelada', null, null, null, '2026-10-09T18:00:00-05:00');
+insert into public.inscripciones (id, torneo_id, jugador_id, estado, seed, posicion_espera, check_in_en, creado_en) values
+  ('ins_001', 'tor_001', 'usr_001', 'confirmada', 1, null, null, '2026-10-18T17:00:00-05:00'),
+  ('ins_002', 'tor_001', 'usr_002', 'confirmada', 2, null, null, '2026-10-18T14:00:00-05:00'),
+  ('ins_003', 'tor_001', 'usr_003', 'confirmada', 3, null, null, '2026-10-20T09:00:00-05:00'),
+  ('ins_004', 'tor_001', 'usr_004', 'confirmada', 4, null, null, '2026-10-19T08:00:00-05:00'),
+  ('ins_005', 'tor_001', 'usr_005', 'confirmada', 5, null, null, '2026-10-22T10:00:00-05:00'),
+  ('ins_006', 'tor_001', 'usr_006', 'confirmada', 6, null, null, '2026-10-21T11:00:00-05:00'),
+  ('ins_007', 'tor_001', 'usr_007', 'confirmada', 7, null, null, '2026-10-20T17:00:00-05:00'),
+  ('ins_008', 'tor_001', 'usr_015', 'confirmada', 8, null, null, '2026-10-16T13:00:00-05:00'),
+  ('ins_009', 'tor_001', 'usr_008', 'pendiente', 9, null, null, '2026-10-19T09:00:00-05:00'),
+  ('ins_010', 'tor_001', 'usr_026', 'pendiente', 10, null, null, '2026-10-15T16:00:00-05:00'),
+  ('ins_011', 'tor_002', 'usr_001', 'confirmada', null, null, null, '2026-10-24T08:00:00-05:00'),
+  ('ins_012', 'tor_002', 'usr_004', 'confirmada', null, null, null, '2026-10-29T17:00:00-05:00'),
+  ('ins_013', 'tor_002', 'usr_003', 'confirmada', null, null, null, '2026-10-29T08:00:00-05:00'),
+  ('ins_014', 'tor_002', 'usr_006', 'pendiente', null, null, null, '2026-10-24T14:00:00-05:00'),
+  ('ins_015', 'tor_002', 'usr_016', 'confirmada', null, null, null, '2026-10-25T19:00:00-05:00'),
+  ('ins_016', 'tor_002', 'usr_009', 'confirmada', null, null, null, '2026-10-26T11:00:00-05:00'),
+  ('ins_017', 'tor_002', 'usr_019', 'confirmada', null, null, null, '2026-10-24T17:00:00-05:00'),
+  ('ins_018', 'tor_002', 'usr_014', 'confirmada', null, null, null, '2026-10-22T14:00:00-05:00'),
+  ('ins_019', 'tor_002', 'usr_011', 'confirmada', null, null, null, '2026-10-22T18:00:00-05:00'),
+  ('ins_020', 'tor_003', 'usr_008', 'confirmada', 1, null, '2026-10-22T17:47:00-05:00', '2026-10-19T15:00:00-05:00'),
+  ('ins_021', 'tor_003', 'usr_017', 'confirmada', 2, null, '2026-10-22T17:32:00-05:00', '2026-10-13T10:00:00-05:00'),
+  ('ins_022', 'tor_003', 'usr_023', 'confirmada', 3, null, '2026-10-22T17:47:00-05:00', '2026-10-15T09:00:00-05:00'),
+  ('ins_023', 'tor_003', 'usr_005', 'confirmada', 4, null, '2026-10-22T17:43:00-05:00', '2026-10-16T15:00:00-05:00'),
+  ('ins_024', 'tor_003', 'usr_003', 'confirmada', 5, null, '2026-10-22T17:51:00-05:00', '2026-10-13T11:00:00-05:00'),
+  ('ins_025', 'tor_003', 'usr_001', 'confirmada', 6, null, '2026-10-22T17:53:00-05:00', '2026-10-21T17:00:00-05:00'),
+  ('ins_026', 'tor_003', 'usr_007', 'confirmada', 7, null, '2026-10-22T17:51:00-05:00', '2026-10-19T06:00:00-05:00'),
+  ('ins_027', 'tor_003', 'usr_002', 'confirmada', 8, null, '2026-10-22T17:34:00-05:00', '2026-10-15T09:00:00-05:00'),
+  ('ins_028', 'tor_003', 'usr_004', 'confirmada', 9, null, '2026-10-22T17:53:00-05:00', '2026-10-15T12:00:00-05:00'),
+  ('ins_029', 'tor_003', 'usr_006', 'confirmada', 10, null, '2026-10-22T17:36:00-05:00', '2026-10-14T10:00:00-05:00'),
+  ('ins_030', 'tor_004', 'usr_014', 'confirmada', 1, null, null, '2026-10-27T08:00:00-05:00'),
+  ('ins_031', 'tor_004', 'usr_019', 'confirmada', 2, null, null, '2026-10-31T06:00:00-05:00'),
+  ('ins_032', 'tor_004', 'usr_005', 'confirmada', 3, null, null, '2026-10-30T06:00:00-05:00'),
+  ('ins_033', 'tor_004', 'usr_003', 'confirmada', 4, null, null, '2026-10-23T04:00:00-05:00'),
+  ('ins_034', 'tor_004', 'usr_022', 'confirmada', 5, null, null, '2026-10-27T04:00:00-05:00'),
+  ('ins_035', 'tor_004', 'usr_026', 'confirmada', 6, null, null, '2026-10-26T15:00:00-05:00'),
+  ('ins_036', 'tor_004', 'usr_015', 'confirmada', 7, null, null, '2026-10-27T10:00:00-05:00'),
+  ('ins_037', 'tor_004', 'usr_018', 'confirmada', 8, null, null, '2026-10-29T09:00:00-05:00'),
+  ('ins_038', 'tor_004', 'usr_001', 'espera', null, 1, null, '2026-10-31T05:00:00-05:00'),
+  ('ins_039', 'tor_004', 'usr_013', 'espera', null, 2, null, '2026-10-27T08:00:00-05:00'),
+  ('ins_040', 'tor_005', 'usr_006', 'confirmada', null, null, null, '2026-11-04T07:00:00-05:00'),
+  ('ins_041', 'tor_005', 'usr_012', 'confirmada', null, null, null, '2026-11-05T05:00:00-05:00'),
+  ('ins_042', 'tor_005', 'usr_021', 'confirmada', null, null, null, '2026-11-02T05:00:00-05:00'),
+  ('ins_043', 'tor_005', 'usr_013', 'confirmada', null, null, null, '2026-10-29T06:00:00-05:00'),
+  ('ins_044', 'tor_005', 'usr_016', 'confirmada', null, null, null, '2026-11-03T13:00:00-05:00'),
+  ('ins_045', 'tor_006', 'usr_022', 'confirmada', null, null, null, '2026-10-25T05:00:00-05:00'),
+  ('ins_046', 'tor_006', 'usr_013', 'confirmada', null, null, null, '2026-10-28T09:00:00-05:00'),
+  ('ins_047', 'tor_006', 'usr_027', 'confirmada', null, null, null, '2026-10-22T17:00:00-05:00'),
+  ('ins_048', 'tor_006', 'usr_002', 'confirmada', null, null, null, '2026-10-25T10:00:00-05:00'),
+  ('ins_049', 'tor_007', 'usr_003', 'confirmada', 1, null, '2026-10-15T18:55:00-05:00', '2026-10-13T14:00:00-05:00'),
+  ('ins_050', 'tor_007', 'usr_001', 'confirmada', 2, null, '2026-10-15T18:46:00-05:00', '2026-10-11T19:00:00-05:00'),
+  ('ins_051', 'tor_007', 'usr_007', 'confirmada', 3, null, '2026-10-15T18:48:00-05:00', '2026-10-13T18:00:00-05:00'),
+  ('ins_052', 'tor_007', 'usr_005', 'confirmada', 4, null, '2026-10-15T18:32:00-05:00', '2026-10-07T18:00:00-05:00'),
+  ('ins_053', 'tor_007', 'usr_004', 'confirmada', 5, null, '2026-10-15T18:31:00-05:00', '2026-10-06T07:00:00-05:00'),
+  ('ins_054', 'tor_007', 'usr_002', 'confirmada', 6, null, '2026-10-15T18:51:00-05:00', '2026-10-12T09:00:00-05:00'),
+  ('ins_055', 'tor_007', 'usr_006', 'confirmada', 7, null, '2026-10-15T18:40:00-05:00', '2026-10-06T17:00:00-05:00'),
+  ('ins_056', 'tor_007', 'usr_008', 'confirmada', 8, null, '2026-10-15T18:47:00-05:00', '2026-10-06T10:00:00-05:00'),
+  ('ins_057', 'tor_008', 'usr_001', 'confirmada', 1, null, '2026-09-19T20:42:00-05:00', '2026-09-15T13:00:00-05:00'),
+  ('ins_058', 'tor_008', 'usr_002', 'confirmada', 2, null, '2026-09-19T20:31:00-05:00', '2026-09-15T10:00:00-05:00'),
+  ('ins_059', 'tor_008', 'usr_005', 'confirmada', 3, null, '2026-09-19T20:46:00-05:00', '2026-09-12T11:00:00-05:00'),
+  ('ins_060', 'tor_008', 'usr_007', 'confirmada', 4, null, '2026-09-19T20:35:00-05:00', '2026-09-13T14:00:00-05:00'),
+  ('ins_061', 'tor_008', 'usr_015', 'confirmada', 5, null, '2026-09-19T20:39:00-05:00', '2026-09-11T20:00:00-05:00'),
+  ('ins_062', 'tor_008', 'usr_018', 'confirmada', 6, null, '2026-09-19T20:48:00-05:00', '2026-09-15T20:00:00-05:00'),
+  ('ins_063', 'tor_008', 'usr_026', 'confirmada', 7, null, '2026-09-19T20:45:00-05:00', '2026-09-18T12:00:00-05:00'),
+  ('ins_064', 'tor_008', 'usr_003', 'confirmada', 8, null, '2026-09-19T20:38:00-05:00', '2026-09-15T12:00:00-05:00'),
+  ('ins_065', 'tor_009', 'usr_015', 'confirmada', 1, null, '2026-09-05T15:48:00-05:00', '2026-09-04T15:00:00-05:00'),
+  ('ins_066', 'tor_009', 'usr_001', 'confirmada', 2, null, '2026-09-05T15:33:00-05:00', '2026-09-04T13:00:00-05:00'),
+  ('ins_067', 'tor_009', 'usr_018', 'confirmada', 3, null, '2026-09-05T15:53:00-05:00', '2026-09-04T11:00:00-05:00'),
+  ('ins_068', 'tor_009', 'usr_026', 'confirmada', 4, null, '2026-09-05T15:53:00-05:00', '2026-08-27T13:00:00-05:00'),
+  ('ins_069', 'tor_010', 'usr_024', 'confirmada', 1, null, '2026-10-22T19:47:00-05:00', '2026-10-14T17:00:00-05:00'),
+  ('ins_070', 'tor_010', 'usr_029', 'confirmada', 2, null, null, '2026-10-13T18:00:00-05:00'),
+  ('ins_071', 'tor_010', 'usr_027', 'confirmada', 3, null, '2026-10-22T19:40:00-05:00', '2026-10-18T08:00:00-05:00'),
+  ('ins_072', 'tor_010', 'usr_030', 'confirmada', 4, null, '2026-10-22T19:40:00-05:00', '2026-10-15T17:00:00-05:00'),
+  ('ins_073', 'tor_010', 'usr_028', 'pendiente', 5, null, null, '2026-10-20T19:00:00-05:00'),
+  ('ins_074', 'tor_010', 'usr_020', 'confirmada', 6, null, '2026-10-22T19:42:00-05:00', '2026-10-16T14:00:00-05:00'),
+  ('ins_075', 'tor_011', 'usr_027', 'confirmada', 1, null, '2026-10-10T17:42:00-05:00', '2026-10-02T07:00:00-05:00'),
+  ('ins_076', 'tor_011', 'usr_030', 'confirmada', 2, null, '2026-10-10T17:54:00-05:00', '2026-10-08T18:00:00-05:00'),
+  ('ins_077', 'tor_011', 'usr_024', 'confirmada', 3, null, '2026-10-10T17:43:00-05:00', '2026-10-04T06:00:00-05:00'),
+  ('ins_078', 'tor_011', 'usr_023', 'confirmada', 4, null, '2026-10-10T17:52:00-05:00', '2026-10-06T15:00:00-05:00'),
+  ('ins_079', 'tor_012', 'usr_020', 'confirmada', 1, null, null, '2026-11-04T10:00:00-05:00'),
+  ('ins_080', 'tor_013', 'usr_023', 'cancelada', null, null, null, '2026-10-09T18:00:00-05:00');
 
 -- partidos (28 filas)
 insert into public.partidos (id, torneo_id, ronda, nombre_ronda, orden, jugador_a_id, jugador_b_id, marcador_a, marcador_b, ganador_id, estado, resuelto_por, fecha_hora, prueba_imagen, nota) values
@@ -671,23 +618,23 @@ insert into public.resultados_battle_royale (id, partida_br_id, jugador_id, pues
   ('rbr_022', 'pbr_003', 'usr_001', 2, 4, 13, 'reportado', null);
 
 -- posiciones_finales (16 filas)
-insert into public.posiciones_finales (id, torneo_id, jugador_id, equipo_id, posicion, puntos_ranking, partidos_jugados, victorias) values
-  ('pos_001', 'tor_008', 'usr_001', null, 1, 300, 3, 3),
-  ('pos_002', 'tor_008', 'usr_002', null, 2, 150, 3, 2),
-  ('pos_003', 'tor_008', 'usr_007', null, 3, 80, 3, 2),
-  ('pos_004', 'tor_008', 'usr_005', null, 4, 10, 3, 1),
-  ('pos_005', 'tor_008', 'usr_026', null, 5, 10, 1, 0),
-  ('pos_006', 'tor_008', 'usr_015', null, 6, 10, 1, 0),
-  ('pos_007', 'tor_008', 'usr_018', null, 7, 10, 1, 0),
-  ('pos_008', 'tor_008', 'usr_003', null, 8, 10, 1, 0),
-  ('pos_009', 'tor_009', 'usr_015', null, 1, 300, 2, 2),
-  ('pos_010', 'tor_009', 'usr_018', null, 2, 150, 2, 1),
-  ('pos_011', 'tor_009', 'usr_001', null, 3, 80, 2, 1),
-  ('pos_012', 'tor_009', 'usr_026', null, 4, 10, 2, 0),
-  ('pos_013', 'tor_011', 'usr_027', null, 1, 250, 2, 2),
-  ('pos_014', 'tor_011', 'usr_030', null, 2, 125, 2, 1),
-  ('pos_015', 'tor_011', 'usr_024', null, 3, 60, 2, 0),
-  ('pos_016', 'tor_011', 'usr_023', null, 4, 10, 2, 0);
+insert into public.posiciones_finales (id, torneo_id, jugador_id, posicion, puntos_ranking, partidos_jugados, victorias) values
+  ('pos_001', 'tor_008', 'usr_001', 1, 100, 3, 3),
+  ('pos_002', 'tor_008', 'usr_002', 2, 88, 3, 2),
+  ('pos_003', 'tor_008', 'usr_007', 3, 75, 3, 2),
+  ('pos_004', 'tor_008', 'usr_005', 4, 63, 3, 1),
+  ('pos_005', 'tor_008', 'usr_026', 5, 50, 1, 0),
+  ('pos_006', 'tor_008', 'usr_015', 6, 38, 1, 0),
+  ('pos_007', 'tor_008', 'usr_018', 7, 25, 1, 0),
+  ('pos_008', 'tor_008', 'usr_003', 8, 13, 1, 0),
+  ('pos_009', 'tor_009', 'usr_015', 1, 100, 2, 2),
+  ('pos_010', 'tor_009', 'usr_018', 2, 75, 2, 1),
+  ('pos_011', 'tor_009', 'usr_001', 3, 50, 2, 1),
+  ('pos_012', 'tor_009', 'usr_026', 4, 25, 2, 0),
+  ('pos_013', 'tor_011', 'usr_027', 1, 100, 2, 2),
+  ('pos_014', 'tor_011', 'usr_030', 2, 75, 2, 1),
+  ('pos_015', 'tor_011', 'usr_024', 3, 50, 2, 0),
+  ('pos_016', 'tor_011', 'usr_023', 4, 25, 2, 0);
 
 -- mensajes_torneo (16 filas)
 insert into public.mensajes_torneo (id, torneo_id, autor_id, contenido, es_anuncio, fijado, creado_en) values
@@ -762,12 +709,6 @@ create policy "Lectura pública" on public.jugador_juegos for select using (true
 
 alter table public.torneos enable row level security;
 create policy "Lectura pública" on public.torneos for select using (true);
-
-alter table public.equipos enable row level security;
-create policy "Lectura pública" on public.equipos for select using (true);
-
-alter table public.equipo_integrantes enable row level security;
-create policy "Lectura pública" on public.equipo_integrantes for select using (true);
 
 alter table public.inscripciones enable row level security;
 create policy "Lectura pública" on public.inscripciones for select using (true);

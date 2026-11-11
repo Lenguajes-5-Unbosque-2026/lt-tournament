@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { formatDia, formatFechaUtc, formatHora } from "@/lib/format";
 import { getInscripcionPropia, getTorneoDetalle } from "@/lib/mock";
+import { jugadorActualId } from "@/lib/sesion";
 
 const DOS_HORAS_MS = 2 * 3600_000;
 
@@ -22,7 +23,7 @@ async function InscripcionConfirmada({
   const torneo = getTorneoDetalle(id);
   if (!torneo) notFound();
 
-  const propia = getInscripcionPropia(id);
+  const propia = getInscripcionPropia(id, await jugadorActualId());
   // Sin inscripción previa, el seed es el orden de llegada: el siguiente cupo.
   const seed = propia?.seed ?? torneo.inscritos + 1;
 

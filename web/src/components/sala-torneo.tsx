@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { MessageCircle, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
+import { hacerCheckinEnTorneo } from "@/app/actions/escritura";
 import { ActionRow } from "@/components/action-row";
 import { CheckinCard } from "@/components/checkin-card";
 import { CheckList } from "@/components/check-list";
@@ -57,7 +58,12 @@ export function SalaTorneo({ sala }: { sala: Sala }) {
           <CheckinCard
             ventana={ventana}
             hecho={checkinEn}
-            onCheckin={() => {
+            onCheckin={async () => {
+              const r = await hacerCheckinEnTorneo(sala.torneoId);
+              if (!r.ok) {
+                toast.error("No se pudo registrar tu check-in", { description: r.error });
+                return;
+              }
               setCheckinEn(AHORA);
               toast.success("Check-in hecho", { description: "Ya estás listo para tu partido." });
             }}

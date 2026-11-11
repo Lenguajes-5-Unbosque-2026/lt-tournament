@@ -180,9 +180,12 @@ export function getTorneoDetalle(id: string): TorneoDetalle | undefined {
 }
 
 /** Inscripción del jugador actual en el torneo, o `undefined` si no tiene (o la canceló). */
-export function getInscripcionPropia(torneoId: string): InscripcionPropia | undefined {
+export function getInscripcionPropia(
+  torneoId: string,
+  jugadorId: string = JUGADOR_ACTUAL_ID,
+): InscripcionPropia | undefined {
   const fila = leer("inscripciones").find(
-    (i) => i.torneo_id === torneoId && i.jugador_id === JUGADOR_ACTUAL_ID,
+    (i) => i.torneo_id === torneoId && i.jugador_id === jugadorId,
   );
   if (!fila || fila.estado === "cancelada") return undefined;
   return {
@@ -559,12 +562,13 @@ export function getRankingDeJuego(juegoId: string, excluirTorneoId?: string): Fi
 }
 
 /** Datos del Perfil (V4): cifras, juego principal e historial de torneos terminados. */
-export function getPerfilCompetitivo(jugadorId: string): PerfilCompetitivo {
-  const perfil = leer("perfiles_jugador").find((r) => r.id === jugadorId)!;
+export function getPerfilCompetitivo(jugadorId: string, respaldo?: Jugador): PerfilCompetitivo {
+  // Una cuenta nueva (creada en la app) no está en los CSV: `respaldo` trae su perfil de Supabase.
+  const perfil = leer("perfiles_jugador").find((r) => r.id === jugadorId);
   const usuario = leer("usuarios").find((u) => u.id === jugadorId);
-  const juego = perfil.juego_principal_id ? juegos().get(perfil.juego_principal_id) : undefined;
+  const juego = perfil?.juego_principal_id ? juegos().get(perfil.juego_principal_id) : undefined;
   const torneos = new Map(todosLosTorneos().map((t) => [t.id, t]));
-  const posicionJuego = perfil.juego_principal_id
+  const posicionJuego = perfil?.juego_principal_id
     ? getRankingDeJuego(perfil.juego_principal_id).findIndex((r) => r.id === jugadorId)
     : -1;
 
@@ -579,7 +583,7 @@ export function getPerfilCompetitivo(jugadorId: string): PerfilCompetitivo {
     .sort((a, b) => b.torneo.fechaInicio.localeCompare(a.torneo.fechaInicio));
 
   return {
-    jugador: getJugadorActual(jugadorId),
+    jugador: perfil ? getJugadorActual(jugadorId) : respaldo!,
     ciudad: usuario?.ciudad ?? "",
     desde: usuario ? Number(usuario.creado_en.slice(0, 4)) : undefined,
     juegoPrincipal: juego?.nombre,

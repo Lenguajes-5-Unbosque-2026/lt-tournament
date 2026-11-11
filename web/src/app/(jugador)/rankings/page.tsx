@@ -1,7 +1,8 @@
 import { Suspense } from "react";
 import { RankingsView } from "@/components/rankings-view";
-import { getJuegos, getJugadorActual, getRankingDeJuego } from "@/lib/mock";
+import { getJuegos, getRankingDeJuego } from "@/lib/mock";
 import { getAmigosRanking } from "@/lib/mock-progreso";
+import { jugadorPorId } from "@/lib/perfiles";
 import { jugadorActualId } from "@/lib/sesion";
 
 // Chips de juego de V3.
@@ -18,7 +19,7 @@ async function Rankings({ searchParams }: { searchParams: Promise<{ vista?: stri
       juegos={juegos}
       rankings={rankings}
       amigos={getAmigosRanking(yoId)}
-      invitacion={`lt.gg/invitar/${getJugadorActual(yoId).nombreUsuario.toLowerCase()}`}
+      invitacion={`lt.gg/invitar/${(await jugadorPorId(yoId)).nombreUsuario.toLowerCase()}`}
       yoId={yoId}
       // J21 es la pestaña Amigos: /rankings?vista=amigos.
       vistaInicial={vista === "amigos" ? "amigos" : "global"}

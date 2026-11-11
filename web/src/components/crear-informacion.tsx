@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Pencil, Trophy } from "lucide-react";
 import { toast } from "sonner";
@@ -11,15 +11,32 @@ import { TextAreaField, TextField } from "@/components/text-field";
 import { UploadZone } from "@/components/upload-zone";
 import { WizardHeader } from "@/components/wizard-header";
 import { Button } from "@/components/ui/button";
-import { MAX_DESCRIPCION, MAX_NOMBRE } from "@/lib/crear-config";
+import { MAX_DESCRIPCION, MAX_NOMBRE, type Borrador } from "@/lib/crear-config";
 import type { Juego } from "@/lib/types";
 
 /** Paso 1 de 4 · Información (O02): portada, juego, nombre y descripción. */
-export function CrearInformacion({ juegos }: { juegos: Juego[] }) {
+export function CrearInformacion({
+  juegos,
+  copia,
+}: {
+  juegos: Juego[];
+  /** Datos de otro torneo para arrancar copiados («Crear torneo similar»). */
+  copia?: Partial<Borrador>;
+}) {
   const router = useRouter();
   const { borrador, actualizar } = useCrearTorneo();
   const [saliendo, setSaliendo] = useState(false);
   const juego = juegos.find((j) => j.id === borrador.juegoId);
+  // Copia los datos una sola vez al abrir y avisa que es un borrador nuevo.
+  useEffect(() => {
+    if (!copia) return;
+    actualizar(copia);
+    toast.success("Borrador creado a partir de un torneo anterior", {
+      description: "Elige la nueva fecha y publícalo.",
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const completo = borrador.nombre.trim() !== "" && juego !== undefined;
 
   return (

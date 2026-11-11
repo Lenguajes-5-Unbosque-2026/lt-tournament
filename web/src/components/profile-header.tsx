@@ -32,7 +32,7 @@ export function ProfileHeader({
         className="rounded-full ring-2 ring-primary ring-offset-3 ring-offset-bg outline-none transition-transform duration-(--dur-fast) ease-out focus-visible:ring-4 active:scale-94"
       >
         <Avatar className="size-12">
-          <AvatarImage src={srcImagen(imagen)} alt="" />
+          {imagen && <AvatarImage src={srcImagen(imagen)} alt="" />}
           <AvatarFallback
             style={{ backgroundImage: `linear-gradient(140deg, ${color1}, ${color2})` }}
           />

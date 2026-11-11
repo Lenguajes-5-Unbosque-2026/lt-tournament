@@ -1,3 +1,6 @@
+import { Suspense } from "react";
+import { Calendar } from "lucide-react";
+import { EmptyState } from "@/components/empty-state";
 import { FeaturedTournamentCard } from "@/components/featured-tournament-card";
 import { GreetingHeader } from "@/components/greeting-header";
 import { NextTournamentCard } from "@/components/next-tournament-card";
@@ -9,14 +12,17 @@ import {
   getTorneoDestacado,
   getTorneosVisibles,
 } from "@/lib/mock";
+import { jugadorActualId } from "@/lib/sesion";
 
 // Chips de juego de J06 (design/flujos/jugador-descubrir-e-inscribirse).
 const JUEGOS_INICIO = ["fc25", "valorant", "fortnite"];
 
-export default function InicioPage() {
-  const jugador = getJugadorActual();
+async function Inicio() {
+  // La sesión viene de una cookie: dato de la petición, por eso va en Suspense.
+  const jugadorId = await jugadorActualId();
+  const jugador = getJugadorActual(jugadorId);
   const torneos = getTorneosVisibles();
-  const proximo = getProximoTorneo(torneos);
+  const proximo = getProximoTorneo(torneos, jugadorId);
   const destacado = getTorneoDestacado(torneos.filter((t) => t.id !== proximo?.torneo.id));
 
   const juegos = JUEGOS_INICIO.flatMap((id) => {
@@ -29,21 +35,29 @@ export default function InicioPage() {
     <>
       <GreetingHeader jugador={jugador} />
 
-      {proximo && (
-        <section className="mt-5">
-          <h1 className="font-display text-display-l text-ink uppercase italic">
-            Tu próximo torneo
-          </h1>
-          <div className="mt-4">
+      <section className="mt-5">
+        <h1 className="font-display text-display-l text-ink uppercase italic">
+          Tu próximo torneo
+        </h1>
+        <div className="mt-4">
+          {proximo ? (
             <NextTournamentCard
               torneo={proximo.torneo}
               faltanSegundos={proximo.faltanSegundos}
               checkinAbierto={proximo.checkinAbierto}
               ahora={AHORA}
             />
-          </div>
-        </section>
-      )}
+          ) : (
+            // V1: sin torneo próximo ni en curso (aunque tenga finalizados).
+            <EmptyState
+              icon={Calendar}
+              titulo="Aún no tienes torneos"
+              texto="Inscríbete en uno de los recomendados y aquí verás tu check-in, chat y bracket."
+              cta={{ label: "Explorar torneos", href: "/explorar" }}
+            />
+          )}
+        </div>
+      </section>
 
       {destacado && (
         <div className="mt-4">
@@ -53,5 +67,13 @@ export default function InicioPage() {
 
       <ParaTi torneos={paraTi} juegos={juegos} ahora={AHORA} />
     </>
+  );
+}
+
+export default function InicioPage() {
+  return (
+    <Suspense>
+      <Inicio />
+    </Suspense>
   );
 }

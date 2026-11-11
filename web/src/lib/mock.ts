@@ -2,6 +2,7 @@ import "server-only";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { AHORA } from "./ahora";
+import { ventanaCheckin } from "./checkin";
 import type { EstadoPartida, ResultadoBR, TorneoBR } from "./battle-royale";
 import { parseCsv } from "./csv";
 import type { EstadoLlave, TorneoEliminacion } from "./eliminacion";
@@ -18,6 +19,9 @@ import type {
   TipoJuego,
   Organizador,
   ProximoTorneo,
+  FilaRanking,
+  MisTorneos,
+  PerfilCompetitivo,
   TorneoDetalle,
   Torneo,
 } from "./types";
@@ -33,7 +37,7 @@ export const JUGADOR_ACTUAL_ID = "usr_001";
 /** Torneos que se muestran en Inicio y Explorar. */
 const ESTADOS_VISIBLES: EstadoTorneo[] = ["abierto", "checkin", "en_curso"];
 
-function leer(archivo: string) {
+export function leer(archivo: string) {
   const ruta = join(process.cwd(), "src", "data", "mock", `${archivo}.csv`);
   return parseCsv(readFileSync(ruta, "utf8"));
 }
@@ -102,8 +106,8 @@ export function getTorneosVisibles(): Torneo[] {
     .sort((a, b) => a.fechaInicio.localeCompare(b.fechaInicio));
 }
 
-export function getJugadorActual(): Jugador {
-  const perfil = leer("perfiles_jugador").find((r) => r.id === JUGADOR_ACTUAL_ID)!;
+export function getJugadorActual(id: string = JUGADOR_ACTUAL_ID): Jugador {
+  const perfil = leer("perfiles_jugador").find((r) => r.id === id)!;
   return {
     id: perfil.id,
     nombreUsuario: perfil.nombre_usuario,
@@ -126,10 +130,13 @@ export function getTorneoDestacado(torneos: Torneo[]): Torneo | undefined {
  * «Tu próximo torneo»: la inscripción confirmada del jugador con el
  * inicio más cercano a `AHORA`.
  */
-export function getProximoTorneo(torneos: Torneo[]): ProximoTorneo | undefined {
+export function getProximoTorneo(
+  torneos: Torneo[],
+  jugadorId: string = JUGADOR_ACTUAL_ID,
+): ProximoTorneo | undefined {
   const propios = new Set(
     leer("inscripciones")
-      .filter((i) => i.jugador_id === JUGADOR_ACTUAL_ID && i.estado === "confirmada")
+      .filter((i) => i.jugador_id === jugadorId && i.estado === "confirmada")
       .map((i) => i.torneo_id),
   );
   const ahora = new Date(AHORA).getTime();
@@ -146,7 +153,8 @@ export function getProximoTorneo(torneos: Torneo[]): ProximoTorneo | undefined {
     torneo,
     faltanSegundos,
     checkinAbierto:
-      filaTorneo.checkin_obligatorio === "true" && faltanSegundos <= minutosAntes * 60,
+      filaTorneo.checkin_obligatorio === "true" &&
+      ventanaCheckin(torneo.fechaInicio, minutosAntes, AHORA).estado === "abierto",
   };
 }
 
@@ -194,8 +202,8 @@ export function getTorneosSimilares(torneo: Torneo): Torneo[] {
 /** Organizador con la sesión iniciada en los datos de prueba: StreamerNova. */
 export const ORGANIZADOR_ACTUAL_ID = "usr_031";
 
-export function getOrganizadorActual(): OrganizadorActual {
-  const r = leer("perfiles_organizador").find((o) => o.id === ORGANIZADOR_ACTUAL_ID)!;
+export function getOrganizadorActual(id: string = ORGANIZADOR_ACTUAL_ID): OrganizadorActual {
+  const r = leer("perfiles_organizador").find((o) => o.id === id)!;
   return {
     id: r.id,
     alias: r.alias,
@@ -208,9 +216,9 @@ export function getOrganizadorActual(): OrganizadorActual {
 }
 
 /** Torneos del organizador actual, con borradores, del más próximo al más lejano. */
-export function getTorneosDelOrganizador(): Torneo[] {
+export function getTorneosDelOrganizador(id: string = ORGANIZADOR_ACTUAL_ID): Torneo[] {
   return todosLosTorneos()
-    .filter((t) => t.organizador.id === ORGANIZADOR_ACTUAL_ID)
+    .filter((t) => t.organizador.id === id)
     .sort((a, b) => a.fechaInicio.localeCompare(b.fechaInicio));
 }
 
@@ -466,5 +474,119 @@ export function getTorneoEliminacion(id: string): TorneoEliminacion | undefined 
     partidos,
     reportes,
     rondaActiva: Math.max(1, ...partidos.map((p) => p.ronda)),
+  };
+}
+
+/** ¿Hay un perfil de jugador / de organizador con ese id? (la sesión viene de una cookie). */
+export function existePerfilJugador(id: string) {
+  return leer("perfiles_jugador").some((r) => r.id === id);
+}
+
+export function existePerfilOrganizador(id: string) {
+  return leer("perfiles_organizador").some((r) => r.id === id);
+}
+
+/**
+ * Torneos en los que el jugador está inscrito, por pestaña de Mis torneos:
+ * próximos (abierto o check-in), en curso y finalizados. Las inscripciones
+ * canceladas o en lista de espera no cuentan.
+ */
+export function getMisTorneos(jugadorId: string): MisTorneos {
+  const mias = leer("inscripciones").filter((i) => i.jugador_id === jugadorId);
+  const estados: MisTorneos["estados"] = {};
+  for (const i of mias) {
+    if (i.estado === "confirmada" || i.estado === "pendiente") estados[i.torneo_id] = i.estado;
+  }
+  const enEspera = new Set(mias.filter((i) => i.estado === "espera").map((i) => i.torneo_id));
+  const todos = todosLosTorneos().sort((a, b) => a.fechaInicio.localeCompare(b.fechaInicio));
+  const torneos = todos.filter((t) => t.id in estados);
+  return {
+    estados,
+    espera: todos.filter((t) => enEspera.has(t.id)),
+    proximos: torneos.filter((t) => t.estado === "abierto" || t.estado === "checkin"),
+    enCurso: torneos.filter((t) => t.estado === "en_curso"),
+    finalizados: torneos.filter((t) => t.estado === "finalizado").reverse(),
+  };
+}
+
+/** Ids de los amigos aceptados del jugador (conexiones en cualquiera de los dos sentidos). */
+export function getAmigosIds(jugadorId: string): string[] {
+  return leer("conexiones")
+    .filter((c) => c.estado === "aceptado" && (c.jugador_id === jugadorId || c.amigo_id === jugadorId))
+    .map((c) => (c.jugador_id === jugadorId ? c.amigo_id : c.jugador_id));
+}
+
+/**
+ * Ranking de un juego: suma de los puntos de ranking que cada jugador ganó
+ * en torneos finalizados de ese juego (posiciones_finales), de mayor a menor.
+ */
+export function getRankingDeJuego(juegoId: string, excluirTorneoId?: string): FilaRanking[] {
+  const torneosDelJuego = new Set(
+    leer("torneos")
+      .filter((t) => t.juego_id === juegoId && t.id !== excluirTorneoId)
+      .map((t) => t.id),
+  );
+  const perfiles = new Map(leer("perfiles_jugador").map((p) => [p.id, p]));
+  const acumulado = new Map<string, { puntos: number; torneos: number }>();
+
+  for (const f of leer("posiciones_finales")) {
+    if (!torneosDelJuego.has(f.torneo_id)) continue;
+    const previo = acumulado.get(f.jugador_id) ?? { puntos: 0, torneos: 0 };
+    acumulado.set(f.jugador_id, {
+      puntos: previo.puntos + Number(f.puntos_ranking),
+      torneos: previo.torneos + 1,
+    });
+  }
+
+  return [...acumulado.entries()]
+    .flatMap(([id, a]) => {
+      const p = perfiles.get(id);
+      return p
+        ? [
+            {
+              id,
+              nombre: p.nombre_usuario,
+              imagen: p.imagen,
+              color1: p.color_1,
+              color2: p.color_2,
+              puntos: a.puntos,
+              torneos: a.torneos,
+            },
+          ]
+        : [];
+    })
+    .sort((a, b) => b.puntos - a.puntos);
+}
+
+/** Datos del Perfil (V4): cifras, juego principal e historial de torneos terminados. */
+export function getPerfilCompetitivo(jugadorId: string): PerfilCompetitivo {
+  const perfil = leer("perfiles_jugador").find((r) => r.id === jugadorId)!;
+  const usuario = leer("usuarios").find((u) => u.id === jugadorId);
+  const juego = perfil.juego_principal_id ? juegos().get(perfil.juego_principal_id) : undefined;
+  const torneos = new Map(todosLosTorneos().map((t) => [t.id, t]));
+  const posicionJuego = perfil.juego_principal_id
+    ? getRankingDeJuego(perfil.juego_principal_id).findIndex((r) => r.id === jugadorId)
+    : -1;
+
+  const historial = leer("posiciones_finales")
+    .filter((f) => f.jugador_id === jugadorId && torneos.has(f.torneo_id))
+    .map((f) => ({
+      torneo: torneos.get(f.torneo_id)!,
+      puesto: Number(f.posicion),
+      puntos: Number(f.puntos_ranking),
+      victorias: Number(f.victorias || 0),
+    }))
+    .sort((a, b) => b.torneo.fechaInicio.localeCompare(a.torneo.fechaInicio));
+
+  return {
+    jugador: getJugadorActual(jugadorId),
+    ciudad: usuario?.ciudad ?? "",
+    desde: usuario ? Number(usuario.creado_en.slice(0, 4)) : undefined,
+    juegoPrincipal: juego?.nombre,
+    posicionJuego: posicionJuego >= 0 ? posicionJuego + 1 : undefined,
+    torneosJugados: historial.length,
+    victorias: historial.reduce((suma, h) => suma + h.victorias, 0),
+    mejorPuesto: historial.length ? Math.min(...historial.map((h) => h.puesto)) : undefined,
+    historial,
   };
 }

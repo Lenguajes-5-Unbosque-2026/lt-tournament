@@ -1,6 +1,6 @@
 import "server-only";
 import { getSupabase } from "./supabase";
-import type { EstadoTorneo, Torneo } from "./types";
+import type { EstadoTorneo, TipoJuego, Torneo } from "./types";
 
 /** Torneos que se muestran en Explorar (igual que en lib/mock.ts). */
 const ESTADOS_VISIBLES: EstadoTorneo[] = ["abierto", "checkin", "en_curso"];
@@ -16,6 +16,7 @@ type FilaTorneo = {
   id: string;
   nombre: string;
   imagen: string | null;
+  tipo_juego: string;
   jugadores_por_equipo: number;
   cupos: number;
   fecha_inicio: string;
@@ -42,7 +43,7 @@ export async function getTorneosVisibles(): Promise<Torneo[]> {
   const { data, error } = await getSupabase()
     .from("torneos")
     .select(
-      `id, nombre, imagen, jugadores_por_equipo, cupos, fecha_inicio, estado, ciudad,
+      `id, nombre, imagen, tipo_juego, jugadores_por_equipo, cupos, fecha_inicio, estado, ciudad,
        juego:juegos!inner (id, nombre, color_1, color_2, abreviatura, imagen),
        organizador:perfiles_organizador!inner (id, alias, verificado, imagen),
        inscripciones (estado)`,
@@ -57,6 +58,7 @@ export async function getTorneosVisibles(): Promise<Torneo[]> {
     id: t.id,
     nombre: t.nombre,
     imagen: t.imagen ?? "",
+    tipoJuego: t.tipo_juego as TipoJuego,
     jugadoresPorEquipo: t.jugadores_por_equipo,
     cupos: t.cupos,
     inscritos: t.inscripciones.filter((i) => OCUPAN_CUPO.includes(i.estado)).length,

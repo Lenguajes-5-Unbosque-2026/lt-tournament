@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Trophy, Users, Zap } from "lucide-react";
 import { CreateTournamentCard } from "@/components/create-tournament-card";
 import { PanelTorneos } from "@/components/panel-torneos";
@@ -11,11 +12,14 @@ import {
   getTorneosDelOrganizador,
   tipoDeBracket,
 } from "@/lib/mock";
+import { organizadorActualId } from "@/lib/sesion";
 
 /** Panel del organizador (O01): cifras, acceso a crear y «Mis torneos». */
-export default function PanelPage() {
-  const organizador = getOrganizadorActual();
-  const torneos = getTorneosDelOrganizador();
+async function Panel() {
+  // La sesión viene de una cookie: dato de la petición, por eso va en Suspense.
+  const organizadorId = await organizadorActualId();
+  const organizador = getOrganizadorActual(organizadorId);
+  const torneos = getTorneosDelOrganizador(organizadorId);
   // Los finalizados solo se cuentan; no aparecen en la lista (spec, estados del panel).
   const lista = torneos.filter((t) => t.estado !== "finalizado" && t.estado !== "cancelado");
   const resumen = getResumenPanel(torneos);
@@ -51,9 +55,19 @@ export default function PanelPage() {
 
       <PanelTorneos
         torneos={lista}
+        // V5: el vacío es no tener ningún torneo, en cualquier estado.
+        sinTorneos={torneos.length === 0}
         ahora={AHORA}
         conBracket={lista.filter((t) => tipoDeBracket(t.id)).map((t) => t.id)}
       />
     </>
+  );
+}
+
+export default function PanelPage() {
+  return (
+    <Suspense>
+      <Panel />
+    </Suspense>
   );
 }

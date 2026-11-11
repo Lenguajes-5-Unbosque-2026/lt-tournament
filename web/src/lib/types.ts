@@ -114,3 +114,43 @@ export type ResumenPanel = {
   inscritos: number;
   finalizados: number;
 };
+
+/** Torneos del jugador por pestaña de Mis torneos (J13 y J24). */
+export type MisTorneos = {
+  proximos: Torneo[];
+  enCurso: Torneo[];
+  finalizados: Torneo[];
+  /** Torneos llenos donde el jugador espera un cupo («Lista de espera»). */
+  espera: Torneo[];
+  /** Estado de la inscripción en cada torneo propio: confirmada o pendiente. */
+  estados: Record<string, "confirmada" | "pendiente">;
+};
+
+/** Una fila del ranking de un juego (V3). */
+export type FilaRanking = {
+  id: string;
+  nombre: string;
+  imagen: string;
+  color1: string;
+  color2: string;
+  puntos: number;
+  /** Torneos de ese juego que terminó. */
+  torneos: number;
+};
+
+/** Perfil competitivo (V4). */
+export type PerfilCompetitivo = {
+  jugador: Jugador;
+  ciudad: string;
+  /** Año de registro («desde 2025»). */
+  desde?: number;
+  /** Nombre del juego principal; vacío hasta que el jugador lo elige. */
+  juegoPrincipal?: string;
+  /** Su lugar en el ranking de ese juego (1 = primero), si ya tiene puntos. */
+  posicionJuego?: number;
+  torneosJugados: number;
+  victorias: number;
+  /** 1 = campeón; `undefined` si aún no terminó ningún torneo. */
+  mejorPuesto?: number;
+  historial: { torneo: Torneo; puesto: number; puntos: number; victorias: number }[];
+};

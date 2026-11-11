@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+import { ModeSync } from "@/components/mode-sync";
 import { Navbar, type Mode } from "@/components/navbar";
 import { cn } from "@/lib/utils";
 
@@ -21,11 +23,17 @@ export function AppShell({
       data-mode={mode === "org" ? "org" : undefined}
       className="relative mx-auto min-h-dvh w-full max-w-phone bg-bg sm:border-x sm:border-line"
     >
+      <ModeSync org={mode === "org"} />
       <div aria-hidden className="glow pointer-events-none absolute inset-x-0 top-0 h-glow" />
       <main className={cn("relative px-screen pt-6", navbar ? "pb-scroll-nav" : "pb-8")}>
         {children}
       </main>
-      {navbar && <Navbar mode={mode} />}
+      {/* usePathname() de la navbar es dato de la petición: va en Suspense. */}
+      {navbar && (
+        <Suspense>
+          <Navbar mode={mode} />
+        </Suspense>
+      )}
     </div>
   );
 }

@@ -23,7 +23,8 @@ export function ExitWizardDialog({
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSaveDraft?: () => void;
+  /** Guarda el borrador; `false` si falló y no hay que salir. */
+  onSaveDraft?: () => Promise<boolean>;
 }) {
   const router = useRouter();
 
@@ -36,8 +37,8 @@ export function ExitWizardDialog({
         </AlertDialogDescription>
         <AlertDialogFooter>
           <Button
-            onClick={() => {
-              onSaveDraft?.();
+            onClick={async () => {
+              if (onSaveDraft && !(await onSaveDraft())) return;
               toast.success("Borrador guardado");
               router.push("/org/panel");
             }}

@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Info } from "lucide-react";
+import { toast } from "sonner";
+import { inscribirseEnTorneo } from "@/app/actions/escritura";
 import { GameArt } from "@/components/game-art";
 import { KeyValueList } from "@/components/key-value-list";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -63,8 +65,14 @@ function EnrollmentForm({
   const [acepta, setAcepta] = useState(false);
   const [enviando, setEnviando] = useState(false);
 
-  function confirmar() {
+  async function confirmar() {
     setEnviando(true);
+    const r = await inscribirseEnTorneo(torneo.id);
+    if (!r.ok) {
+      setEnviando(false);
+      toast.error("No se pudo registrar tu inscripción", { description: r.error });
+      return;
+    }
     router.push(`/torneo/${torneo.id}/inscripcion`);
   }
 

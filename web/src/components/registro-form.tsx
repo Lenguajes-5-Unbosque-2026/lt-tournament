@@ -1,7 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { crearCuenta } from "@/app/actions/escritura";
 import { Gamepad2, Lock, Mail, User } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { OptionGroup } from "@/components/option-group";
@@ -44,6 +47,7 @@ function errorDeId(id: string, ocupados: string[]) {
 export function RegistroForm({ idsOcupados }: { idsOcupados: string[] }) {
   const router = useRouter();
   const { datos, actualizar } = useRegistro();
+  const [creando, setCreando] = useState(false);
   const esOrganizador = datos.perfil === "organizador";
 
   const errorId = errorDeId(datos.idPublico.trim(), idsOcupados);
@@ -65,7 +69,19 @@ export function RegistroForm({ idsOcupados }: { idsOcupados: string[] }) {
     !errorContrasena &&
     datos.terminos;
 
-  function crearCuenta() {
+  async function enviarCuenta() {
+    setCreando(true);
+    const r = await crearCuenta({
+      perfil: datos.perfil,
+      nombre: datos.nombre.trim(),
+      idPublico: datos.idPublico.trim(),
+      correo: datos.correo.trim(),
+    });
+    if (!r.ok) {
+      setCreando(false);
+      toast.error("No se pudo crear la cuenta", { description: r.error });
+      return;
+    }
     router.push(esOrganizador ? "/org/panel" : "/registro/juegos");
   }
 
@@ -148,7 +164,7 @@ export function RegistroForm({ idsOcupados }: { idsOcupados: string[] }) {
       </label>
 
       <div className="mt-5 flex flex-col gap-1">
-        <Button className="w-full" disabled={!completo} onClick={crearCuenta}>
+        <Button className="w-full" disabled={!completo || creando} onClick={enviarCuenta}>
           Crear cuenta
         </Button>
         <Link

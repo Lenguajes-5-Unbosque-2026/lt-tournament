@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Megaphone, Send, Users } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
+import { enviarMensajeAlChat } from "@/app/actions/escritura";
 import { ChatMessage } from "@/components/chat-message";
 import { SwitchRow } from "@/components/switch-row";
 import { Topbar } from "@/components/topbar";
@@ -33,8 +34,17 @@ export function ChatOrganizador({
   const [mensajes, setMensajes] = useState<MensajeChat[]>(chat.mensajes);
   const vacio = texto.trim() === "";
 
-  function publicar() {
+  async function publicar() {
     if (vacio) return;
+    const r = await enviarMensajeAlChat(chat.torneoId, texto.trim(), {
+      organizador: true,
+      anuncio: true,
+      fijado: fijar,
+    });
+    if (!r.ok) {
+      toast.error("No se pudo publicar el anuncio", { description: r.error });
+      return;
+    }
     setMensajes((m) => [
       ...m,
       {

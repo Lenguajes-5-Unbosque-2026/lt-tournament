@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Clock, GitFork, Ticket, TriangleAlert } from "lucide-react";
 import { toast } from "sonner";
+import { unirseAListaDeEspera } from "@/app/actions/escritura";
 import { EnrollmentSheet, type ResumenTorneo } from "@/components/enrollment-sheet";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -83,12 +84,14 @@ export function EnrollmentCard({
  * y muestra un toast.
  */
 export function WaitlistActions({
+  torneoId,
   inscritos,
   cupos,
   posicionInicial,
   siguientePosicion,
   similaresHref,
 }: {
+  torneoId: string;
   inscritos: number;
   cupos: number;
   /** Posición si el jugador ya estaba en la lista. */
@@ -99,9 +102,14 @@ export function WaitlistActions({
 }) {
   const [posicion, setPosicion] = useState(posicionInicial);
 
-  function unirse() {
-    setPosicion(siguientePosicion);
-    toast.success(`Estás en la lista de espera · #${siguientePosicion}`);
+  async function unirse() {
+    const r = await unirseAListaDeEspera(torneoId);
+    if (!r.ok) {
+      toast.error("No se pudo unir a la lista de espera", { description: r.error });
+      return;
+    }
+    setPosicion(r.posicionEspera);
+    toast.success(`Estás en la lista de espera · #${r.posicionEspera}`);
   }
 
   return (

@@ -1,7 +1,7 @@
 -- LT Tournament · Esquema y datos de prueba
 -- Generado a partir de data/mock/*.csv (no editar a mano los INSERT; regenerar si cambian los CSV).
 -- Los id son texto legible (tor_001, usr_001) para revisar relaciones a mano.
--- Row Level Security activado en todas las tablas: por ahora solo lectura pública, nada de escritura.
+-- Row Level Security activado en todas las tablas: lectura pública; la escritura se habilita con supabase/escritura.sql.
 
 begin;
 

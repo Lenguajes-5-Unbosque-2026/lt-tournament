@@ -32,3 +32,16 @@ export async function organizadorActualId() {
   const id = await usuarioDeSesion();
   return id && existePerfilOrganizador(id) ? id : ORGANIZADOR_ACTUAL_ID;
 }
+
+/**
+ * Id con el que se escribe en Supabase: la cuenta de la cookie, aunque sea
+ * nueva y todavía no esté en los datos de prueba (las lecturas de
+ * `jugadorActualId` caen en Johitan si no la encuentran). Sin sesión, Johitan.
+ */
+export async function jugadorEscrituraId() {
+  return (await usuarioDeSesion()) ?? JUGADOR_ACTUAL_ID;
+}
+
+export async function organizadorEscrituraId() {
+  return (await usuarioDeSesion()) ?? ORGANIZADOR_ACTUAL_ID;
+}

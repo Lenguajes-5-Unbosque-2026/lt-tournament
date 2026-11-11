@@ -1,7 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { guardarJuegosDelJugador } from "@/app/actions/escritura";
 import { AppShell } from "@/components/app-shell";
 import { GameMultiPicker } from "@/components/game-multi-picker";
 import { useRegistro } from "@/components/registro-provider";
@@ -13,6 +16,7 @@ import type { Juego } from "@/lib/types";
 export function RegistroJuegos({ juegos }: { juegos: Juego[] }) {
   const router = useRouter();
   const { datos, actualizar } = useRegistro();
+  const [guardando, setGuardando] = useState(false);
   const elegidos = datos.juegos.length;
 
   return (
@@ -42,7 +46,16 @@ export function RegistroJuegos({ juegos }: { juegos: Juego[] }) {
       </p>
 
       <div className="mt-4 flex flex-col gap-1">
-        <Button className="w-full" disabled={elegidos === 0} onClick={() => router.push("/inicio")}>
+        <Button className="w-full" disabled={elegidos === 0 || guardando} onClick={async () => {
+            setGuardando(true);
+            const r = await guardarJuegosDelJugador(datos.juegos);
+            if (!r.ok) {
+              setGuardando(false);
+              toast.error("No se pudieron guardar tus juegos", { description: r.error });
+              return;
+            }
+            router.push("/inicio");
+          }}>
           Continuar
         </Button>
         <Link href="/inicio" className={`${buttonVariants({ variant: "ghost" })} self-center`}>

@@ -103,6 +103,7 @@ async function DetalleTorneo({
 
       {lleno ? (
         <WaitlistActions
+          torneoId={torneo.id}
           inscritos={torneo.inscritos}
           cupos={torneo.cupos}
           posicionInicial={propia?.estado === "espera" ? propia.posicionEspera : null}

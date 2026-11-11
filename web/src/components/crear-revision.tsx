@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { TriangleAlert, Ticket, Zap } from "lucide-react";
@@ -36,7 +37,8 @@ export function CrearRevision({
   organizador: Organizador;
 }) {
   const router = useRouter();
-  const { borrador: b } = useCrearTorneo();
+  const { borrador: b, guardar } = useCrearTorneo();
+  const [guardando, setGuardando] = useState(false);
   const juego = juegos.find((j) => j.id === b.juegoId);
   const inicio = inicioDelBorrador(b);
 
@@ -134,16 +136,28 @@ export function CrearRevision({
       </Alert>
 
       <div className="mt-4 flex flex-col gap-3">
-        <Button className="w-full" onClick={() => router.push("/org/crear/publicado")}>
+        <Button
+          className="w-full"
+          disabled={guardando}
+          onClick={async () => {
+            setGuardando(true);
+            if (await guardar("abierto")) router.push("/org/crear/publicado");
+            else setGuardando(false);
+          }}
+        >
           <Zap />
           Publicar torneo
         </Button>
         <Button
           variant="secondary"
           className="w-full"
-          onClick={() => {
-            toast.success("Borrador guardado");
-            router.push("/org/panel");
+          disabled={guardando}
+          onClick={async () => {
+            setGuardando(true);
+            if (await guardar("borrador")) {
+              toast.success("Borrador guardado");
+              router.push("/org/panel");
+            } else setGuardando(false);
           }}
         >
           Guardar como borrador

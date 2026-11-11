@@ -249,9 +249,9 @@ insert into public.juegos (id, nombre, abreviatura, color_1, color_2, puntos_1, 
   ('lol', 'League of Legends', 'LOL', '#5d55e0', '#171447', 100, 97, 94, true, array['moba', 'estrategia', 'pc'], 'portada-lol.jpg'),
   ('fortnite', 'Fortnite', 'FN', '#f07a2c', '#4a1a05', 100, 97, 94, true, array['battle royale', 'shooter'], 'portada-fortnite.jpg'),
   ('rocket', 'Rocket League', 'RL', '#3f78e8', '#0c1d4b', 100, 97, 94, false, array['fútbol', 'autos', 'deportes'], 'portada-rocket.jpg'),
-  ('freefire', 'Free Fire', 'FF', '#ff9f1c', '#5a2600', 100, 97, 94, true, array['battle royale', 'móvil'], null),
+  ('freefire', 'Free Fire', 'FF', '#ff9f1c', '#5a2600', 100, 97, 94, true, array['battle royale', 'móvil'], 'portada-freefire.jpg'),
   ('codm', 'CoD Mobile', 'CODM', '#7a8a6a', '#1d2416', 100, 97, 94, false, array['shooter', 'móvil'], null),
-  ('clash', 'Clash Royale', 'CR', '#3b82f6', '#172554', 100, 97, 94, false, array['estrategia', 'móvil', 'cartas'], null),
+  ('clash', 'Clash Royale', 'CR', '#3b82f6', '#172554', 100, 97, 94, false, array['estrategia', 'móvil', 'cartas'], 'portada-clash.jpg'),
   ('brawl', 'Brawl Stars', 'BS', '#facc15', '#713f12', 100, 97, 94, false, array['acción', 'móvil'], null),
   ('apex', 'Apex Legends', 'APEX', '#dc2626', '#3f0a0a', 100, 97, 94, false, array['battle royale', 'shooter'], null),
   ('ow2', 'Overwatch 2', 'OW2', '#f97316', '#3b1606', 100, 97, 94, false, array['shooter', 'héroes'], null),
@@ -259,14 +259,14 @@ insert into public.juegos (id, nombre, abreviatura, color_1, color_2, puntos_1, 
   ('r6', 'Rainbow Six Siege', 'R6', '#64748b', '#0f172a', 100, 97, 94, false, array['shooter', 'táctico'], null),
   ('sf6', 'Street Fighter 6', 'SF6', '#e11d48', '#3f0616', 100, 97, 94, false, array['pelea', 'consola'], null),
   ('tekken', 'Tekken 8', 'TK8', '#a855f7', '#2e1065', 100, 97, 94, false, array['pelea', 'consola'], null),
-  ('smash', 'Smash Bros. Ultimate', 'SSBU', '#ef4444', '#450a0a', 100, 97, 94, false, array['pelea', 'nintendo'], null),
+  ('smash', 'Smash Bros. Ultimate', 'SSBU', '#ef4444', '#450a0a', 100, 97, 94, false, array['pelea', 'nintendo'], 'portada-smash.jpg'),
   ('mlbb', 'Mobile Legends', 'MLBB', '#0ea5e9', '#082f49', 100, 97, 94, false, array['moba', 'móvil'], null),
   ('pubg', 'PUBG', 'PUBG', '#d4a017', '#3d2e05', 100, 97, 94, false, array['battle royale', 'shooter'], null),
   ('efootball', 'eFootball', 'EFB', '#16a34a', '#052e16', 100, 97, 94, false, array['fútbol', 'deportes'], null),
   ('nba2k', 'NBA 2K25', '2K25', '#2563eb', '#1e1b4b', 100, 97, 94, false, array['baloncesto', 'deportes'], null),
   ('mk1', 'Mortal Kombat 1', 'MK1', '#ca8a04', '#1c1402', 100, 97, 94, false, array['pelea', 'consola'], null),
   ('halo', 'Halo Infinite', 'HALO', '#22c55e', '#052e1a', 100, 97, 94, false, array['shooter', 'consola'], null),
-  ('minecraft', 'Minecraft', 'MC', '#65a30d', '#1a2e05', 100, 97, 94, false, array['construcción', 'creativo'], null);
+  ('minecraft', 'Minecraft', 'MC', '#65a30d', '#1a2e05', 100, 97, 94, false, array['construcción', 'creativo'], 'portada-minecraft.jpg');
 
 -- usuarios (36 filas)
 insert into public.usuarios (id, nombre, correo, ciudad, modo_actual, creado_en) values

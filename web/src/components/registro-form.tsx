@@ -6,7 +6,6 @@ import { Gamepad2, Lock, Mail, User } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { OptionGroup } from "@/components/option-group";
 import { useRegistro, type PerfilCuenta } from "@/components/registro-provider";
-import { StepProgress } from "@/components/step-progress";
 import { TextField } from "@/components/text-field";
 import { Topbar } from "@/components/topbar";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -46,7 +45,6 @@ export function RegistroForm({ idsOcupados }: { idsOcupados: string[] }) {
   const router = useRouter();
   const { datos, actualizar } = useRegistro();
   const esOrganizador = datos.perfil === "organizador";
-  const pasos = esOrganizador ? 1 : 2;
 
   const errorId = errorDeId(datos.idPublico.trim(), idsOcupados);
   const errorCorreo =
@@ -73,14 +71,7 @@ export function RegistroForm({ idsOcupados }: { idsOcupados: string[] }) {
 
   return (
     <AppShell mode={esOrganizador ? "org" : "player"} navbar={false}>
-      <Topbar
-        title="Crear cuenta"
-        subtitle={`Paso 1 de ${pasos}`}
-        fallbackHref="/bienvenida"
-      />
-      <div className="mt-3">
-        <StepProgress total={pasos} current={1} />
-      </div>
+      <Topbar title="Crear cuenta" fallbackHref="/bienvenida" />
 
       <h2 className="mt-4 font-display text-display-l text-ink uppercase italic">
         Crea tu cuenta

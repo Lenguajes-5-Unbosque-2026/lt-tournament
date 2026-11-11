@@ -321,30 +321,30 @@ Si tampoco, la abreviatura (.art__abbr) en display de blanco al 92 %.
 Colores por juego:
 
 Juego	id	c1	c2	Puntos 1°/2°/3°
-EA FC 25	fc25	#2fb35a	#0b3a19	300 / 150 / 80
-Valorant	valorant	#e8473f	#4a0d0e	400 / 200 / 100
-CS2	cs2	#f2a33a	#4f2a07	400 / 200 / 100
-League of Legends	lol	#5d55e0	#171447	350 / 175 / 90
-Fortnite	fortnite	#f07a2c	#4a1a05	250 / 125 / 60
-Rocket League	rocket	#3f78e8	#0c1d4b	300 / 150 / 80
-Free Fire	freefire	#ff9f1c	#5a2600	250 / 120 / 60
-CoD Mobile	codm	#7a8a6a	#1d2416	250 / 120 / 60
-Clash Royale	clash	#3b82f6	#172554	200 / 100 / 50
-Brawl Stars	brawl	#facc15	#713f12	200 / 100 / 50
-Apex Legends	apex	#dc2626	#3f0a0a	300 / 150 / 75
-Overwatch 2	ow2	#f97316	#3b1606	300 / 150 / 75
-Dota 2	dota2	#b91c1c	#1c0606	350 / 175 / 90
-Rainbow Six Siege	r6	#64748b	#0f172a	300 / 150 / 75
-Street Fighter 6	sf6	#e11d48	#3f0616	250 / 125 / 60
-Tekken 8	tekken	#a855f7	#2e1065	250 / 125 / 60
-Smash Bros. Ultimate	smash	#ef4444	#450a0a	250 / 125 / 60
-Mobile Legends	mlbb	#0ea5e9	#082f49	250 / 125 / 60
-PUBG	pubg	#d4a017	#3d2e05	250 / 125 / 60
-eFootball	efootball	#16a34a	#052e16	250 / 125 / 60
-NBA 2K25	nba2k	#2563eb	#1e1b4b	250 / 125 / 60
-Mortal Kombat 1	mk1	#ca8a04	#1c1402	200 / 100 / 50
-Halo Infinite	halo	#22c55e	#052e1a	250 / 125 / 60
-Minecraft	minecraft	#65a30d	#1a2e05	150 / 75 / 40
+EA FC 25	fc25	#2fb35a	#0b3a19	100 / 97 / 94
+Valorant	valorant	#e8473f	#4a0d0e	100 / 97 / 94
+CS2	cs2	#f2a33a	#4f2a07	100 / 97 / 94
+League of Legends	lol	#5d55e0	#171447	100 / 97 / 94
+Fortnite	fortnite	#f07a2c	#4a1a05	100 / 97 / 94
+Rocket League	rocket	#3f78e8	#0c1d4b	100 / 97 / 94
+Free Fire	freefire	#ff9f1c	#5a2600	100 / 97 / 94
+CoD Mobile	codm	#7a8a6a	#1d2416	100 / 97 / 94
+Clash Royale	clash	#3b82f6	#172554	100 / 97 / 94
+Brawl Stars	brawl	#facc15	#713f12	100 / 97 / 94
+Apex Legends	apex	#dc2626	#3f0a0a	100 / 97 / 94
+Overwatch 2	ow2	#f97316	#3b1606	100 / 97 / 94
+Dota 2	dota2	#b91c1c	#1c0606	100 / 97 / 94
+Rainbow Six Siege	r6	#64748b	#0f172a	100 / 97 / 94
+Street Fighter 6	sf6	#e11d48	#3f0616	100 / 97 / 94
+Tekken 8	tekken	#a855f7	#2e1065	100 / 97 / 94
+Smash Bros. Ultimate	smash	#ef4444	#450a0a	100 / 97 / 94
+Mobile Legends	mlbb	#0ea5e9	#082f49	100 / 97 / 94
+PUBG	pubg	#d4a017	#3d2e05	100 / 97 / 94
+eFootball	efootball	#16a34a	#052e16	100 / 97 / 94
+NBA 2K25	nba2k	#2563eb	#1e1b4b	100 / 97 / 94
+Mortal Kombat 1	mk1	#ca8a04	#1c1402	100 / 97 / 94
+Halo Infinite	halo	#22c55e	#052e1a	100 / 97 / 94
+Minecraft	minecraft	#65a30d	#1a2e05	100 / 97 / 94
 Los populares, que se muestran primero, son fc25, valorant, freefire, fortnite, lol, cs2.
 
 5.19 Selector de juegos — gamePicker

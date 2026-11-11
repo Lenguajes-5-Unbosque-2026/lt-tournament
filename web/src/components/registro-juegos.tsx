@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { AppShell } from "@/components/app-shell";
 import { GameMultiPicker } from "@/components/game-multi-picker";
 import { useRegistro } from "@/components/registro-provider";
-import { StepProgress } from "@/components/step-progress";
 import { Topbar } from "@/components/topbar";
 import { Button, buttonVariants } from "@/components/ui/button";
 import type { Juego } from "@/lib/types";
@@ -18,10 +17,7 @@ export function RegistroJuegos({ juegos }: { juegos: Juego[] }) {
 
   return (
     <AppShell mode="player" navbar={false}>
-      <Topbar title="Tus juegos" subtitle="Paso 2 de 2" fallbackHref="/registro" />
-      <div className="mt-3">
-        <StepProgress total={2} current={2} />
-      </div>
+      <Topbar title="Tus juegos" fallbackHref="/registro" />
 
       <h2 className="mt-4 font-display text-display-l text-ink uppercase italic">
         ¿Qué juegas?

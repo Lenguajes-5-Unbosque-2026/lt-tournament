@@ -11,6 +11,8 @@ import { OrganizerCard } from "@/components/organizer-card";
 import { Stat } from "@/components/stat";
 import { StatusTag } from "@/components/status-tag";
 import { Topbar } from "@/components/topbar";
+import { jugadorPorId } from "@/lib/perfiles";
+import { jugadorActualId } from "@/lib/sesion";
 import { Progress } from "@/components/ui/progress";
 import { AHORA } from "@/lib/ahora";
 import {
@@ -21,7 +23,6 @@ import {
 } from "@/lib/format";
 import {
   getInscripcionPropia,
-  getJugadorActual,
   getTorneoDetalle,
   tipoDeBracket,
 } from "@/lib/mock";
@@ -39,8 +40,9 @@ async function DetalleTorneo({
   const torneo = getTorneoDetalle(id);
   if (!torneo) notFound();
 
-  const jugador = getJugadorActual();
-  const propia = getInscripcionPropia(id);
+  const jugadorId = await jugadorActualId();
+  const jugador = await jugadorPorId(jugadorId);
+  const propia = getInscripcionPropia(id, jugadorId);
   const estado = etiquetaEstado(torneo);
   const lleno = estado === "lleno";
   const yaInscrito = propia?.estado === "confirmada" || propia?.estado === "pendiente";

@@ -7,18 +7,18 @@ import { Stat } from "@/components/stat";
 import { Badge } from "@/components/ui/badge";
 import { AHORA } from "@/lib/ahora";
 import {
-  getOrganizadorActual,
   getResumenPanel,
   getTorneosDelOrganizador,
   tipoDeBracket,
 } from "@/lib/mock";
+import { organizadorPorId } from "@/lib/perfiles";
 import { organizadorActualId } from "@/lib/sesion";
 
 /** Panel del organizador (O01): cifras, acceso a crear y «Mis torneos». */
 async function Panel() {
   // La sesión viene de una cookie: dato de la petición, por eso va en Suspense.
   const organizadorId = await organizadorActualId();
-  const organizador = getOrganizadorActual(organizadorId);
+  const organizador = await organizadorPorId(organizadorId);
   const torneos = getTorneosDelOrganizador(organizadorId);
   // Los finalizados solo se cuentan; no aparecen en la lista (spec, estados del panel).
   const lista = torneos.filter((t) => t.estado !== "finalizado" && t.estado !== "cancelado");

@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
+import { jugadorActualId } from "@/lib/sesion";
 import { BracketPendiente } from "@/components/bracket-pendiente";
 import { BRBracketJugador } from "@/components/br-bracket-jugador";
 import { EliminacionBracketJugador } from "@/components/eliminacion-bracket-jugador";
@@ -9,7 +10,6 @@ import {
   getTorneoDetalle,
   getTorneoEliminacion,
   getTorneoLiga,
-  JUGADOR_ACTUAL_ID,
 } from "@/lib/mock";
 
 /**
@@ -18,8 +18,9 @@ import {
  */
 async function Bracket({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  const yo = await jugadorActualId();
   const propio = (jugadores: { id: string }[]) =>
-    jugadores.some((j) => j.id === JUGADOR_ACTUAL_ID) ? JUGADOR_ACTUAL_ID : undefined;
+    jugadores.some((j) => j.id === yo) ? yo : undefined;
 
   const br = getTorneoBR(id);
   if (br) return <BRBracketJugador torneo={br} propioId={propio(br.jugadores)} />;

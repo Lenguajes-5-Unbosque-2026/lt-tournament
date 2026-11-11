@@ -1,11 +1,6 @@
 import "server-only";
 import { cookies } from "next/headers";
-import {
-  JUGADOR_ACTUAL_ID,
-  ORGANIZADOR_ACTUAL_ID,
-  existePerfilJugador,
-  existePerfilOrganizador,
-} from "./mock";
+import { JUGADOR_ACTUAL_ID, ORGANIZADOR_ACTUAL_ID } from "./mock";
 
 /** Cookie con el id de la cuenta que ingresó en J04 (sesión de prueba, sin Supabase Auth). */
 export const COOKIE_USUARIO = "lt_usuario";
@@ -21,7 +16,7 @@ async function usuarioDeSesion() {
  */
 export async function jugadorActualId() {
   const id = await usuarioDeSesion();
-  return id && existePerfilJugador(id) ? id : JUGADOR_ACTUAL_ID;
+  return id?.startsWith("usr_") ? id : JUGADOR_ACTUAL_ID;
 }
 
 /**
@@ -30,7 +25,7 @@ export async function jugadorActualId() {
  */
 export async function organizadorActualId() {
   const id = await usuarioDeSesion();
-  return id && existePerfilOrganizador(id) ? id : ORGANIZADOR_ACTUAL_ID;
+  return id?.startsWith("usr_") ? id : ORGANIZADOR_ACTUAL_ID;
 }
 
 /**

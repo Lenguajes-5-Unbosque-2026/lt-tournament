@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { PerfilCompetitivoView } from "@/components/perfil-competitivo";
 import { getPerfilCompetitivo } from "@/lib/mock";
 import { getHistorial, getLogros } from "@/lib/mock-progreso";
+import { jugadorPorId } from "@/lib/perfiles";
 import { jugadorActualId } from "@/lib/sesion";
 
 async function Perfil() {
@@ -9,7 +10,7 @@ async function Perfil() {
   const id = await jugadorActualId();
   return (
     <PerfilCompetitivoView
-      perfil={getPerfilCompetitivo(id)}
+      perfil={getPerfilCompetitivo(id, await jugadorPorId(id))}
       logros={getLogros(id)}
       ultimos={getHistorial(id).items}
     />

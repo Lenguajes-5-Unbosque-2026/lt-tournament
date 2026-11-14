@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Search, type LucideIcon } from "lucide-react";
+import { ArrowLeft, Search, type LucideIcon } from "lucide-react";
 import { Render3D } from "@/components/render-3d";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -22,7 +22,7 @@ export function EmptyState({
   titulo: string;
   texto: string;
   /** Botón principal; sin él, el recuadro solo informa (V5). */
-  cta?: { label: string; href: string };
+  cta?: { label: string; href: string; /** «back» cambia la lupa por una flecha. */ icon?: "search" | "back" };
   variant?: "card" | "page";
   className?: string;
 }) {
@@ -31,7 +31,7 @@ export function EmptyState({
       href={cta.href}
       className={cn(buttonVariants(), "mt-5 w-full")}
     >
-      <Search />
+      {cta.icon === "back" ? <ArrowLeft /> : <Search />}
       {cta.label}
     </Link>
   );

@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { MapPin, MoreHorizontal } from "lucide-react";
+import { toast } from "sonner";
+import { enviarMensajeAlChat } from "@/app/actions/escritura";
 import { ChatComposer } from "@/components/chat-composer";
 import { ChatMessage } from "@/components/chat-message";
 import { Topbar } from "@/components/topbar";
@@ -29,7 +31,9 @@ export function ChatTorneo({ chat }: { chat: Chat }) {
     fin.current?.scrollIntoView({ block: "end" });
   }, [mensajes.length]);
 
-  function enviar(texto: string) {
+  async function enviar(texto: string) {
+    const r = await enviarMensajeAlChat(chat.torneoId, texto);
+    if (!r.ok) toast.error("No se pudo enviar el mensaje", { description: r.error });
     setMensajes((m) => [
       ...m,
       {

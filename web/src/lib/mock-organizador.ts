@@ -2,6 +2,7 @@ import "server-only";
 import { BORRADOR_INICIAL, type Borrador, type TipoTorneo } from "./crear-config";
 import { formatDiaSemana } from "./format";
 import { getOrganizadorActual, getTorneosDelOrganizador, leer } from "./mock";
+import type { OrganizadorActual } from "./types";
 import {
   TORNEOS_POR_NIVEL,
   type EstadisticasTorneo,
@@ -9,9 +10,13 @@ import {
 } from "./organizador";
 
 /** Perfil del organizador (O17): reputación, nivel, progreso y torneos organizados. */
-export function getPerfilOrganizador(organizadorId: string): PerfilOrganizador {
-  const org = getOrganizadorActual(organizadorId);
-  const fila = leer("perfiles_organizador").find((o) => o.id === organizadorId)!;
+export function getPerfilOrganizador(
+  organizadorId: string,
+  respaldo?: OrganizadorActual,
+): PerfilOrganizador {
+  // Una cuenta nueva (creada en la app) no está en los CSV: `respaldo` trae su perfil de Supabase.
+  const fila = leer("perfiles_organizador").find((o) => o.id === organizadorId);
+  const org = fila ? getOrganizadorActual(organizadorId) : respaldo!;
   const torneos = getTorneosDelOrganizador(organizadorId);
   const contados = torneos.filter((t) => t.estado !== "borrador" && t.estado !== "cancelado");
 
@@ -25,7 +30,7 @@ export function getPerfilOrganizador(organizadorId: string): PerfilOrganizador {
     nivel: org.nivel,
     torneos: contados.length,
     jugadores: contados.reduce((s, t) => s + t.inscritos, 0),
-    valoracion: Number(fila.valoracion),
+    valoracion: Number(fila?.valoracion ?? 0),
     faltan: Math.max(0, meta - contados.length),
     progreso: Math.min(1, contados.length / meta),
     // Del más reciente al más antiguo; los borradores y cancelados no se muestran.

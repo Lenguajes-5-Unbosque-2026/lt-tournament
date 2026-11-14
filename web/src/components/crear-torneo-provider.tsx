@@ -1,6 +1,8 @@
 "use client";
 
 import { createContext, useContext, useState } from "react";
+import { toast } from "sonner";
+import { guardarTorneoDelOrganizador } from "@/app/actions/escritura";
 import { BORRADOR_INICIAL, type Borrador } from "@/lib/crear-config";
 
 type Contexto = {
@@ -9,6 +11,8 @@ type Contexto = {
   actualizar: (cambios: Partial<Borrador>) => void;
   /** Nivel del organizador: fija el máximo de jugadores. */
   nivel: number;
+  /** Guarda el torneo en Supabase (publicado o borrador). `true` si se guardó; si no, avisa del error. */
+  guardar: (estado: "abierto" | "borrador") => Promise<boolean>;
 };
 
 const CrearTorneoContext = createContext<Contexto | null>(null);
@@ -33,6 +37,15 @@ export function CrearTorneoProvider({
         borrador,
         nivel,
         actualizar: (cambios) => setBorrador((b) => ({ ...b, ...cambios })),
+        guardar: async (estado) => {
+          if (borrador.nombre.trim() === "") {
+            toast.error("Escribe el nombre del torneo para guardarlo");
+            return false;
+          }
+          const r = await guardarTorneoDelOrganizador(borrador, estado);
+          if (!r.ok) toast.error("No se pudo guardar el torneo", { description: r.error });
+          return r.ok;
+        },
       }}
     >
       {children}

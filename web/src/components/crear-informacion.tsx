@@ -24,7 +24,7 @@ export function CrearInformacion({
   copia?: Partial<Borrador>;
 }) {
   const router = useRouter();
-  const { borrador, actualizar } = useCrearTorneo();
+  const { borrador, actualizar, guardar } = useCrearTorneo();
   const [saliendo, setSaliendo] = useState(false);
   const juego = juegos.find((j) => j.id === borrador.juegoId);
   // Copia los datos una sola vez al abrir y avisa que es un borrador nuevo.
@@ -99,16 +99,22 @@ export function CrearInformacion({
         <Button
           variant="secondary"
           className="w-full"
-          onClick={() => {
-            toast.success("Borrador guardado");
-            router.push("/org/panel");
+          onClick={async () => {
+            if (await guardar("borrador")) {
+              toast.success("Borrador guardado");
+              router.push("/org/panel");
+            }
           }}
         >
           Guardar borrador
         </Button>
       </div>
 
-      <ExitWizardDialog open={saliendo} onOpenChange={setSaliendo} />
+      <ExitWizardDialog
+        open={saliendo}
+        onOpenChange={setSaliendo}
+        onSaveDraft={() => guardar("borrador")}
+      />
     </>
   );
 }

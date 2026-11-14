@@ -4,32 +4,65 @@
 -- tablas y crea la política de lectura pública. Pega este archivo en el SQL
 -- Editor de Supabase. Se puede ejecutar más de una vez.
 --
--- Inscribirse en un torneo solo agrega una fila en public.inscripciones.
--- No modifica public.torneos: `cupos` es la capacidad TOTAL del torneo y los
--- inscritos («24/32») se calculan contando las filas de inscripciones con
--- estado confirmada o pendiente. Por eso NO hay política de UPDATE sobre
--- torneos (ver la nota al final).
-
--- 1. Cualquiera puede inscribirse (INSERT en inscripciones)
-drop policy if exists "Inscripción pública" on public.inscripciones;
-
-create policy "Inscripción pública"
-  on public.inscripciones
-  for insert
-  to anon, authenticated
-  with check (true);
-
--- Nota sobre las otras acciones, que siguen bloqueadas:
---   · SELECT  → ya lo permite "Lectura pública" (schema.sql). La app lo
---               necesita para contar inscritos y para leer la fila recién
---               creada (insert(...).select()).
---   · UPDATE y DELETE sobre inscripciones → sin política, por lo tanto nadie
---               puede cancelar ni editar una inscripción todavía. Cuando
---               haya login se agregarán con auth.uid().
+-- Con estas políticas la app puede registrar en Supabase lo que hace el
+-- usuario, usando solo la llave pública (anon):
 --
--- Nota sobre torneos: no se crea política de UPDATE. Restar «cupos» al
--- inscribirse dañaría el dato (el torneo quedaría con menos capacidad de la
--- que tiene) y, peor, un UPDATE abierto permitiría a cualquiera cambiar el
--- nombre, el estado o los premios de cualquier torneo. Si más adelante se
--- necesita un contador, se agrega con un trigger en inscripciones, no con
--- una política de escritura abierta.
+--   Acción en la app                        Tabla                  Permiso
+--   Crear cuenta (J03)                      usuarios               INSERT
+--                                           perfiles_jugador       INSERT
+--                                           perfiles_organizador   INSERT
+--   Elegir juegos (J02)                     jugador_juegos         INSERT
+--   Inscribirse / lista de espera (J10/J12) inscripciones          INSERT
+--   Hacer check-in (J14)                    inscripciones          UPDATE
+--   Publicar o guardar un torneo (O05)      torneos                INSERT
+--   Escribir en el chat / anuncio (J15/O14) mensajes_torneo        INSERT
+--
+-- IMPORTANTE: hoy no hay login con Supabase Auth, así que estas políticas son
+-- abiertas (cualquiera con la llave pública puede escribir). Sirven para
+-- desarrollar y probar el MVP. Cuando se conecte el login hay que cambiar
+-- `with check (true)` por reglas con auth.uid(): por ejemplo, que una
+-- inscripción solo la pueda crear o actualizar su jugador.
+--
+-- No hay políticas de UPDATE ni DELETE en torneos: inscribirse NO modifica el
+-- torneo (`cupos` es la capacidad total; los inscritos se cuentan en
+-- inscripciones), y editar o borrar un torneo ajeno no debe poder hacerse.
+
+-- 1. Cuentas ---------------------------------------------------------------
+drop policy if exists "Crear cuenta" on public.usuarios;
+create policy "Crear cuenta" on public.usuarios
+  for insert to anon, authenticated with check (true);
+
+drop policy if exists "Crear perfil de jugador" on public.perfiles_jugador;
+create policy "Crear perfil de jugador" on public.perfiles_jugador
+  for insert to anon, authenticated with check (true);
+
+drop policy if exists "Crear perfil de organizador" on public.perfiles_organizador;
+create policy "Crear perfil de organizador" on public.perfiles_organizador
+  for insert to anon, authenticated with check (true);
+
+drop policy if exists "Elegir juegos" on public.jugador_juegos;
+create policy "Elegir juegos" on public.jugador_juegos
+  for insert to anon, authenticated with check (true);
+
+-- 2. Inscripciones y check-in ----------------------------------------------
+drop policy if exists "Inscripción pública" on public.inscripciones;
+create policy "Inscripción pública" on public.inscripciones
+  for insert to anon, authenticated with check (true);
+
+-- El check-in actualiza una inscripción existente (check_in_en).
+drop policy if exists "Check-in público" on public.inscripciones;
+create policy "Check-in público" on public.inscripciones
+  for update to anon, authenticated using (true) with check (true);
+
+-- 3. Torneos ---------------------------------------------------------------
+drop policy if exists "Publicar torneo" on public.torneos;
+create policy "Publicar torneo" on public.torneos
+  for insert to anon, authenticated with check (true);
+
+-- 4. Chat ------------------------------------------------------------------
+drop policy if exists "Escribir en el chat" on public.mensajes_torneo;
+create policy "Escribir en el chat" on public.mensajes_torneo
+  for insert to anon, authenticated with check (true);
+
+-- Lo demás sigue bloqueado: sin política no hay UPDATE ni DELETE (salvo el
+-- check-in de arriba). La lectura la permite "Lectura pública" de schema.sql.

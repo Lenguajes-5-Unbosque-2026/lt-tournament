@@ -520,20 +520,17 @@ export function getAmigosIds(jugadorId: string): string[] {
 }
 
 /**
- * Ranking de un juego: suma de los puntos de ranking que cada jugador ganó
- * en torneos finalizados de ese juego (posiciones_finales), de mayor a menor.
+ * Ranking general: suma de los puntos de ranking que cada jugador ganó en
+ * todos sus torneos finalizados (posiciones_finales), de mayor a menor. No hay
+ * ranking por juego: el puntaje es uno solo por jugador. `excluirTorneoId`
+ * deja fuera un torneo, para ver dónde estaba el jugador antes de jugarlo.
  */
-export function getRankingDeJuego(juegoId: string, excluirTorneoId?: string): FilaRanking[] {
-  const torneosDelJuego = new Set(
-    leer("torneos")
-      .filter((t) => t.juego_id === juegoId && t.id !== excluirTorneoId)
-      .map((t) => t.id),
-  );
+export function getRankingGeneral(excluirTorneoId?: string): FilaRanking[] {
   const perfiles = new Map(leer("perfiles_jugador").map((p) => [p.id, p]));
   const acumulado = new Map<string, { puntos: number; torneos: number }>();
 
   for (const f of leer("posiciones_finales")) {
-    if (!torneosDelJuego.has(f.torneo_id)) continue;
+    if (f.torneo_id === excluirTorneoId) continue;
     const previo = acumulado.get(f.jugador_id) ?? { puntos: 0, torneos: 0 };
     acumulado.set(f.jugador_id, {
       puntos: previo.puntos + Number(f.puntos_ranking),
@@ -568,9 +565,7 @@ export function getPerfilCompetitivo(jugadorId: string, respaldo?: Jugador): Per
   const usuario = leer("usuarios").find((u) => u.id === jugadorId);
   const juego = perfil?.juego_principal_id ? juegos().get(perfil.juego_principal_id) : undefined;
   const torneos = new Map(todosLosTorneos().map((t) => [t.id, t]));
-  const posicionJuego = perfil?.juego_principal_id
-    ? getRankingDeJuego(perfil.juego_principal_id).findIndex((r) => r.id === jugadorId)
-    : -1;
+  const posicionGeneral = getRankingGeneral().findIndex((r) => r.id === jugadorId);
 
   const historial = leer("posiciones_finales")
     .filter((f) => f.jugador_id === jugadorId && torneos.has(f.torneo_id))
@@ -587,7 +582,7 @@ export function getPerfilCompetitivo(jugadorId: string, respaldo?: Jugador): Per
     ciudad: usuario?.ciudad ?? "",
     desde: usuario ? Number(usuario.creado_en.slice(0, 4)) : undefined,
     juegoPrincipal: juego?.nombre,
-    posicionJuego: posicionJuego >= 0 ? posicionJuego + 1 : undefined,
+    posicionGeneral: posicionGeneral >= 0 ? posicionGeneral + 1 : undefined,
     torneosJugados: historial.length,
     victorias: historial.reduce((suma, h) => suma + h.victorias, 0),
     mejorPuesto: historial.length ? Math.min(...historial.map((h) => h.puesto)) : undefined,

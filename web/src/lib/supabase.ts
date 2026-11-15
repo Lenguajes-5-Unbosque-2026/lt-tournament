@@ -30,3 +30,22 @@ export function getSupabase(): SupabaseClient {
   });
   return cliente;
 }
+
+let clienteEscritura: SupabaseClient | undefined;
+
+/**
+ * Cliente para escribir desde el servidor (acciones de servidor). Si existe
+ * SUPABASE_SERVICE_ROLE_KEY lo usa, y la llave de servicio se salta las
+ * políticas RLS: así no hace falta abrir la escritura al público. Esa llave NO
+ * lleva el prefijo NEXT_PUBLIC_, por lo que nunca llega al navegador. Sin ella,
+ * cae en la llave pública y dependen de supabase/escritura.sql.
+ */
+export function getSupabaseEscritura(): SupabaseClient {
+  const llaveServicio = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  if (!llaveServicio || !url) return getSupabase();
+  clienteEscritura ??= createClient(url, llaveServicio, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+  return clienteEscritura;
+}

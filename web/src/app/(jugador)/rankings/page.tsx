@@ -1,23 +1,17 @@
 import { Suspense } from "react";
 import { RankingsView } from "@/components/rankings-view";
-import { getJuegos, getRankingDeJuego } from "@/lib/mock";
+import { getRankingGeneral } from "@/lib/mock";
 import { getAmigosRanking } from "@/lib/mock-progreso";
 import { jugadorPorId } from "@/lib/perfiles";
 import { jugadorActualId } from "@/lib/sesion";
 
-// Chips de juego de V3.
-const JUEGOS_RANKING = ["fc25", "valorant", "cs2"];
-
 async function Rankings({ searchParams }: { searchParams: Promise<{ vista?: string }> }) {
   // La sesión y la vista vienen de la petición: van dentro de Suspense.
   const [yoId, { vista }] = await Promise.all([jugadorActualId(), searchParams]);
-  const juegos = getJuegos(JUEGOS_RANKING).map((j) => ({ id: j.id, nombre: j.nombre }));
-  const rankings = Object.fromEntries(juegos.map((j) => [j.id, getRankingDeJuego(j.id)]));
 
   return (
     <RankingsView
-      juegos={juegos}
-      rankings={rankings}
+      ranking={getRankingGeneral()}
       amigos={getAmigosRanking(yoId)}
       invitacion={`lt.gg/invitar/${(await jugadorPorId(yoId)).nombreUsuario.toLowerCase()}`}
       yoId={yoId}

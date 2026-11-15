@@ -2,7 +2,7 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import type { Borrador } from "./crear-config";
 import { slugDeNombre } from "./slug";
-import { getSupabase } from "./supabase";
+import { getSupabaseEscritura as getSupabase } from "./supabase";
 
 /**
  * Escritura en Supabase (INSERT y UPDATE con la llave pública). Las políticas

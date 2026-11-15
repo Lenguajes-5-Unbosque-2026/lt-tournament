@@ -51,7 +51,6 @@ export type PuestoFinal = Participante & { puesto: number; puntos: number };
 export type ResultadoFinal = {
   torneoId: string;
   torneoNombre: string;
-  juegoNombre: string;
   /** 1.º, 2.º y 3.º. */
   podio: PuestoFinal[];
   /** Puesto, puntos de ranking y victorias del jugador. */

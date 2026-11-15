@@ -35,11 +35,8 @@ export function PerfilCompetitivoView({
   ]
     .filter(Boolean)
     .join(" · ");
-  const etiquetaJuego = perfil.juegoPrincipal
-    ? perfil.posicionJuego && perfil.posicionJuego <= 10
-      ? `Top ${perfil.posicionJuego} · ${perfil.juegoPrincipal}`
-      : perfil.juegoPrincipal
-    : "Sin juego principal";
+  const etiquetaJuego = perfil.juegoPrincipal ?? "Sin juego principal";
+  const top = perfil.posicionGeneral && perfil.posicionGeneral <= 10 ? perfil.posicionGeneral : null;
 
   return (
     <>
@@ -73,6 +70,11 @@ export function PerfilCompetitivoView({
           >
             {etiquetaJuego}
           </Badge>
+          {top && (
+            <Badge variant="warning" dot={false} className="rounded-sm">
+              Top {top}
+            </Badge>
+          )}
           <Badge variant="accent" dot={false} className="rounded-sm">
             Nivel {jugador.nivel}
           </Badge>

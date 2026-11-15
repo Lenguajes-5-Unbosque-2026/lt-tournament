@@ -57,7 +57,8 @@ export async function getTorneosVisibles(): Promise<Torneo[]> {
   return data.map((t) => ({
     id: t.id,
     nombre: t.nombre,
-    imagen: t.imagen ?? "",
+    // La portada del torneo es la de su juego (la imagen real, no una ilustración).
+    imagen: t.juego.imagen ?? "",
     tipoJuego: t.tipo_juego as TipoJuego,
     jugadoresPorEquipo: t.jugadores_por_equipo,
     cupos: t.cupos,

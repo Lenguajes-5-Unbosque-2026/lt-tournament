@@ -88,7 +88,7 @@ function todosLosTorneos(): Torneo[] {
     nombre: r.nombre,
     juego: catalogo.get(r.juego_id)!,
     organizador: orgs.get(r.organizador_id)!,
-    imagen: r.imagen,
+    imagen: catalogo.get(r.juego_id)?.imagen ?? "",
     tipoJuego: r.tipo_juego as TipoJuego,
     jugadoresPorEquipo: Number(r.jugadores_por_equipo),
     cupos: Number(r.cupos),

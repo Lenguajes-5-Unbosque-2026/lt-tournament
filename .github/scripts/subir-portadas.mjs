@@ -42,7 +42,8 @@ for (const archivo of archivos) {
   }
 
   // 2. Guarda el link público en el juego.
-  const enlace = `${url}/storage/v1/object/public/${BUCKET}/${archivo}`;
+  // El «?v=» cambia en cada subida para que nadie vea la imagen vieja guardada en caché.
+  const enlace = `${url}/storage/v1/object/public/${BUCKET}/${archivo}?v=${Date.now()}`;
   const cambio = await fetch(`${url}/rest/v1/juegos?id=eq.${juegoId}`, {
     method: "PATCH",
     headers: { ...cabeceras, "Content-Type": "application/json", Prefer: "return=representation" },

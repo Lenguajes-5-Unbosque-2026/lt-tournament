@@ -22,7 +22,11 @@ function nuevoId(prefijo: string) {
 function mensaje(error: ErrorSupabase, traducciones: Record<string, string> = {}) {
   const texto = `${error.message} ${error.details ?? ""}`;
   const clave = Object.keys(traducciones).find((k) => texto.includes(k));
-  return clave ? traducciones[clave] : error.message;
+  if (clave) return traducciones[clave];
+  if (texto.includes("row-level security")) {
+    return "Supabase no deja escribir en esa tabla todavía. Corre supabase/escritura.sql en el SQL Editor o configura SUPABASE_SERVICE_ROLE_KEY.";
+  }
+  return error.message;
 }
 
 async function envolver<T extends object>(fn: () => Promise<Resultado<T>>): Promise<Resultado<T>> {
@@ -80,7 +84,7 @@ export function registrarCheckin(torneoId: string, jugadorId: string) {
       .update({ check_in_en: new Date().toISOString() })
       .eq("torneo_id", torneoId)
       .eq("jugador_id", jugadorId);
-    return error ? { ok: false, error: error.message } : { ok: true };
+    return error ? { ok: false, error: mensaje(error) } : { ok: true };
   });
 }
 
@@ -161,7 +165,7 @@ export function guardarJuegos(jugadorId: string, juegos: string[]) {
         // Si ya estaba elegido no se toca: así solo hace falta el permiso de INSERT.
         { onConflict: "jugador_id,juego_id", ignoreDuplicates: true },
       );
-    return error ? { ok: false, error: error.message } : { ok: true };
+    return error ? { ok: false, error: mensaje(error) } : { ok: true };
   });
 }
 
@@ -173,9 +177,47 @@ const TIPO_GUARDADO = {
   por_puntos: "por_puntos",
 } as const;
 
+/**
+ * Un torneo necesita perfil de organizador. Quien creó su cuenta como jugador
+ * y pasa a modo Organizador no lo tiene todavía: se crea con su mismo ID.
+ */
+async function asegurarPerfilOrganizador(id: string): Promise<Resultado> {
+  const supabase = getSupabase();
+  const existente = await supabase.from("perfiles_organizador").select("id").eq("id", id).maybeSingle();
+  if (existente.error) return { ok: false, error: mensaje(existente.error) };
+  if (existente.data) return { ok: true };
+
+  const jugador = await supabase
+    .from("perfiles_jugador")
+    .select("nombre_usuario, color_1, color_2, imagen")
+    .eq("id", id)
+    .maybeSingle();
+  const usuario = await supabase.from("usuarios").select("nombre").eq("id", id).maybeSingle();
+  if (!jugador.data && !usuario.data) {
+    return { ok: false, error: "Tu cuenta todavía no existe en Supabase. Crea una cuenta nueva." };
+  }
+
+  const { error } = await supabase.from("perfiles_organizador").insert({
+    id,
+    alias: jugador.data?.nombre_usuario ?? usuario.data?.nombre,
+    nivel: 1,
+    verificado: false,
+    valoracion: 0,
+    seguidores: 0,
+    color_1: jugador.data?.color_1 ?? COLORES_PERFIL.color_1,
+    color_2: jugador.data?.color_2 ?? COLORES_PERFIL.color_2,
+    imagen: jugador.data?.imagen ?? null,
+    creado_en: new Date().toISOString(),
+  });
+  return error ? { ok: false, error: mensaje(error) } : { ok: true };
+}
+
 /** Guarda el torneo del asistente: publicado (`abierto`) o como `borrador`. */
 export function guardarTorneo(b: Borrador, organizadorId: string, estado: "abierto" | "borrador") {
   return envolver<{ id: string }>(async () => {
+    const perfil = await asegurarPerfilOrganizador(organizadorId);
+    if (!perfil.ok) return perfil;
+
     const id = nuevoId("tor");
     const ahora = new Date().toISOString();
     const f = b.fechaReglas;
@@ -232,7 +274,15 @@ export function guardarTorneo(b: Borrador, organizadorId: string, estado: "abier
         enlace: `lt.gg/${slugDeNombre(b.nombre)}`,
         creado_en: ahora,
       });
-    return error ? { ok: false, error: error.message } : { ok: true, id };
+    return error
+      ? {
+          ok: false,
+          error: mensaje(error, {
+            torneos_organizador_id_fkey: "Tu cuenta no tiene perfil de organizador.",
+            torneos_juego_id_fkey: "El juego elegido no existe en Supabase.",
+          }),
+        }
+      : { ok: true, id };
   });
 }
 
@@ -255,6 +305,6 @@ export function guardarMensaje(m: {
       fijado: m.fijado,
       creado_en: new Date().toISOString(),
     });
-    return error ? { ok: false, error: error.message } : { ok: true };
+    return error ? { ok: false, error: mensaje(error) } : { ok: true };
   });
 }

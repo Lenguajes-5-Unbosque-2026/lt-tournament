@@ -146,8 +146,8 @@ export type PerfilCompetitivo = {
   desde?: number;
   /** Nombre del juego principal; vacío hasta que el jugador lo elige. */
   juegoPrincipal?: string;
-  /** Su lugar en el ranking de ese juego (1 = primero), si ya tiene puntos. */
-  posicionJuego?: number;
+  /** Su lugar en el ranking general (1 = primero), si ya tiene puntos. */
+  posicionGeneral?: number;
   torneosJugados: number;
   victorias: number;
   /** 1 = campeón; `undefined` si aún no terminó ningún torneo. */

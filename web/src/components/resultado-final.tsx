@@ -43,7 +43,7 @@ export function ResultadoFinal({ resultado: r }: { resultado: Resultado }) {
         <Stat
           icon={Gamepad2}
           value={`${r.puestosSubidos > 0 ? "↑" : r.puestosSubidos < 0 ? "↓" : "="}${Math.abs(r.puestosSubidos)}`}
-          label={`Puestos en ${r.juegoNombre.replace("EA ", "")}`}
+          label="Puestos en el ranking"
         />
         <Stat icon={Swords} value={String(r.victorias)} label="Victorias" />
       </div>

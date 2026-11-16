@@ -1,6 +1,6 @@
 import "server-only";
 import type { Amigo, Historial, Logro, Notificacion, TipoNotificacion } from "./progreso";
-import { getAmigosIds, getRankingDeJuego, leer } from "./mock";
+import { getAmigosIds, getRankingGeneral, leer } from "./mock";
 
 /** Torneos terminados del jugador, del más reciente al más antiguo, con su resultado. */
 export function getHistorial(jugadorId: string): Historial {
@@ -83,11 +83,7 @@ export function getLogros(jugadorId: string): Logro[] {
     logros.push({ id: "victorias", titulo: `Victorias x${victorias}`, detalle: "En todos los torneos" });
   }
 
-  const principal = leer("perfiles_jugador").find((p) => p.id === jugadorId)?.juego_principal_id;
-  if (principal) {
-    const lugar = getRankingDeJuego(principal).findIndex((r) => r.id === jugadorId);
-    const nombre = leer("juegos").find((j) => j.id === principal)?.nombre ?? principal;
-    if (lugar >= 0 && lugar < 10) logros.push({ id: "top", titulo: "Top 10", detalle: nombre });
-  }
+  const lugar = getRankingGeneral().findIndex((r) => r.id === jugadorId);
+  if (lugar >= 0 && lugar < 10) logros.push({ id: "top", titulo: "Top 10", detalle: "Ranking general" });
   return logros;
 }

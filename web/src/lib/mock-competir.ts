@@ -1,7 +1,7 @@
 import "server-only";
 import type { Chat, PrimerPartido, ResultadoFinal, Sala } from "./competir";
 import { cuadro, jugadorPorId } from "./eliminacion";
-import { getRankingDeJuego, getTorneoDetalle, getTorneoEliminacion, leer } from "./mock";
+import { getRankingGeneral, getTorneoDetalle, getTorneoEliminacion, leer } from "./mock";
 
 /**
  * La Sala del torneo (J14) del jugador, o `undefined` si el torneo no existe o
@@ -120,18 +120,17 @@ export function getResultadoFinal(torneoId: string, jugadorId: string): Resultad
   const mia = filas.find((f) => f.jugador_id === jugadorId);
   if (!mia || Number(mia.posicion) > 3) return undefined;
 
-  // Puestos que subió: su lugar en el ranking del juego sin este torneo, menos con él.
+  // Puestos que subió: su lugar en el ranking general sin este torneo, menos con él.
   const lugar = (ranking: { id: string }[]) => {
     const i = ranking.findIndex((r) => r.id === jugadorId);
     return i < 0 ? ranking.length + 1 : i + 1;
   };
-  const antes = lugar(getRankingDeJuego(detalle.juego.id, torneoId));
-  const despues = lugar(getRankingDeJuego(detalle.juego.id));
+  const antes = lugar(getRankingGeneral(torneoId));
+  const despues = lugar(getRankingGeneral());
 
   return {
     torneoId,
     torneoNombre: detalle.nombre,
-    juegoNombre: detalle.juego.nombre,
     podio,
     puesto: Number(mia.posicion),
     puntos: Number(mia.puntos_ranking),

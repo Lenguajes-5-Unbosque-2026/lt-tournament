@@ -13,13 +13,20 @@ import {
 } from "@/lib/mock";
 import { organizadorPorId } from "@/lib/perfiles";
 import { organizadorActualId } from "@/lib/sesion";
+import { getTorneosDelOrganizadorSupabase } from "@/lib/supabase-torneos";
 
 /** Panel del organizador (O01): cifras, acceso a crear y «Mis torneos». */
 async function Panel() {
   // La sesión viene de una cookie: dato de la petición, por eso va en Suspense.
   const organizadorId = await organizadorActualId();
   const organizador = await organizadorPorId(organizadorId);
-  const torneos = getTorneosDelOrganizador(organizadorId);
+  // Los torneos creados en la app viven en Supabase; los datos de prueba son el respaldo.
+  let torneos;
+  try {
+    torneos = await getTorneosDelOrganizadorSupabase(organizadorId);
+  } catch {
+    torneos = getTorneosDelOrganizador(organizadorId);
+  }
   // Los finalizados solo se cuentan; no aparecen en la lista (spec, estados del panel).
   const lista = torneos.filter((t) => t.estado !== "finalizado" && t.estado !== "cancelado");
   const resumen = getResumenPanel(torneos);

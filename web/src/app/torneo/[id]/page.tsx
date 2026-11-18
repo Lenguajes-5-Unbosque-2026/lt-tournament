@@ -21,11 +21,8 @@ import {
   formatDiaSemana,
   formatHora,
 } from "@/lib/format";
-import {
-  getInscripcionPropia,
-  getTorneoDetalle,
-  tipoDeBracket,
-} from "@/lib/mock";
+import { tipoDeBracket } from "@/lib/mock";
+import { inscripcionPropia, torneoDetalle } from "@/lib/torneos-datos";
 import { etiquetaEstado, modalidad, nombreFormato } from "@/lib/torneo";
 
 const PUESTOS = ["1er puesto", "2do puesto", "3er puesto"];
@@ -37,12 +34,12 @@ async function DetalleTorneo({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const torneo = getTorneoDetalle(id);
+  const torneo = await torneoDetalle(id);
   if (!torneo) notFound();
 
   const jugadorId = await jugadorActualId();
   const jugador = await jugadorPorId(jugadorId);
-  const propia = getInscripcionPropia(id, jugadorId);
+  const propia = await inscripcionPropia(id, jugadorId);
   const estado = etiquetaEstado(torneo);
   const lleno = estado === "lleno";
   const yaInscrito = propia?.estado === "confirmada" || propia?.estado === "pendiente";

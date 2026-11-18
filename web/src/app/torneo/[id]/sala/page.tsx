@@ -1,9 +1,8 @@
 import { Suspense } from "react";
 import { notFound, redirect } from "next/navigation";
 import { SalaTorneo } from "@/components/sala-torneo";
-import { getTorneoDetalle } from "@/lib/mock";
-import { getSala } from "@/lib/mock-competir";
 import { jugadorActualId } from "@/lib/sesion";
+import { salaDelJugador, torneoDetalle } from "@/lib/torneos-datos";
 
 /**
  * Sala del torneo (J14). Todas las tarjetas de Mis torneos llevan aquí. Sin
@@ -12,11 +11,11 @@ import { jugadorActualId } from "@/lib/sesion";
  */
 async function SalaPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const detalle = getTorneoDetalle(id);
+  const detalle = await torneoDetalle(id);
   if (!detalle) notFound();
   if (detalle.estado === "finalizado") redirect(`/torneo/${id}/resultado`);
 
-  const sala = getSala(id, await jugadorActualId());
+  const sala = await salaDelJugador(id, await jugadorActualId());
   if (!sala) redirect(`/torneo/${id}`);
   return <SalaTorneo sala={sala} />;
 }

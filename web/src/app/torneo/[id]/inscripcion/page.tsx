@@ -8,7 +8,7 @@ import { Topbar } from "@/components/topbar";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { formatDia, formatFechaUtc, formatHora } from "@/lib/format";
-import { getInscripcionPropia, getTorneoDetalle } from "@/lib/mock";
+import { inscripcionPropia, torneoDetalle } from "@/lib/torneos-datos";
 import { jugadorActualId } from "@/lib/sesion";
 
 const DOS_HORAS_MS = 2 * 3600_000;
@@ -20,10 +20,10 @@ async function InscripcionConfirmada({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const torneo = getTorneoDetalle(id);
+  const torneo = await torneoDetalle(id);
   if (!torneo) notFound();
 
-  const propia = getInscripcionPropia(id, await jugadorActualId());
+  const propia = await inscripcionPropia(id, await jugadorActualId());
   // Sin inscripción previa, el seed es el orden de llegada: el siguiente cupo.
   const seed = propia?.seed ?? torneo.inscritos + 1;
 

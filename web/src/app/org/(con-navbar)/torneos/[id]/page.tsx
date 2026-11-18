@@ -1,9 +1,8 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { GestionResumen } from "@/components/gestion-resumen";
-import { getTorneoDetalle } from "@/lib/mock";
-import { getResumenGestion } from "@/lib/mock-gestion";
 import { organizadorActualId } from "@/lib/sesion";
+import { resumenGestion, torneoDetalle } from "@/lib/torneos-datos";
 
 /**
  * Gestionar · Resumen (O07). Solo el organizador dueño del torneo lo ve; las
@@ -11,8 +10,8 @@ import { organizadorActualId } from "@/lib/sesion";
  */
 async function Resumen({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const propio = getTorneoDetalle(id)?.organizador.id === (await organizadorActualId());
-  const resumen = propio ? getResumenGestion(id) : undefined;
+  const propio = (await torneoDetalle(id))?.organizador.id === (await organizadorActualId());
+  const resumen = propio ? await resumenGestion(id) : undefined;
   if (!resumen) notFound();
   return <GestionResumen r={resumen} />;
 }

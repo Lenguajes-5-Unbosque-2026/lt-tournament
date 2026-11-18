@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import { ChatOrganizador } from "@/components/chat-organizador";
-import { getTorneoDetalle } from "@/lib/mock";
-import { getChat } from "@/lib/mock-competir";
+
 import { organizadorActualId } from "@/lib/sesion";
+import { chatDelTorneo, torneoDetalle } from "@/lib/torneos-datos";
 
 /**
  * Carga el chat de un torneo para su organizador (O14). Solo el dueño lo ve.
@@ -16,8 +16,8 @@ export async function ChatOrganizadorCargado({
   mencion?: string;
 }) {
   const yo = await organizadorActualId();
-  if (getTorneoDetalle(torneoId)?.organizador.id !== yo) notFound();
-  const chat = getChat(torneoId, yo);
+  if ((await torneoDetalle(torneoId))?.organizador.id !== yo) notFound();
+  const chat = await chatDelTorneo(torneoId, yo);
   if (!chat) notFound();
   return <ChatOrganizador chat={chat} mencion={mencion} />;
 }
